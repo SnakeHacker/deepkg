@@ -33,7 +33,7 @@ func main() {
 		&gorm_model.KnowledgeGraphWorkspace{},
 		&gorm_model.SchemaOntology{},
 		&gorm_model.SchemaOntologyProp{},
-		&gorm_model.SchemaRelationship{},
+		&gorm_model.SchemaTriple{},
 	)
 
 	if err != nil {
