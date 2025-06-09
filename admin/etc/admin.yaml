@@ -1,0 +1,21 @@
+Name: admin
+Host: 0.0.0.0
+Port: 8888
+MaxBytes: 167772160
+
+Mysql:
+  DataSource: root:deepkg_db_pwd@tcp(127.0.0.1:3323)/deepkg_db?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+
+Minio:
+  AccessKey: minio_access_key
+  SecretKey: minio_secret_key
+  Host: 127.0.0.1
+  Port: 9003
+  Secure: false
+  PublicURL: http://127.0.0.1:9003/
+
+Redis:
+  IsCluster: false
+  Hosts:
+    - 127.0.0.1:6379
+  Pass: "123456"

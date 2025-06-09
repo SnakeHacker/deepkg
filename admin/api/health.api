@@ -1,0 +1,14 @@
+type (
+	GetHealthResp {
+		Result string `json:"result"`
+	}
+)
+
+@server(
+	prefix: api
+	group: admin
+)
+service admin {
+	@handler health
+	get /health returns (GetHealthResp)
+}
