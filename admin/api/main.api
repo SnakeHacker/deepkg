@@ -1,3 +1,6 @@
 import (
 	"health.api"
+	"common.api"
+	"user.api"
+	"orgnization.api"
 )

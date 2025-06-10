@@ -1,0 +1,74 @@
+import (
+    "common.api"
+)
+
+type (
+    User {
+        ID           int64  `json:"id, optional"`
+        UserCode     string `json:"user_code, optional"` // 自动生成
+        OrgID        int64  `json:"org_id"`
+        OrgName      string `json:"org_name, optional"` // 展示字段
+        Account      string `json:"account"`
+        Username     string `json:"username"`
+        Password string `json:"password, optional"`
+        Phone        string `json:"phone, optional"`
+        Mail         string `json:"mail, optional"`
+        Enable       int   `json:"enable, optional"` // 启用状态: 1-启用，2-禁用
+        Role         int    `json:"role"` // 角色：2-普通用户，1-管理员
+        Avatar       string `json:"avatar, optional"`
+        CreatedAt    string   `json:"created_at, optional"`
+        UpdatedAt    string   `json:"updated_at, optional"`
+    }
+
+    GetUserListReq {
+        PaginationParams
+    }
+
+    GetUserListResp {
+        Total       int64   `json:"total"`        // 总记录数
+        Users       []User  `json:"users"`        // User列表
+        PageSize    int     `json:"page_size"`    // 每页大小
+        PageNumber  int     `json:"page_number"`  // 当前页码
+    }
+
+    GetUserReq {
+        ID int64 `json:"id"`
+    }
+
+    GetUserResp {
+        User User `json:"user"`
+    }
+
+    CreateUserReq {
+        User          User   `json:"user"`
+    }
+
+    UpdateUserReq {
+        User User `json:"user"`
+    }
+
+    DeleteUsersReq {
+        Ids []int64 `json:"ids"`
+    }
+)
+
+@server(
+    prefix: api
+    group: user
+)
+service admin {
+    @handler getUser
+    post /user/get (GetUserReq) returns (GetUserResp)
+
+    @handler getUserList
+    post /user/list (GetUserListReq) returns (GetUserListResp)
+
+    @handler createUser
+    post /user/create (CreateUserReq)
+
+    @handler updateUser
+    post /user/update (UpdateUserReq)
+
+    @handler deleteUsers
+    post /user/delete (DeleteUsersReq)
+}

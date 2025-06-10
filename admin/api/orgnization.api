@@ -1,0 +1,64 @@
+import (
+    "common.api"
+)
+
+type (
+    Organization {
+        ID           int64  `json:"id, optional"`
+        OrgName      string `json:"org_name"`
+        CreatedAt    string   `json:"created_at,optional"`
+        UpdatedAt    string   `json:"updated_at,optional"`
+    }
+
+    GetOrgListReq {
+        PaginationParams
+    }
+
+    GetOrgListResp {
+        Total              int64           `json:"total"`        // 总记录数
+        Organizations      []Organization  `json:"organizations"` // Organizations列表
+        PageSize           int             `json:"page_size"`    // 每页大小
+        PageNumber         int             `json:"page_number"`  // 当前页码
+    }
+
+    GetOrgReq {
+        ID    int64  `json:"id"`
+    }
+
+    GetOrgResp {
+        Organization Organization `json:"organization"`
+    }
+
+    CreateOrgReq {
+        Organization  Organization  `json:"organization"`
+    }
+
+    UpdateOrgReq {
+         Organization  Organization  `json:"organization"`
+    }
+
+    DeleteOrgsReq {
+        Ids []int64 `json:"ids"`
+    }
+)
+
+@server(
+    prefix: api
+    group: org
+)
+service admin {
+    @handler getOrg
+    post /org/get (GetOrgReq) returns (GetOrgResp)
+
+    @handler getOrgList
+    post /org/list (GetOrgListReq) returns (GetOrgListResp)
+
+    @handler createOrg
+    post /org/create (CreateOrgReq)
+
+    @handler updateOrg
+    post /org/update (UpdateOrgReq)
+
+    @handler deleteOrgs
+    post /org/delete (DeleteOrgsReq)
+}

@@ -4,3 +4,94 @@ package types
 type GetHealthResp struct {
 	Result string `json:"result"`
 }
+
+type PaginationParams struct {
+	PageSize   int `json:"page_size"`
+	PageNumber int `json:"page_number"`
+}
+
+type User struct {
+	ID        int64  `json:"id, optional"`
+	UserCode  string `json:"user_code, optional"` // 自动生成
+	OrgID     int64  `json:"org_id"`
+	OrgName   string `json:"org_name, optional"` // 展示字段
+	Account   string `json:"account"`
+	Username  string `json:"username"`
+	Password  string `json:"password, optional"`
+	Phone     string `json:"phone, optional"`
+	Mail      string `json:"mail, optional"`
+	Enable    int    `json:"enable, optional"` // 启用状态: 1-启用，2-禁用
+	Role      int    `json:"role"`             // 角色：2-普通用户，1-管理员
+	Avatar    string `json:"avatar, optional"`
+	CreatedAt string `json:"created_at, optional"`
+	UpdatedAt string `json:"updated_at, optional"`
+}
+
+type GetUserListReq struct {
+	PaginationParams
+}
+
+type GetUserListResp struct {
+	Total      int64  `json:"total"`       // 总记录数
+	Users      []User `json:"users"`       // User列表
+	PageSize   int    `json:"page_size"`   // 每页大小
+	PageNumber int    `json:"page_number"` // 当前页码
+}
+
+type GetUserReq struct {
+	ID int64 `json:"id"`
+}
+
+type GetUserResp struct {
+	User User `json:"user"`
+}
+
+type CreateUserReq struct {
+	User User `json:"user"`
+}
+
+type UpdateUserReq struct {
+	User User `json:"user"`
+}
+
+type DeleteUsersReq struct {
+	Ids []int64 `json:"ids"`
+}
+
+type Organization struct {
+	ID        int64  `json:"id, optional"`
+	OrgName   string `json:"org_name"`
+	CreatedAt string `json:"created_at,optional"`
+	UpdatedAt string `json:"updated_at,optional"`
+}
+
+type GetOrgListReq struct {
+	PaginationParams
+}
+
+type GetOrgListResp struct {
+	Total         int64          `json:"total"`         // 总记录数
+	Organizations []Organization `json:"organizations"` // Organizations列表
+	PageSize      int            `json:"page_size"`     // 每页大小
+	PageNumber    int            `json:"page_number"`   // 当前页码
+}
+
+type GetOrgReq struct {
+	ID int64 `json:"id"`
+}
+
+type GetOrgResp struct {
+	Organization Organization `json:"organization"`
+}
+
+type CreateOrgReq struct {
+	Organization Organization `json:"organization"`
+}
+
+type UpdateOrgReq struct {
+	Organization Organization `json:"organization"`
+}
+
+type DeleteOrgsReq struct {
+	Ids []int64 `json:"ids"`
+}

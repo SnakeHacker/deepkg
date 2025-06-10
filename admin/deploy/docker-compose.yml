@@ -17,7 +17,7 @@ services:
             max-size: "50m"
             max-file: "1"
     ports:
-        - 3323:3306
+        - 3324:3306
     volumes:
         - ./data/mysql:/var/lib/mysql
         - ../model/schema:/docker-entrypoint-initdb.d/

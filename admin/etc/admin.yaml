@@ -3,8 +3,15 @@ Host: 0.0.0.0
 Port: 8888
 MaxBytes: 167772160
 
+Timeout: 180000
+
+Auth:
+  AccessSecret: golangNumberOne
+  AccessExpire: 7200
+  HardAccessSecret: CmsrWansui
+
 Mysql:
-  DataSource: root:deepkg_db_pwd@tcp(127.0.0.1:3323)/deepkg_db?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+  DataSource: root:deepkg_db_pwd@tcp(127.0.0.1:3324)/deepkg_db?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
 
 Minio:
   AccessKey: minio_access_key

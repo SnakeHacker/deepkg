@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	admin "github.com/SnakeHacker/deepkg/admin/internal/handler/admin"
+	org "github.com/SnakeHacker/deepkg/admin/internal/handler/org"
+	user "github.com/SnakeHacker/deepkg/admin/internal/handler/user"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -17,6 +19,68 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodGet,
 				Path:    "/health",
 				Handler: admin.HealthHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/get",
+				Handler: user.GetUserHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/list",
+				Handler: user.GetUserListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/create",
+				Handler: user.CreateUserHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/update",
+				Handler: user.UpdateUserHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/delete",
+				Handler: user.DeleteUsersHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/org/get",
+				Handler: org.GetOrgHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/org/list",
+				Handler: org.GetOrgListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/org/create",
+				Handler: org.CreateOrgHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/org/update",
+				Handler: org.UpdateOrgHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/org/delete",
+				Handler: org.DeleteOrgsHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/api"),

@@ -1,0 +1,7 @@
+type (
+    // 分页查询参数
+	PaginationParams {
+		PageSize    int    `json:"page_size"`
+		PageNumber  int    `json:"page_number"`
+	}
+)

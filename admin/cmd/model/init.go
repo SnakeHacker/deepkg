@@ -28,6 +28,7 @@ func main() {
 
 	err = mysql.ResetTables(db,
 		&gorm_model.User{},
+		&gorm_model.Organization{},
 		&gorm_model.DocumentDir{},
 		&gorm_model.Document{},
 		&gorm_model.KnowledgeGraphWorkspace{},
