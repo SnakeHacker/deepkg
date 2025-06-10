@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	admin "github.com/SnakeHacker/deepkg/admin/internal/handler/admin"
+	document_dir "github.com/SnakeHacker/deepkg/admin/internal/handler/document_dir"
 	org "github.com/SnakeHacker/deepkg/admin/internal/handler/org"
 	user "github.com/SnakeHacker/deepkg/admin/internal/handler/user"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
@@ -28,28 +29,28 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/user/get",
-				Handler: user.GetUserHandler(serverCtx),
+				Path:    "/document_dir/get",
+				Handler: document_dir.GetDocumentDirHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/user/list",
-				Handler: user.GetUserListHandler(serverCtx),
+				Path:    "/document_dir/list",
+				Handler: document_dir.GetDocumentDirListHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/user/create",
-				Handler: user.CreateUserHandler(serverCtx),
+				Path:    "/document_dir/create",
+				Handler: document_dir.CreateDocumentDirHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/user/update",
-				Handler: user.UpdateUserHandler(serverCtx),
+				Path:    "/document_dir/update",
+				Handler: document_dir.UpdateDocumentDirHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/user/delete",
-				Handler: user.DeleteUsersHandler(serverCtx),
+				Path:    "/document_dir/delete",
+				Handler: document_dir.DeleteDocumentDirsHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/api"),
@@ -81,6 +82,37 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/org/delete",
 				Handler: org.DeleteOrgsHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/get",
+				Handler: user.GetUserHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/list",
+				Handler: user.GetUserListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/create",
+				Handler: user.CreateUserHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/update",
+				Handler: user.UpdateUserHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/delete",
+				Handler: user.DeleteUsersHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/api"),

@@ -10,6 +10,82 @@ type PaginationParams struct {
 	PageNumber int `json:"page_number"`
 }
 
+type DocumentDir struct {
+	ID        int64         `json:"id, optional"`
+	DirName   string        `json:"dir_name"`
+	ParentID  int64         `json:"parent_id"`
+	Children  []DocumentDir `json:"children"`
+	SortIndex int           `json:"sort_index"`
+	Remark    string        `json:"remark"`
+	CreatedAt string        `json:"created_at,optional"`
+	UpdatedAt string        `json:"updated_at,optional"`
+}
+
+type GetDocumentDirListReq struct {
+}
+
+type GetDocumentDirListResp struct {
+	DocumentDirs []DocumentDir `json:"document_dirs"` // 列表
+}
+
+type GetDocumentDirReq struct {
+	ID int64 `json:"id"`
+}
+
+type GetDocumentDirResp struct {
+	DocumentDir DocumentDir `json:"document_dir"`
+}
+
+type CreateDocumentDirReq struct {
+	DocumentDir DocumentDir `json:"document_dir"`
+}
+
+type UpdateDocumentDirReq struct {
+	DocumentDir DocumentDir `json:"document_dir"`
+}
+
+type DeleteDocumentDirsReq struct {
+	IDs []int64 `json:"ids"`
+}
+
+type Organization struct {
+	ID        int64  `json:"id, optional"`
+	OrgName   string `json:"org_name"`
+	CreatedAt string `json:"created_at,optional"`
+	UpdatedAt string `json:"updated_at,optional"`
+}
+
+type GetOrgListReq struct {
+	PaginationParams
+}
+
+type GetOrgListResp struct {
+	Total         int64          `json:"total"`         // 总记录数
+	Organizations []Organization `json:"organizations"` // Organizations列表
+	PageSize      int            `json:"page_size"`     // 每页大小
+	PageNumber    int            `json:"page_number"`   // 当前页码
+}
+
+type GetOrgReq struct {
+	ID int64 `json:"id"`
+}
+
+type GetOrgResp struct {
+	Organization Organization `json:"organization"`
+}
+
+type CreateOrgReq struct {
+	Organization Organization `json:"organization"`
+}
+
+type UpdateOrgReq struct {
+	Organization Organization `json:"organization"`
+}
+
+type DeleteOrgsReq struct {
+	Ids []int64 `json:"ids"`
+}
+
 type User struct {
 	ID        int64  `json:"id, optional"`
 	UserCode  string `json:"user_code, optional"` // 自动生成
@@ -55,43 +131,5 @@ type UpdateUserReq struct {
 }
 
 type DeleteUsersReq struct {
-	Ids []int64 `json:"ids"`
-}
-
-type Organization struct {
-	ID        int64  `json:"id, optional"`
-	OrgName   string `json:"org_name"`
-	CreatedAt string `json:"created_at,optional"`
-	UpdatedAt string `json:"updated_at,optional"`
-}
-
-type GetOrgListReq struct {
-	PaginationParams
-}
-
-type GetOrgListResp struct {
-	Total         int64          `json:"total"`         // 总记录数
-	Organizations []Organization `json:"organizations"` // Organizations列表
-	PageSize      int            `json:"page_size"`     // 每页大小
-	PageNumber    int            `json:"page_number"`   // 当前页码
-}
-
-type GetOrgReq struct {
-	ID int64 `json:"id"`
-}
-
-type GetOrgResp struct {
-	Organization Organization `json:"organization"`
-}
-
-type CreateOrgReq struct {
-	Organization Organization `json:"organization"`
-}
-
-type UpdateOrgReq struct {
-	Organization Organization `json:"organization"`
-}
-
-type DeleteOrgsReq struct {
 	Ids []int64 `json:"ids"`
 }

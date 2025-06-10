@@ -1,0 +1,66 @@
+import (
+    "common.api"
+)
+
+type (
+    DocumentDir {
+        ID           int64  `json:"id, optional"`
+        DirName      string `json:"dir_name"`
+        ParentID     int64  `json:"parent_id"`
+        Children     []DocumentDir `json:"children"`
+        SortIndex    int  `json:"sort_index"`
+        Remark       string `json:"remark"`
+
+        CreatedAt    string   `json:"created_at,optional"`
+        UpdatedAt    string   `json:"updated_at,optional"`
+    }
+
+    GetDocumentDirListReq {
+
+    }
+
+    GetDocumentDirListResp {
+        DocumentDirs      []DocumentDir    `json:"document_dirs"` // 列表
+    }
+
+    GetDocumentDirReq {
+        ID    int64  `json:"id"`
+    }
+
+    GetDocumentDirResp {
+        DocumentDir DocumentDir `json:"document_dir"`
+    }
+
+    CreateDocumentDirReq {
+        DocumentDir  DocumentDir  `json:"document_dir"`
+    }
+
+    UpdateDocumentDirReq {
+        DocumentDir  DocumentDir  `json:"document_dir"`
+    }
+
+    DeleteDocumentDirsReq {
+        IDs []int64 `json:"ids"`
+    }
+)
+
+@server(
+    prefix: api
+    group: document_dir
+)
+service admin {
+    @handler getDocumentDir
+    post /document_dir/get (GetDocumentDirReq) returns (GetDocumentDirResp)
+
+    @handler getDocumentDirList
+    post /document_dir/list (GetDocumentDirListReq) returns (GetDocumentDirListResp)
+
+    @handler createDocumentDir
+    post /document_dir/create (CreateDocumentDirReq)
+
+    @handler updateDocumentDir
+    post /document_dir/update (UpdateDocumentDirReq)
+
+    @handler deleteDocumentDirs
+    post /document_dir/delete (DeleteDocumentDirsReq)
+}
