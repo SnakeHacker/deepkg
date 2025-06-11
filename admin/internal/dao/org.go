@@ -2,7 +2,7 @@ package dao
 
 import (
 	"errors"
-	"fmt"
+
 	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 	"github.com/golang/glog"
 	"gorm.io/gorm"
@@ -25,7 +25,6 @@ func CreateOrg(db *gorm.DB, org *m.Organization) (err error) {
 func DeleteOrgsByIDs(db *gorm.DB, ids []int64) (err error) {
 	err = db.Where("id IN (?)", ids).Delete(&m.Organization{}).Error
 	if err != nil {
-		err = errors.New("organization does not exist")
 		glog.Error(err)
 		return
 	}
@@ -47,7 +46,7 @@ func SelectOrgs(db *gorm.DB, pageIndex int, pageSize int) (orgs []*m.Organizatio
 	}
 
 	err = statement.Order("created_at desc").Distinct().Find(&orgs).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
+	if err != nil {
 		glog.Error(err)
 		return
 	}
@@ -58,9 +57,6 @@ func SelectOrgs(db *gorm.DB, pageIndex int, pageSize int) (orgs []*m.Organizatio
 func SelectOrgByID(db *gorm.DB, id int64) (org *m.Organization, err error) {
 	err = db.Where("id = ?", id).First(&org).Error
 	if err != nil {
-		if err == gorm.ErrRecordNotFound {
-			err = errors.New(fmt.Sprintf("organization with ID %d does not exist", id))
-		}
 		glog.Error(err)
 		return
 	}
@@ -98,10 +94,6 @@ func SelectUsersByOrgIDs(db *gorm.DB, ids []int64) (users []*m.User, err error) 
 func SelectOrgByName(db *gorm.DB, orgName string) (org *m.Organization, err error) {
 	err = db.Where("org_name = ?", orgName).First(&org).Error
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			err = fmt.Errorf("organization with name %s does not exist", orgName)
-			errors.As(err, &gorm.ErrRecordNotFound)
-		}
 		glog.Error(err)
 		return
 	}
