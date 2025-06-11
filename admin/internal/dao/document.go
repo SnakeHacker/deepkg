@@ -39,7 +39,7 @@ func SelectDocuments(db *gorm.DB, dirID int64, pageIndex int, pageSize int) (doc
 	statement := db.Model(&m.Document{})
 
 	statement = db.Table("document").Select("document.*, user.id, user.username").
-		Joins("JOIN user ON document.creator_id = user.id").Where("user.deleted_at IS NULL")
+		Joins("JOIN user ON document.creator_id = user.id").Where("document.deleted_at IS NULL")
 
 	if dirID > 0 {
 		statement = statement.Where("document.dir_id = ?", dirID)

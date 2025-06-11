@@ -108,3 +108,13 @@ func SelectUserByAccount(db *gorm.DB, account string) (user m.User, err error) {
 
 	return
 }
+
+func SelectUserModelsByIDs(db *gorm.DB, ids []int64) (users []*m.User, err error) {
+	err = db.Where("id IN (?)", ids).Find(&users).Error
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	return
+}

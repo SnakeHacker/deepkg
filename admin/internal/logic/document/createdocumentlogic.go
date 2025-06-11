@@ -34,6 +34,8 @@ func (l *CreateDocumentLogic) CreateDocument(req *types.CreateDocumentReq) (err 
 		DocDesc: doc.DocDesc,
 		DocPath: doc.DocPath,
 		DirID:   int(doc.DirID),
+		// TODO
+		CreatorID: 0,
 	}
 
 	err = dao.CreateDocument(l.svcCtx.DB, &docModel)
