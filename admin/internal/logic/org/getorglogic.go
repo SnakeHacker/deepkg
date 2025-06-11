@@ -2,9 +2,10 @@ package org
 
 import (
 	"context"
-
+	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 	"github.com/SnakeHacker/deepkg/admin/internal/types"
+	"github.com/golang/glog"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -24,7 +25,22 @@ func NewGetOrgLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetOrgLogi
 }
 
 func (l *GetOrgLogic) GetOrg(req *types.GetOrgReq) (resp *types.GetOrgResp, err error) {
-	// todo: add your logic here and delete this line
+	orgModel, err := dao.SelectOrgByID(l.svcCtx.DB, req.ID)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	result := types.Organization{
+		ID:        int64(orgModel.ID),
+		OrgName:   orgModel.OrgName,
+		CreatedAt: orgModel.CreatedAt.Format("2006-01-02 15:04:05"),
+		UpdatedAt: orgModel.UpdatedAt.Format("2006-01-02 15:04:05"),
+	}
+
+	resp = &types.GetOrgResp{
+		Organization: result,
+	}
 
 	return
 }

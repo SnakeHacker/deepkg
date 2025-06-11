@@ -2,9 +2,10 @@ package org
 
 import (
 	"context"
-
+	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 	"github.com/SnakeHacker/deepkg/admin/internal/types"
+	"github.com/golang/glog"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -24,7 +25,28 @@ func NewGetOrgListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetOrg
 }
 
 func (l *GetOrgListLogic) GetOrgList(req *types.GetOrgListReq) (resp *types.GetOrgListResp, err error) {
-	// todo: add your logic here and delete this line
+	orgsModel, total, err := dao.SelectOrgs(l.svcCtx.DB, req.PageNumber, req.PageSize)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	orgs := []types.Organization{}
+	for _, org := range orgsModel {
+		orgs = append(orgs, types.Organization{
+			ID:        int64(org.ID),
+			OrgName:   org.OrgName,
+			CreatedAt: org.CreatedAt.Format("2006-01-02 15:04:05"),
+			UpdatedAt: org.UpdatedAt.Format("2006-01-02 15:04:05"),
+		})
+	}
+
+	resp = &types.GetOrgListResp{
+		PageSize:      req.PageSize,
+		PageNumber:    req.PageNumber,
+		Organizations: orgs,
+		Total:         total,
+	}
 
 	return
 }
