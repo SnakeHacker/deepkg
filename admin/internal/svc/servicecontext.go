@@ -8,11 +8,13 @@ import (
 	"github.com/SnakeHacker/deepkg/admin/internal/config"
 	"github.com/SnakeHacker/deepkg/admin/internal/middleware"
 	"github.com/SnakeHacker/deepkg/admin/internal/utils/mysql"
+	"github.com/SnakeHacker/deepkg/admin/internal/utils/nebula"
 	"github.com/SnakeHacker/deepkg/admin/internal/utils/s3/minio"
 	"github.com/go-redis/redis/v8"
 	"github.com/go-resty/resty/v2"
 	"github.com/golang/glog"
 	"github.com/mojocn/base64Captcha"
+	nebula_go "github.com/vesoft-inc/nebula-go/v3"
 	"github.com/zeromicro/go-zero/rest"
 	"gorm.io/gorm"
 )
@@ -24,6 +26,7 @@ type ServiceContext struct {
 	HTTPClient *resty.Client
 	Minio      *minio.Client
 	Redis      redis.UniversalClient
+	Nebula     *nebula_go.Session
 	PrivateKey *rsa.PrivateKey
 	Captcha    *base64Captcha.Captcha
 }
@@ -45,6 +48,11 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	// Init redis client
 	redisClient := NewRedisClient(c)
 
+	nebulaSession, err := nebula.NewNebulaSession(c.Nebula)
+	if err != nil {
+		glog.Fatal(err)
+	}
+
 	// Init RSA key
 	privateKey, err := rsa2.GenerateKey(2048)
 	if err != nil {
@@ -63,6 +71,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		HTTPClient: httpClient,
 		Minio:      minioClient,
 		Redis:      redisClient,
+		Nebula:     nebulaSession,
 		PrivateKey: privateKey,
 		JwtX:       middleware.NewJwtXMiddleware(redisClient, c).Handle,
 		Captcha:    svcCaptcha,

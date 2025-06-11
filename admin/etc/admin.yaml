@@ -26,3 +26,13 @@ Redis:
   Hosts:
     - 127.0.0.1:6379
   Pass: "123456"
+
+Nebula:
+  Timeout: 0
+  IdleTime: 0
+  MaxConnPoolSize: 10
+  MinConnPoolSize: 1
+  Host: 0.0.0.0
+  Port: 9669
+  Username: root
+  Password: nebula
