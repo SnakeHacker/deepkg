@@ -2,16 +2,15 @@ package dao
 
 import (
 	"errors"
+	"fmt"
 	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
-	"strconv"
-
 	"github.com/golang/glog"
 	"gorm.io/gorm"
 )
 
 func CreateOrg(db *gorm.DB, org *m.Organization) (err error) {
 	if org == nil {
-		err = errors.New("缺少 org组织 对象")
+		err = errors.New("organization object is missing")
 		glog.Error(err)
 		return
 	}
@@ -26,7 +25,7 @@ func CreateOrg(db *gorm.DB, org *m.Organization) (err error) {
 func DeleteOrgsByIDs(db *gorm.DB, ids []int64) (err error) {
 	err = db.Where("id IN (?)", ids).Delete(&m.Organization{}).Error
 	if err != nil {
-		err = errors.New("Org组织对象不存在")
+		err = errors.New("organization does not exist")
 		glog.Error(err)
 		return
 	}
@@ -35,7 +34,7 @@ func DeleteOrgsByIDs(db *gorm.DB, ids []int64) (err error) {
 }
 
 func SelectOrgs(db *gorm.DB, pageIndex int, pageSize int) (orgs []*m.Organization, total int64, err error) {
-	statement := db.Select("*").Find(&m.Organization{}).Where("deleted_at IS NULL")
+	statement := db.Model(&m.Organization{}).Where("deleted_at IS NULL")
 
 	err = statement.Count(&total).Error
 	if err != nil {
@@ -57,10 +56,10 @@ func SelectOrgs(db *gorm.DB, pageIndex int, pageSize int) (orgs []*m.Organizatio
 }
 
 func SelectOrgByID(db *gorm.DB, id int64) (org *m.Organization, err error) {
-	err = db.Where("id = ? AND deleted_at IS NULL", id).First(&org).Error
+	err = db.Where("id = ?", id).First(&org).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			err = errors.New("ID为" + strconv.FormatInt(id, 10) + "的组织不存在")
+			err = errors.New(fmt.Sprintf("organization with ID %d does not exist", id))
 		}
 		glog.Error(err)
 		return
@@ -71,7 +70,7 @@ func SelectOrgByID(db *gorm.DB, id int64) (org *m.Organization, err error) {
 
 func UpdateOrg(db *gorm.DB, organization *m.Organization) (err error) {
 	if organization == nil {
-		err = errors.New("缺少org组织对象")
+		err = errors.New("organization object is missing")
 		glog.Error(err)
 		return
 	}
@@ -97,10 +96,11 @@ func SelectUsersByOrgIDs(db *gorm.DB, ids []int64) (users []*m.User, err error) 
 
 // SelectOrgByName 根据组织名称查询组织
 func SelectOrgByName(db *gorm.DB, orgName string) (org *m.Organization, err error) {
-	err = db.Where("org_name = ? AND deleted_at IS NULL", orgName).First(&org).Error
+	err = db.Where("org_name = ?", orgName).First(&org).Error
 	if err != nil {
-		if err == gorm.ErrRecordNotFound {
-			err = errors.New("名称为" + orgName + "的组织不存在")
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = fmt.Errorf("organization with name %s does not exist", orgName)
+			errors.As(err, &gorm.ErrRecordNotFound)
 		}
 		glog.Error(err)
 		return

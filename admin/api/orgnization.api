@@ -11,7 +11,7 @@ type (
     }
 
     GetOrgListReq {
-        PaginationParams PaginationParams `json:"pagination_params"` // 分页参数
+        PaginationParams
     }
 
     GetOrgListResp {

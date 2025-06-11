@@ -25,16 +25,7 @@ func NewGetOrgListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetOrg
 }
 
 func (l *GetOrgListLogic) GetOrgList(req *types.GetOrgListReq) (resp *types.GetOrgListResp, err error) {
-	pageNumber := req.PaginationParams.PageNumber
-	pageSize := req.PaginationParams.PageSize
-	if pageNumber < 1 {
-		pageNumber = 1
-	}
-	if pageSize < 1 {
-		pageSize = 10
-	}
-
-	orgsModel, total, err := dao.SelectOrgs(l.svcCtx.DB, pageNumber, pageSize)
+	orgsModel, total, err := dao.SelectOrgs(l.svcCtx.DB, req.PageNumber, req.PageSize)
 	if err != nil {
 		glog.Error(err)
 		return
@@ -51,8 +42,8 @@ func (l *GetOrgListLogic) GetOrgList(req *types.GetOrgListReq) (resp *types.GetO
 	}
 
 	resp = &types.GetOrgListResp{
-		PageSize:      pageSize,
-		PageNumber:    pageNumber,
+		PageSize:      req.PageSize,
+		PageNumber:    req.PageNumber,
 		Organizations: orgs,
 		Total:         total,
 	}

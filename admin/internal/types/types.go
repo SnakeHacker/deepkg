@@ -102,7 +102,7 @@ type GetHealthResp struct {
 }
 
 type GetOrgListReq struct {
-	PaginationParams PaginationParams `json:"pagination_params"` // 分页参数
+	PaginationParams
 }
 
 type GetOrgListResp struct {
@@ -121,7 +121,7 @@ type GetOrgResp struct {
 }
 
 type GetUserListReq struct {
-	PaginationParams PaginationParams `json:"pagination_params"` // 分页参数
+	PaginationParams
 }
 
 type GetUserListResp struct {
