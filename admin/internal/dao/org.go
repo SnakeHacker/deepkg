@@ -34,7 +34,7 @@ func DeleteOrgsByIDs(db *gorm.DB, ids []int64) (err error) {
 }
 
 func SelectOrgs(db *gorm.DB, pageIndex int, pageSize int) (orgs []*m.Organization, total int64, err error) {
-	statement := db.Model(&m.Organization{}).Where("deleted_at IS NULL")
+	statement := db.Model(&m.Organization{})
 
 	err = statement.Count(&total).Error
 	if err != nil {
@@ -47,7 +47,7 @@ func SelectOrgs(db *gorm.DB, pageIndex int, pageSize int) (orgs []*m.Organizatio
 	}
 
 	err = statement.Order("created_at desc").Distinct().Find(&orgs).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
+	if err != nil {
 		glog.Error(err)
 		return
 	}
@@ -94,17 +94,15 @@ func SelectUsersByOrgIDs(db *gorm.DB, ids []int64) (users []*m.User, err error) 
 	return
 }
 
-// SelectOrgByName 根据组织名称查询组织
-func SelectOrgByName(db *gorm.DB, orgName string) (org *m.Organization, err error) {
+func CheckOrgNameExists(db *gorm.DB, orgName string) (exists bool, err error) {
+	var org *m.Organization
 	err = db.Where("org_name = ?", orgName).First(&org).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			err = fmt.Errorf("organization with name %s does not exist", orgName)
-			errors.As(err, &gorm.ErrRecordNotFound)
+			return false, nil // 组织不存在
 		}
 		glog.Error(err)
-		return
+		return false, err // 查询出错
 	}
-
-	return
+	return true, nil // 如果查询到组织，则返回存在
 }
