@@ -13,5 +13,5 @@ type DocumentDir struct {
 }
 
 func (u *DocumentDir) TableName() string {
-	return "DocumentDir"
+	return "document_dir"
 }
