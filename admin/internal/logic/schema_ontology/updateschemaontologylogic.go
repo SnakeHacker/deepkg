@@ -25,7 +25,7 @@ func NewUpdateSchemaOntologyLogic(ctx context.Context, svcCtx *svc.ServiceContex
 	}
 }
 
-func (l *UpdateSchemaOntologyLogic) UpdateSchemaOntology(req *types.UpdateSchemaOntologyReq) error {
+func (l *UpdateSchemaOntologyLogic) UpdateSchemaOntology(req *types.UpdateSchemaOntologyReq) (err error) {
 	ontology := req.SchemaOntology
 	ontologyModel, err := dao.SelectSchemaOntologyByID(l.svcCtx.DB, ontology.ID)
 	if err != nil {
@@ -44,5 +44,5 @@ func (l *UpdateSchemaOntologyLogic) UpdateSchemaOntology(req *types.UpdateSchema
 		return err
 	}
 
-	return nil
+	return
 }
