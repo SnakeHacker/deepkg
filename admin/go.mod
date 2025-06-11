@@ -3,7 +3,6 @@ module github.com/SnakeHacker/deepkg/admin
 go 1.20
 
 require (
-	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-resty/resty/v2 v2.16.5
 	github.com/golang/glog v1.2.1
@@ -11,6 +10,7 @@ require (
 	github.com/minio/minio-go/v7 v7.0.7
 	github.com/mojocn/base64Captcha v1.3.8
 	github.com/stretchr/testify v1.9.0
+	github.com/vesoft-inc/nebula-go/v3 v3.8.0
 	github.com/zeromicro/go-zero v1.7.4
 	github.com/zeromicro/x v0.0.0-20240408115609-8224c482b07e
 	golang.org/x/crypto v0.39.0
@@ -25,7 +25,6 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
-	github.com/facebook/fbthrift v0.0.0-20190922225929-2f9839604e25 // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
@@ -56,8 +55,6 @@ require (
 	github.com/rs/xid v1.6.0 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/vesoft-inc/fbthrift v0.0.0-20230214024353-fa2f34755b28 // indirect
-	github.com/vesoft-inc/nebula-go v1.1.0 // indirect
-	github.com/vesoft-inc/nebula-go/v3 v3.8.0 // indirect
 	go.opentelemetry.io/otel v1.24.0 // indirect
 	go.opentelemetry.io/otel/exporters/jaeger v1.17.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.24.0 // indirect
