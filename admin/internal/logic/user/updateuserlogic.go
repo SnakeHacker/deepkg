@@ -30,7 +30,7 @@ func (l *UpdateUserLogic) UpdateUser(req *types.UpdateUserReq) (err error) {
 		glog.Error(err)
 		return
 	}
-	_, err = dao.SelectOrgByID(l.svcCtx.DB, int(req.User.OrgID))
+	_, err = dao.SelectOrgByID(l.svcCtx.DB, req.User.OrgID)
 	if err != nil {
 		glog.Error(err)
 		return

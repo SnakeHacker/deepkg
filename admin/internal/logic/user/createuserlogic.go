@@ -30,7 +30,7 @@ func NewCreateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Create
 
 func (l *CreateUserLogic) CreateUser(req *types.CreateUserReq) (err error) {
 	// 检查 org 是否存在
-	_, err = dao.SelectOrgByID(l.svcCtx.DB, int(req.User.OrgID))
+	_, err = dao.SelectOrgByID(l.svcCtx.DB, req.User.OrgID)
 	if err != nil {
 		glog.Error(err)
 		return
