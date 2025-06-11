@@ -56,7 +56,7 @@ func SelectDocuments(db *gorm.DB, dirID int64, pageIndex int, pageSize int) (doc
 	}
 
 	err = statement.Order("created_at desc").Distinct().Find(&docs).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
+	if err != nil {
 		glog.Error(err)
 		return
 	}
@@ -70,9 +70,6 @@ func SelectDocumentByID(db *gorm.DB, id int64) (doc types.Document, err error) {
 
 	err = statement.First(&doc).Error
 	if err != nil {
-		if err == gorm.ErrRecordNotFound {
-			err = errors.New("document is not existed")
-		}
 		glog.Error(err)
 		return
 	}

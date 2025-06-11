@@ -66,7 +66,7 @@ func SelectDocumentDirs(db *gorm.DB) (dirs []*m.DocumentDir, total int64, err er
 	}
 
 	err = statement.Order("created_at desc").Distinct().Find(&dirs).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
+	if err != nil {
 		glog.Error(err)
 		return
 	}
@@ -77,9 +77,6 @@ func SelectDocumentDirs(db *gorm.DB) (dirs []*m.DocumentDir, total int64, err er
 func SelectDocumentDirByID(db *gorm.DB, id int64) (dir m.DocumentDir, err error) {
 	err = db.Where("id = ?", id).First(&dir).Error
 	if err != nil {
-		if err == gorm.ErrRecordNotFound {
-			err = errors.New("dir is not existed")
-		}
 		glog.Error(err)
 		return
 	}
