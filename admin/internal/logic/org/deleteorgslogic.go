@@ -2,6 +2,8 @@ package org
 
 import (
 	"context"
+	"github.com/SnakeHacker/deepkg/admin/internal/dao"
+	"github.com/golang/glog"
 
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 	"github.com/SnakeHacker/deepkg/admin/internal/types"
@@ -23,8 +25,12 @@ func NewDeleteOrgsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delete
 	}
 }
 
-func (l *DeleteOrgsLogic) DeleteOrgs(req *types.DeleteOrgsReq) error {
-	// todo: add your logic here and delete this line
+func (l *DeleteOrgsLogic) DeleteOrgs(req *types.DeleteOrgsReq) (err error) {
+	err = dao.DeleteOrgsByIDs(l.svcCtx.DB, req.Ids)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
 
-	return nil
+	return
 }
