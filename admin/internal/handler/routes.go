@@ -5,7 +5,9 @@ import (
 	"net/http"
 
 	admin "github.com/SnakeHacker/deepkg/admin/internal/handler/admin"
+	document "github.com/SnakeHacker/deepkg/admin/internal/handler/document"
 	document_dir "github.com/SnakeHacker/deepkg/admin/internal/handler/document_dir"
+	file "github.com/SnakeHacker/deepkg/admin/internal/handler/file"
 	org "github.com/SnakeHacker/deepkg/admin/internal/handler/org"
 	user "github.com/SnakeHacker/deepkg/admin/internal/handler/user"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
@@ -20,6 +22,37 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodGet,
 				Path:    "/health",
 				Handler: admin.HealthHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/document/get",
+				Handler: document.GetDocumentHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/document/list",
+				Handler: document.GetDocumentListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/document/create",
+				Handler: document.CreateDocumentHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/document/update",
+				Handler: document.UpdateDocumentHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/document/delete",
+				Handler: document.DeleteDocumentsHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/api"),
@@ -51,6 +84,17 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/document_dir/delete",
 				Handler: document_dir.DeleteDocumentDirsHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/file/upload",
+				Handler: file.UploadFileHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/api"),

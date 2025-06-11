@@ -1,7 +1,9 @@
 import (
 	"health.api"
 	"common.api"
+	"document.api"
 	"document_dir.api"
+	"file.api"
 	"orgnization.api"
 	"user.api"
 )

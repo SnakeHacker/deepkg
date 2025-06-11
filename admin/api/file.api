@@ -1,0 +1,25 @@
+type (
+
+	UploadFileReq {
+	}
+
+	UploadFileResp {
+        Host string `json:"host"`
+		ObjectID string `json:"object_id"`
+	}
+
+	GetFileContentReq {
+		FileID     string `json:"file_id"`
+	}
+
+)
+
+@server(
+	prefix: api
+	group: file
+)
+service admin {
+	@handler uploadFile
+	post /file/upload (UploadFileReq) returns (UploadFileResp)
+
+}

@@ -10,6 +10,50 @@ type PaginationParams struct {
 	PageNumber int `json:"page_number"`
 }
 
+type Document struct {
+	ID          int64  `json:"id, optional"`
+	DocName     string `json:"doc_name"`
+	DocDesc     string `json:"doc_desc"`
+	DocPath     string `json:"doc_path"`
+	DirID       int64  `json:"dir_id"`
+	CreatorID   int64  `json:"creator_id,ptional"`
+	CreatorName string `json:"creator_name,optional"`
+	CreatedAt   string `json:"created_at,optional"`
+	UpdatedAt   string `json:"updated_at,optional"`
+}
+
+type GetDocumentListReq struct {
+	DirID int64 `json:"dir_id,optional"`
+	PaginationParams
+}
+
+type GetDocumentListResp struct {
+	Total      int64      `json:"total"`       // 总记录数
+	Documents  []Document `json:"documents"`   // 列表
+	PageSize   int        `json:"page_size"`   // 每页大小
+	PageNumber int        `json:"page_number"` // 当前页码
+}
+
+type GetDocumentReq struct {
+	ID int64 `json:"id"`
+}
+
+type GetDocumentResp struct {
+	Document Document `json:"document"`
+}
+
+type CreateDocumentReq struct {
+	Document Document `json:"document"`
+}
+
+type UpdateDocumentReq struct {
+	Document Document `json:"document"`
+}
+
+type DeleteDocumentsReq struct {
+	IDs []int64 `json:"ids"`
+}
+
 type DocumentDir struct {
 	ID        int64         `json:"id, optional"`
 	DirName   string        `json:"dir_name"`
@@ -46,6 +90,18 @@ type UpdateDocumentDirReq struct {
 
 type DeleteDocumentDirsReq struct {
 	IDs []int64 `json:"ids"`
+}
+
+type UploadFileReq struct {
+}
+
+type UploadFileResp struct {
+	Host     string `json:"host"`
+	ObjectID string `json:"object_id"`
+}
+
+type GetFileContentReq struct {
+	FileID string `json:"file_id"`
 }
 
 type Organization struct {

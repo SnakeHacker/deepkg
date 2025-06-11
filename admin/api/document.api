@@ -1,0 +1,72 @@
+import (
+    "common.api"
+)
+
+type (
+    Document {
+        ID           int64  `json:"id, optional"`
+        DocName      string `json:"doc_name"`
+        DocDesc      string `json:"doc_desc"`
+        DocPath      string `json:"doc_path"`
+        DirID        int64  `json:"dir_id"`
+
+        CreatorID    int64  `json:"creator_id,ptional"`
+        CreatorName  string `json:"creator_name,optional"`
+
+        CreatedAt    string   `json:"created_at,optional"`
+        UpdatedAt    string   `json:"updated_at,optional"`
+    }
+
+    GetDocumentListReq {
+        DirID    int64  `json:"dir_id,optional"`
+        PaginationParams
+    }
+
+    GetDocumentListResp {
+        Total              int64           `json:"total"`        // 总记录数
+        Documents          []Document      `json:"documents"`    // 列表
+        PageSize           int             `json:"page_size"`    // 每页大小
+        PageNumber         int             `json:"page_number"`  // 当前页码
+    }
+
+    GetDocumentReq {
+        ID    int64  `json:"id"`
+    }
+
+    GetDocumentResp {
+        Document Document `json:"document"`
+    }
+
+    CreateDocumentReq {
+        Document  Document  `json:"document"`
+    }
+
+    UpdateDocumentReq {
+        Document  Document  `json:"document"`
+    }
+
+    DeleteDocumentsReq {
+        IDs []int64 `json:"ids"`
+    }
+)
+
+@server(
+    prefix: api
+    group: document
+)
+service admin {
+    @handler getDocument
+    post /document/get (GetDocumentReq) returns (GetDocumentResp)
+
+    @handler getDocumentList
+    post /document/list (GetDocumentListReq) returns (GetDocumentListResp)
+
+    @handler createDocument
+    post /document/create (CreateDocumentReq)
+
+    @handler updateDocument
+    post /document/update (UpdateDocumentReq)
+
+    @handler deleteDocuments
+    post /document/delete (DeleteDocumentsReq)
+}
