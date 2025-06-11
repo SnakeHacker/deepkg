@@ -4,6 +4,7 @@ const (
 	MULTIPART_MEMORY = 15 << 20 // 15 MB
 	FILE_BUCKET      = "file"
 
+	TIME_FORMAT              = "2006-01-02 15:04:05"
 	USER_PASSWORD_MAX_LENGTH = 16
 	USER_PASSWORD_MIN_LENGTH = 8
 	SPACE                    = " "

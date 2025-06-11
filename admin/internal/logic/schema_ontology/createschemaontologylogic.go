@@ -3,8 +3,11 @@ package schema_ontology
 import (
 	"context"
 
+	"github.com/SnakeHacker/deepkg/admin/internal/dao"
+	"github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 	"github.com/SnakeHacker/deepkg/admin/internal/types"
+	"github.com/golang/glog"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -23,8 +26,22 @@ func NewCreateSchemaOntologyLogic(ctx context.Context, svcCtx *svc.ServiceContex
 	}
 }
 
-func (l *CreateSchemaOntologyLogic) CreateSchemaOntology(req *types.CreateSchemaOntologyReq) error {
-	// todo: add your logic here and delete this line
+func (l *CreateSchemaOntologyLogic) CreateSchemaOntology(req *types.CreateSchemaOntologyReq) (err error) {
+	ontology := req.SchemaOntology
 
-	return nil
+	ontologyModel := gorm_model.SchemaOntology{
+		OntologyName: ontology.OntologyName,
+		OntologyDesc: ontology.OntologyDesc,
+		WorkSpaceID:  int(ontology.WorkSpaceID),
+		// TODO
+		CreatorID: 0,
+	}
+
+	err = dao.CreateSchemaOntology(l.svcCtx.DB, &ontologyModel)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	return
 }

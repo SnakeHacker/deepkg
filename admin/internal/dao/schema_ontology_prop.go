@@ -33,7 +33,7 @@ func DeleteSchemaOntologyPropsByIDs(db *gorm.DB, ids []int64) (err error) {
 	return
 }
 
-func SelectSchemaOntologyProps(db *gorm.DB, ontologyID int) (props []*m.SchemaOntologyProp, total int64, err error) {
+func SelectSchemaOntologyProps(db *gorm.DB, ontologyID int, pageIndex int, pageSize int) (props []*m.SchemaOntologyProp, total int64, err error) {
 
 	statement := db.Model(&m.SchemaOntologyProp{}).Where("ontology_id = ?", ontologyID)
 
@@ -41,6 +41,10 @@ func SelectSchemaOntologyProps(db *gorm.DB, ontologyID int) (props []*m.SchemaOn
 	if err != nil {
 		glog.Error(err)
 		return
+	}
+
+	if pageIndex != -1 {
+		statement = statement.Offset((pageIndex - 1) * pageSize).Limit(pageSize)
 	}
 
 	err = statement.Order("created_at desc").Distinct().Find(&props).Error

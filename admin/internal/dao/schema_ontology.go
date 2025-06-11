@@ -33,7 +33,7 @@ func DeleteSchemaOntologysByIDs(db *gorm.DB, ids []int64) (err error) {
 	return
 }
 
-func SelectSchemaOntologys(db *gorm.DB, workspaceID int) (ontologys []*m.SchemaOntology, total int64, err error) {
+func SelectSchemaOntologys(db *gorm.DB, workspaceID int, pageIndex int, pageSize int) (ontologys []*m.SchemaOntology, total int64, err error) {
 
 	statement := db.Model(&m.SchemaOntology{}).Where("work_space_id = ?", workspaceID)
 
@@ -41,6 +41,10 @@ func SelectSchemaOntologys(db *gorm.DB, workspaceID int) (ontologys []*m.SchemaO
 	if err != nil {
 		glog.Error(err)
 		return
+	}
+
+	if pageIndex != -1 {
+		statement = statement.Offset((pageIndex - 1) * pageSize).Limit(pageSize)
 	}
 
 	err = statement.Order("created_at desc").Distinct().Find(&ontologys).Error

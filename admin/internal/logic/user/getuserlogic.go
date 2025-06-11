@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/SnakeHacker/deepkg/admin/common"
 	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 	"github.com/SnakeHacker/deepkg/admin/internal/types"
@@ -35,8 +36,8 @@ func (l *GetUserLogic) GetUser(req *types.GetUserReq) (resp *types.GetUserResp, 
 
 	createdAt, _ := time.Parse(time.RFC3339, userModel.CreatedAt)
 	updatedAt, _ := time.Parse(time.RFC3339, userModel.UpdatedAt)
-	userModel.CreatedAt = createdAt.Format("2006-01-02 15:04:05")
-	userModel.UpdatedAt = updatedAt.Format("2006-01-02 15:04:05")
+	userModel.CreatedAt = createdAt.Format(common.TIME_FORMAT)
+	userModel.UpdatedAt = updatedAt.Format(common.TIME_FORMAT)
 
 	resp = &types.GetUserResp{
 		User: *userModel,

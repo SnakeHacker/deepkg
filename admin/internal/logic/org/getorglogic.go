@@ -2,6 +2,8 @@ package org
 
 import (
 	"context"
+
+	"github.com/SnakeHacker/deepkg/admin/common"
 	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 	"github.com/SnakeHacker/deepkg/admin/internal/types"
@@ -34,8 +36,8 @@ func (l *GetOrgLogic) GetOrg(req *types.GetOrgReq) (resp *types.GetOrgResp, err 
 	result := types.Organization{
 		ID:        int64(orgModel.ID),
 		OrgName:   orgModel.OrgName,
-		CreatedAt: orgModel.CreatedAt.Format("2006-01-02 15:04:05"),
-		UpdatedAt: orgModel.UpdatedAt.Format("2006-01-02 15:04:05"),
+		CreatedAt: orgModel.CreatedAt.Format(common.TIME_FORMAT),
+		UpdatedAt: orgModel.UpdatedAt.Format(common.TIME_FORMAT),
 	}
 
 	resp = &types.GetOrgResp{

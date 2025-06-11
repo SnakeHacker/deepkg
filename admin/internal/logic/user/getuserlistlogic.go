@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/SnakeHacker/deepkg/admin/common"
 	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 	"github.com/SnakeHacker/deepkg/admin/internal/types"
@@ -50,8 +51,8 @@ func (l *GetUserListLogic) GetUserList(req *types.GetUserListReq) (resp *types.G
 			Enable:    user.Enable,
 			Role:      user.Role,
 			Avatar:    user.Avatar,
-			CreatedAt: createdAt.Format("2006-01-02 15:04:05"),
-			UpdatedAt: updatedAt.Format("2006-01-02 15:04:05"),
+			CreatedAt: createdAt.Format(common.TIME_FORMAT),
+			UpdatedAt: updatedAt.Format(common.TIME_FORMAT),
 		})
 	}
 

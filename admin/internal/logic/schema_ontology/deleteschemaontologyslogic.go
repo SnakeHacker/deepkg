@@ -3,8 +3,10 @@ package schema_ontology
 import (
 	"context"
 
+	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 	"github.com/SnakeHacker/deepkg/admin/internal/types"
+	"github.com/golang/glog"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -23,8 +25,12 @@ func NewDeleteSchemaOntologysLogic(ctx context.Context, svcCtx *svc.ServiceConte
 	}
 }
 
-func (l *DeleteSchemaOntologysLogic) DeleteSchemaOntologys(req *types.DeleteSchemaOntologysReq) error {
-	// todo: add your logic here and delete this line
+func (l *DeleteSchemaOntologysLogic) DeleteSchemaOntologys(req *types.DeleteSchemaOntologysReq) (err error) {
+	err = dao.DeleteSchemaOntologysByIDs(l.svcCtx.DB, req.IDs)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
 
-	return nil
+	return
 }
