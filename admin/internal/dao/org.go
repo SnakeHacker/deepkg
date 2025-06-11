@@ -14,6 +14,7 @@ func CreateOrg(db *gorm.DB, org *m.Organization) (err error) {
 		glog.Error(err)
 		return
 	}
+
 	if err = db.Create(org).Error; err != nil {
 		glog.Error(err)
 		return

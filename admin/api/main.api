@@ -5,5 +5,8 @@ import (
 	"document_dir.api"
 	"file.api"
 	"orgnization.api"
+	"schema_ontology.api"
+	"schema_ontology_prop.api"
+	"schema_triple.api"
 	"user.api"
 )

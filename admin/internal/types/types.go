@@ -142,6 +142,137 @@ type DeleteOrgsReq struct {
 	Ids []int64 `json:"ids"`
 }
 
+type SchemaOntology struct {
+	ID           int64  `json:"id, optional"`
+	OntologyDesc string `json:"ontology_desc"`
+	OntologyName string `json:"ontology_name"`
+	WorkSpaceID  int64  `json:"work_space_id"`
+	CreatorID    int64  `json:"creator_id,ptional"`
+	CreatorName  string `json:"creator_name,optional"`
+	CreatedAt    string `json:"created_at,optional"`
+	UpdatedAt    string `json:"updated_at,optional"`
+}
+
+type GetSchemaOntologyListReq struct {
+	WorkSpaceID int64 `json:"work_space_id"`
+	PaginationParams
+}
+
+type GetSchemaOntologyListResp struct {
+	Total           int64            `json:"total"`            // 总记录数
+	SchemaOntologys []SchemaOntology `json:"schema_ontologys"` // 列表
+	PageSize        int              `json:"page_size"`        // 每页大小
+	PageNumber      int              `json:"page_number"`      // 当前页码
+}
+
+type GetSchemaOntologyReq struct {
+	ID int64 `json:"id"`
+}
+
+type GetSchemaOntologyResp struct {
+	SchemaOntology SchemaOntology `json:"schema_ontology"`
+}
+
+type CreateSchemaOntologyReq struct {
+	SchemaOntology SchemaOntology `json:"schema_ontology"`
+}
+
+type UpdateSchemaOntologyReq struct {
+	SchemaOntology SchemaOntology `json:"schema_ontology"`
+}
+
+type DeleteSchemaOntologysReq struct {
+	IDs []int64 `json:"ids"`
+}
+
+type SchemaOntologyProp struct {
+	ID          int64  `json:"id, optional"`
+	PropDesc    string `json:"prop_desc"`
+	PropName    string `json:"prop_name"`
+	WorkSpaceID int64  `json:"work_space_id"`
+	OntologyID  int64  `json:"ontology_id"`
+	CreatorID   int64  `json:"creator_id,ptional"`
+	CreatorName string `json:"creator_name,optional"`
+	CreatedAt   string `json:"created_at,optional"`
+	UpdatedAt   string `json:"updated_at,optional"`
+}
+
+type GetSchemaOntologyPropListReq struct {
+	OntologyID int64 `json:"ontology_id"`
+	PaginationParams
+}
+
+type GetSchemaOntologyPropListResp struct {
+	Total               int64                `json:"total"`                 // 总记录数
+	SchemaOntologyProps []SchemaOntologyProp `json:"schema_ontology_props"` // 列表
+	PageSize            int                  `json:"page_size"`             // 每页大小
+	PageNumber          int                  `json:"page_number"`           // 当前页码
+}
+
+type GetSchemaOntologyPropReq struct {
+	ID int64 `json:"id"`
+}
+
+type GetSchemaOntologyPropResp struct {
+	SchemaOntologyProp SchemaOntologyProp `json:"schema_ontology_prop"`
+}
+
+type CreateSchemaOntologyPropReq struct {
+	SchemaOntologyProp SchemaOntologyProp `json:"schema_ontology_prop"`
+}
+
+type UpdateSchemaOntologyPropReq struct {
+	SchemaOntologyProp SchemaOntologyProp `json:"schema_ontology_prop"`
+}
+
+type DeleteSchemaOntologyPropsReq struct {
+	IDs []int64 `json:"ids"`
+}
+
+type SchemaTriple struct {
+	ID               int64  `json:"id, optional"`
+	SourceOntologyID int64  `json:"source_ontology_id"`
+	TargetOntologyID int64  `json:"target_ontology_id"`
+	Relationship     string `json:"relationship"`
+	WorkSpaceID      int64  `json:"work_space_id"`
+	CreatorID        int64  `json:"creator_id,ptional"`
+	CreatorName      string `json:"creator_name,optional"`
+	CreatedAt        string `json:"created_at,optional"`
+	UpdatedAt        string `json:"updated_at,optional"`
+}
+
+type GetSchemaTripleListReq struct {
+	WorkSpaceID int64 `json:"work_space_id"`
+	PaginationParams
+}
+
+type GetSchemaTripleListResp struct {
+	Total         int64          `json:"total"`          // 总记录数
+	SchemaTriples []SchemaTriple `json:"schema_triples"` // 列表
+	PageSize      int            `json:"page_size"`      // 每页大小
+	PageNumber    int            `json:"page_number"`    // 当前页码
+}
+
+type GetSchemaTripleReq struct {
+	ID int64 `json:"id"`
+}
+
+type GetSchemaTripleResp struct {
+	SchemaTriple SchemaTriple `json:"schema_triple"`
+}
+
+type CreateSchemaTripleReq struct {
+	SchemaTriple SchemaTriple `json:"schema_triple"`
+}
+
+type UpdateSchemaTripleReq struct {
+	SchemaTriple SchemaTriple `json:"schema_triple"`
+}
+
+type DeleteSchemaTriplesReq struct {
+	IDs []int64 `json:"ids"`
+}
+
 type User struct {
 	ID        int64  `json:"id, optional"`
 	UserCode  string `json:"user_code, optional"` // 自动生成

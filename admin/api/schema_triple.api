@@ -1,0 +1,72 @@
+import (
+    "common.api"
+)
+
+type (
+    SchemaTriple {
+        ID           int64  `json:"id, optional"`
+        SourceOntologyID int64  `json:"source_ontology_id"`
+        TargetOntologyID int64  `json:"target_ontology_id"`
+        Relationship     string `json:"relationship"`
+        WorkSpaceID      int64  `json:"work_space_id"`
+
+        CreatorID    int64  `json:"creator_id,ptional"`
+        CreatorName  string `json:"creator_name,optional"`
+
+        CreatedAt    string   `json:"created_at,optional"`
+        UpdatedAt    string   `json:"updated_at,optional"`
+    }
+
+    GetSchemaTripleListReq {
+        WorkSpaceID    int64  `json:"work_space_id"`
+        PaginationParams
+    }
+
+    GetSchemaTripleListResp {
+        Total              int64            `json:"total"`        // 总记录数
+        SchemaTriples    []SchemaTriple `json:"schema_triples"`    // 列表
+        PageSize           int              `json:"page_size"`    // 每页大小
+        PageNumber         int              `json:"page_number"`  // 当前页码
+    }
+
+    GetSchemaTripleReq {
+        ID    int64  `json:"id"`
+    }
+
+    GetSchemaTripleResp {
+        SchemaTriple SchemaTriple `json:"schema_triple"`
+    }
+
+    CreateSchemaTripleReq {
+        SchemaTriple  SchemaTriple  `json:"schema_triple"`
+    }
+
+    UpdateSchemaTripleReq {
+        SchemaTriple  SchemaTriple  `json:"schema_triple"`
+    }
+
+    DeleteSchemaTriplesReq {
+        IDs []int64 `json:"ids"`
+    }
+)
+
+@server(
+    prefix: api
+    group: schema_triple
+)
+service admin {
+    @handler getSchemaTriple
+    post /schema_triple/get (GetSchemaTripleReq) returns (GetSchemaTripleResp)
+
+    @handler getSchemaTripleList
+    post /schema_triple/list (GetSchemaTripleListReq) returns (GetSchemaTripleListResp)
+
+    @handler createSchemaTriple
+    post /schema_triple/create (CreateSchemaTripleReq)
+
+    @handler updateSchemaTriple
+    post /schema_triple/update (UpdateSchemaTripleReq)
+
+    @handler deleteSchemaTriples
+    post /schema_triple/delete (DeleteSchemaTriplesReq)
+}

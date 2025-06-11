@@ -1,0 +1,72 @@
+import (
+    "common.api"
+)
+
+type (
+    SchemaOntologyProp {
+        ID           int64  `json:"id, optional"`
+        PropDesc     string `json:"prop_desc"`
+        PropName     string `json:"prop_name"`
+        WorkSpaceID  int64  `json:"work_space_id"`
+        OntologyID   int64  `json:"ontology_id"`
+
+        CreatorID    int64  `json:"creator_id,ptional"`
+        CreatorName  string `json:"creator_name,optional"`
+
+        CreatedAt    string   `json:"created_at,optional"`
+        UpdatedAt    string   `json:"updated_at,optional"`
+    }
+
+    GetSchemaOntologyPropListReq {
+        OntologyID   int64  `json:"ontology_id"`
+        PaginationParams
+    }
+
+    GetSchemaOntologyPropListResp {
+        Total                  int64            `json:"total"`        // 总记录数
+        SchemaOntologyProps    []SchemaOntologyProp `json:"schema_ontology_props"`    // 列表
+        PageSize               int              `json:"page_size"`    // 每页大小
+        PageNumber             int              `json:"page_number"`  // 当前页码
+    }
+
+    GetSchemaOntologyPropReq {
+        ID    int64  `json:"id"`
+    }
+
+    GetSchemaOntologyPropResp {
+        SchemaOntologyProp SchemaOntologyProp `json:"schema_ontology_prop"`
+    }
+
+    CreateSchemaOntologyPropReq {
+        SchemaOntologyProp SchemaOntologyProp `json:"schema_ontology_prop"`
+    }
+
+    UpdateSchemaOntologyPropReq {
+        SchemaOntologyProp SchemaOntologyProp `json:"schema_ontology_prop"`
+    }
+
+    DeleteSchemaOntologyPropsReq {
+        IDs []int64 `json:"ids"`
+    }
+)
+
+@server(
+    prefix: api
+    group: schema_ontology_prop
+)
+service admin {
+    @handler getSchemaOntologyProp
+    post /schema_ontology_prop/get (GetSchemaOntologyPropReq) returns (GetSchemaOntologyPropResp)
+
+    @handler getSchemaOntologyPropList
+    post /schema_ontology_prop/list (GetSchemaOntologyPropListReq) returns (GetSchemaOntologyPropListResp)
+
+    @handler createSchemaOntologyProp
+    post /schema_ontology_prop/create (CreateSchemaOntologyPropReq)
+
+    @handler updateSchemaOntologyProp
+    post /schema_ontology_prop/update (UpdateSchemaOntologyPropReq)
+
+    @handler deleteSchemaOntologyProps
+    post /schema_ontology_prop/delete (DeleteSchemaOntologyPropsReq)
+}

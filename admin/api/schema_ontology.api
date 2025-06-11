@@ -1,0 +1,71 @@
+import (
+    "common.api"
+)
+
+type (
+    SchemaOntology {
+        ID           int64  `json:"id, optional"`
+        OntologyDesc      string `json:"ontology_desc"`
+        OntologyName      string `json:"ontology_name"`
+        WorkSpaceID        int64  `json:"work_space_id"`
+
+        CreatorID    int64  `json:"creator_id,ptional"`
+        CreatorName  string `json:"creator_name,optional"`
+
+        CreatedAt    string   `json:"created_at,optional"`
+        UpdatedAt    string   `json:"updated_at,optional"`
+    }
+
+    GetSchemaOntologyListReq {
+        WorkSpaceID    int64  `json:"work_space_id"`
+        PaginationParams
+    }
+
+    GetSchemaOntologyListResp {
+        Total              int64            `json:"total"`        // 总记录数
+        SchemaOntologys    []SchemaOntology `json:"schema_ontologys"`    // 列表
+        PageSize           int              `json:"page_size"`    // 每页大小
+        PageNumber         int              `json:"page_number"`  // 当前页码
+    }
+
+    GetSchemaOntologyReq {
+        ID    int64  `json:"id"`
+    }
+
+    GetSchemaOntologyResp {
+        SchemaOntology SchemaOntology `json:"schema_ontology"`
+    }
+
+    CreateSchemaOntologyReq {
+        SchemaOntology  SchemaOntology  `json:"schema_ontology"`
+    }
+
+    UpdateSchemaOntologyReq {
+        SchemaOntology  SchemaOntology  `json:"schema_ontology"`
+    }
+
+    DeleteSchemaOntologysReq {
+        IDs []int64 `json:"ids"`
+    }
+)
+
+@server(
+    prefix: api
+    group: schema_ontology
+)
+service admin {
+    @handler getSchemaOntology
+    post /schema_ontology/get (GetSchemaOntologyReq) returns (GetSchemaOntologyResp)
+
+    @handler getSchemaOntologyList
+    post /schema_ontology/list (GetSchemaOntologyListReq) returns (GetSchemaOntologyListResp)
+
+    @handler createSchemaOntology
+    post /schema_ontology/create (CreateSchemaOntologyReq)
+
+    @handler updateSchemaOntology
+    post /schema_ontology/update (UpdateSchemaOntologyReq)
+
+    @handler deleteSchemaOntologys
+    post /schema_ontology/delete (DeleteSchemaOntologysReq)
+}

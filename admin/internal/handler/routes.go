@@ -9,6 +9,9 @@ import (
 	document_dir "github.com/SnakeHacker/deepkg/admin/internal/handler/document_dir"
 	file "github.com/SnakeHacker/deepkg/admin/internal/handler/file"
 	org "github.com/SnakeHacker/deepkg/admin/internal/handler/org"
+	schema_ontology "github.com/SnakeHacker/deepkg/admin/internal/handler/schema_ontology"
+	schema_ontology_prop "github.com/SnakeHacker/deepkg/admin/internal/handler/schema_ontology_prop"
+	schema_triple "github.com/SnakeHacker/deepkg/admin/internal/handler/schema_triple"
 	user "github.com/SnakeHacker/deepkg/admin/internal/handler/user"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 
@@ -126,6 +129,99 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/org/delete",
 				Handler: org.DeleteOrgsHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/schema_ontology/get",
+				Handler: schema_ontology.GetSchemaOntologyHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/schema_ontology/list",
+				Handler: schema_ontology.GetSchemaOntologyListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/schema_ontology/create",
+				Handler: schema_ontology.CreateSchemaOntologyHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/schema_ontology/update",
+				Handler: schema_ontology.UpdateSchemaOntologyHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/schema_ontology/delete",
+				Handler: schema_ontology.DeleteSchemaOntologysHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/schema_ontology_prop/get",
+				Handler: schema_ontology_prop.GetSchemaOntologyPropHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/schema_ontology_prop/list",
+				Handler: schema_ontology_prop.GetSchemaOntologyPropListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/schema_ontology_prop/create",
+				Handler: schema_ontology_prop.CreateSchemaOntologyPropHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/schema_ontology_prop/update",
+				Handler: schema_ontology_prop.UpdateSchemaOntologyPropHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/schema_ontology_prop/delete",
+				Handler: schema_ontology_prop.DeleteSchemaOntologyPropsHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/schema_triple/get",
+				Handler: schema_triple.GetSchemaTripleHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/schema_triple/list",
+				Handler: schema_triple.GetSchemaTripleListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/schema_triple/create",
+				Handler: schema_triple.CreateSchemaTripleHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/schema_triple/update",
+				Handler: schema_triple.UpdateSchemaTripleHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/schema_triple/delete",
+				Handler: schema_triple.DeleteSchemaTriplesHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/api"),
