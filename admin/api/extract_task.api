@@ -1,0 +1,89 @@
+import (
+    "common.api"
+)
+
+type (
+    ExtractTask {
+        ID          int64  `json:"id,optional"`
+        TaskName    string `json:"task_name"`
+        Remark      string `json:"remark,optional"`
+        WorkSpaceID int64  `json:"work_space_id"`
+        TaskStatus  int    `json:"task_status,optional"`
+        Published   bool   `json:"published"`
+
+        CreatorID    int64  `json:"creator_id,optional"`
+        CreatorName  string `json:"creator_name,optional"`
+
+        CreatedAt    string   `json:"created_at,optional"`
+        UpdatedAt    string   `json:"updated_at,optional"`
+    }
+
+    GetExtractTaskListReq {
+        WorkSpaceID    int64  `json:"work_space_id"`
+        PaginationParams
+    }
+
+    GetExtractTaskListResp {
+        Total              int64            `json:"total"`        // 总记录数
+        ExtractTasks    []ExtractTask `json:"extract_tasks"`    // 列表
+        PageSize           int              `json:"page_size"`    // 每页大小
+        PageNumber         int              `json:"page_number"`  // 当前页码
+    }
+
+    GetExtractTaskReq {
+        ID    int64  `json:"id"`
+    }
+
+    GetExtractTaskResp {
+        ExtractTask ExtractTask `json:"extract_task"`
+    }
+
+    CreateExtractTaskReq {
+        ExtractTask  ExtractTask  `json:"extract_task"`
+    }
+
+    UpdateExtractTaskReq {
+        ExtractTask  ExtractTask  `json:"extract_task"`
+    }
+
+    DeleteExtractTasksReq {
+        IDs []int64 `json:"ids"`
+    }
+
+    UpdateExtractTaskStatusReq {
+        ID    int64  `json:"id"`
+        TaskStatus int `json:"task_status"`
+    }
+
+    PublishExtractTaskReq {
+        ID    int64  `json:"id"`
+    }
+)
+
+@server(
+    prefix: api
+    group: extract_task
+)
+service admin {
+    @handler getExtractTask
+    post /extract_task/get (GetExtractTaskReq) returns (GetExtractTaskResp)
+
+    @handler getExtractTaskList
+    post /extract_task/list (GetExtractTaskListReq) returns (GetExtractTaskListResp)
+
+    @handler createExtractTask
+    post /extract_task/create (CreateExtractTaskReq)
+
+    @handler updateExtractTask
+    post /extract_task/update (UpdateExtractTaskReq)
+
+    @handler deleteExtractTasks
+    post /extract_task/delete (DeleteExtractTasksReq)
+
+    @handler updateExtractTaskStatus
+    post /extract_task/update_status (UpdateExtractTaskStatusReq)
+
+    @handler publishExtractTask
+    post /extract_task/publish (PublishExtractTaskReq)
+
+}

@@ -10,7 +10,7 @@ type (
         DocPath      string `json:"doc_path"`
         DirID        int64  `json:"dir_id"`
 
-        CreatorID    int64  `json:"creator_id,ptional"`
+        CreatorID    int64  `json:"creator_id,optional"`
         CreatorName  string `json:"creator_name,optional"`
 
         CreatedAt    string   `json:"created_at,optional"`

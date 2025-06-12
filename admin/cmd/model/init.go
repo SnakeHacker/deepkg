@@ -35,6 +35,10 @@ func main() {
 		&gorm_model.SchemaOntology{},
 		&gorm_model.SchemaOntologyProp{},
 		&gorm_model.SchemaTriple{},
+		&gorm_model.ExtractTask{},
+		&gorm_model.ExtractTaskEntity{},
+		&gorm_model.ExtractTaskProp{},
+		&gorm_model.ExtractTaskRelationship{},
 	)
 
 	if err != nil {

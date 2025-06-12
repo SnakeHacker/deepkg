@@ -36,3 +36,8 @@ Nebula:
   Port: 9669
   Username: root
   Password: nebula
+
+LLM:
+  ApiSecret: 0e9acf3a-96f8-48ed-907d-22da52596d1e
+  BaseUrl: https://api-inference.modelscope.cn/v1/chat/completions
+  Model: Qwen/Qwen3-32B

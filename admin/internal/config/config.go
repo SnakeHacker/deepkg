@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/SnakeHacker/deepkg/admin/common/ai/llm"
 	"github.com/SnakeHacker/deepkg/admin/internal/utils/nebula"
 	"github.com/SnakeHacker/deepkg/admin/internal/utils/s3/minio"
 	"github.com/zeromicro/go-zero/rest"
@@ -28,4 +29,6 @@ type Config struct {
 	}
 
 	Nebula nebula.NebulaSessionConfig
+
+	LLM llm.Config
 }

@@ -9,7 +9,7 @@ type (
         OntologyName      string `json:"ontology_name"`
         WorkSpaceID        int64  `json:"work_space_id"`
 
-        CreatorID    int64  `json:"creator_id,ptional"`
+        CreatorID    int64  `json:"creator_id,optional"`
         CreatorName  string `json:"creator_name,optional"`
 
         CreatedAt    string   `json:"created_at,optional"`
