@@ -8,6 +8,7 @@ import (
 	document "github.com/SnakeHacker/deepkg/admin/internal/handler/document"
 	document_dir "github.com/SnakeHacker/deepkg/admin/internal/handler/document_dir"
 	extract_task "github.com/SnakeHacker/deepkg/admin/internal/handler/extract_task"
+	extract_task_result "github.com/SnakeHacker/deepkg/admin/internal/handler/extract_task_result"
 	file "github.com/SnakeHacker/deepkg/admin/internal/handler/file"
 	org "github.com/SnakeHacker/deepkg/admin/internal/handler/org"
 	schema_ontology "github.com/SnakeHacker/deepkg/admin/internal/handler/schema_ontology"
@@ -288,13 +289,74 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/extract_task/update_status",
-				Handler: extract_task.UpdateExtractTaskStatusHandler(serverCtx),
+				Path:    "/extract_task/publish",
+				Handler: extract_task.PublishExtractTaskHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/entity/list",
+				Handler: extract_task_result.GetEntityListHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/extract_task/publish",
-				Handler: extract_task.PublishExtractTaskHandler(serverCtx),
+				Path:    "/entity/create",
+				Handler: extract_task_result.CreateEntityHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/entity/update",
+				Handler: extract_task_result.UpdateEntityHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/entity/delete",
+				Handler: extract_task_result.DeleteEntitiesHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/prop/list",
+				Handler: extract_task_result.GetPropListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/prop/create",
+				Handler: extract_task_result.CreatePropHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/prop/update",
+				Handler: extract_task_result.UpdatePropHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/prop/delete",
+				Handler: extract_task_result.DeletePropsHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/relationship/list",
+				Handler: extract_task_result.GetRelationshipListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/relationship/create",
+				Handler: extract_task_result.CreateRelationshipHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/relationship/update",
+				Handler: extract_task_result.UpdateRelationshipHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/relationship/delete",
+				Handler: extract_task_result.DeleteRelationshipsHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/api"),

@@ -3,8 +3,10 @@ package extract_task
 import (
 	"context"
 
+	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 	"github.com/SnakeHacker/deepkg/admin/internal/types"
+	"github.com/golang/glog"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -23,8 +25,13 @@ func NewDeleteExtractTasksLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 	}
 }
 
-func (l *DeleteExtractTasksLogic) DeleteExtractTasks(req *types.DeleteExtractTasksReq) error {
-	// todo: add your logic here and delete this line
+func (l *DeleteExtractTasksLogic) DeleteExtractTasks(req *types.DeleteExtractTasksReq) (err error) {
+	err = dao.DeleteExtractTasksByIDs(l.svcCtx.DB, req.IDs)
 
-	return nil
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	return
 }

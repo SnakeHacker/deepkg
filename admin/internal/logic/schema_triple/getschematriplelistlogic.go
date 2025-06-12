@@ -3,6 +3,7 @@ package schema_triple
 import (
 	"context"
 	"errors"
+
 	"github.com/SnakeHacker/deepkg/admin/common"
 	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"

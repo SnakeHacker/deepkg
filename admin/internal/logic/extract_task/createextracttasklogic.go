@@ -3,8 +3,11 @@ package extract_task
 import (
 	"context"
 
+	"github.com/SnakeHacker/deepkg/admin/internal/dao"
+	"github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 	"github.com/SnakeHacker/deepkg/admin/internal/types"
+	"github.com/golang/glog"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -23,8 +26,23 @@ func NewCreateExtractTaskLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 	}
 }
 
-func (l *CreateExtractTaskLogic) CreateExtractTask(req *types.CreateExtractTaskReq) error {
-	// todo: add your logic here and delete this line
+func (l *CreateExtractTaskLogic) CreateExtractTask(req *types.CreateExtractTaskReq) (err error) {
+	et := req.ExtractTask
 
-	return nil
+	etModel := gorm_model.ExtractTask{
+		TaskName:    et.TaskName,
+		WorkSpaceID: et.WorkSpaceID,
+		TaskStatus:  EXTRACT_TASK_STATUS_WAITING,
+		Published:   false,
+		Remark:      et.Remark,
+		// TODO
+		CreatorID: 0,
+	}
+	err = dao.CreateExtractTask(l.svcCtx.DB, &etModel)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	return
 }

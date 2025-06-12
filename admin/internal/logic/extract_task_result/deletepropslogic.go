@@ -1,4 +1,4 @@
-package extract_task
+package extract_task_result
 
 import (
 	"context"
@@ -11,22 +11,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type PublishExtractTaskLogic struct {
+type DeletePropsLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewPublishExtractTaskLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PublishExtractTaskLogic {
-	return &PublishExtractTaskLogic{
+func NewDeletePropsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DeletePropsLogic {
+	return &DeletePropsLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *PublishExtractTaskLogic) PublishExtractTask(req *types.PublishExtractTaskReq) (err error) {
-	err = dao.UpdateExtractTaskPublished(l.svcCtx.DB, int(req.ID), true)
+func (l *DeletePropsLogic) DeleteProps(req *types.DeletePropsReq) (err error) {
+	err = dao.DeletePropsByIDs(l.svcCtx.DB, req.IDs)
 	if err != nil {
 		glog.Error(err)
 		return

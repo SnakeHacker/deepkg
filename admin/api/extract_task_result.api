@@ -1,0 +1,146 @@
+import (
+    "common.api"
+)
+
+type (
+    Entity {
+        ID             int64  `json:"id"`
+        TaskID         int64  `json:"task_id"`
+        EntityName         string `json:"entity_name"`
+    }
+
+    GetEntityListReq {
+        TaskID    int64  `json:"task_id"`
+        PaginationParams
+    }
+
+    GetEntityListResp {
+        Total              int64    `json:"total"`        // 总记录数
+        Entities           []Entity `json:"entities"`    // 列表
+        PageSize           int      `json:"page_size"`    // 每页大小
+        PageNumber         int      `json:"page_number"`  // 当前页码
+    }
+
+    CreateEntityReq {
+        Entity Entity `json:"entity"`
+    }
+
+    UpdateEntityReq {
+        Entity Entity `json:"entity"`
+    }
+
+    DeleteEntitiesReq {
+        IDs []int64 `json:"ids"`
+    }
+
+    EntityProp {
+        ID             int64  `json:"id"`
+        TaskID         int64  `json:"task_id"`
+        EntityID       int64  `json:"entity_id"`
+        PropName       string `json:"prop_name"`
+        PropValue      string `json:"prop_value"`
+    }
+
+    GetPropListReq {
+        EntityID  int64  `json:"entity_id"`
+        PaginationParams
+    }
+
+    GetPropListResp {
+        Total              int64    `json:"total"`        // 总记录数
+        Props           []EntityProp `json:"props"`    // 列表
+        PageSize           int      `json:"page_size"`    // 每页大小
+        PageNumber         int      `json:"page_number"`  // 当前页码
+    }
+
+    CreatePropReq {
+        Prop EntityProp `json:"prop"`
+    }
+
+    UpdatePropReq {
+        Prop EntityProp `json:"prop"`
+    }
+
+    DeletePropsReq {
+        IDs []int64 `json:"ids"`
+    }
+
+    Relationship {
+        ID               int64  `json:"id"`
+        TaskID           int64  `json:"task_id"`
+        SourceEntityID   int64  `json:"source_entity_id"`
+        SourceEntityName string `json:"source_entity_name"`
+        TargetEntityID   int64  `json:"target_entity_id"`
+        TargetEntityName string `json:"target_entity_name"`
+        RelationshipName string `json:"relationship_name"`
+    }
+
+    GetRelationshipListReq {
+        TaskID  int64  `json:"task_id"`
+        PaginationParams
+    }
+
+    GetRelationshipListResp {
+        Total              int64    `json:"total"`        // 总记录数
+        Relationships      []Relationship `json:"relationships"`    // 列表
+        PageSize           int      `json:"page_size"`    // 每页大小
+        PageNumber         int      `json:"page_number"`  // 当前页码
+    }
+
+    CreateRelationshipReq {
+        Relationship Relationship `json:"relationship"`
+    }
+
+    UpdateRelationshipReq {
+        Relationship Relationship `json:"relationship"`
+    }
+
+    DeleteRelationshipsReq {
+        IDs []int64 `json:"ids"`
+    }
+)
+
+@server(
+    prefix: api
+    group: extract_task_result
+)
+service admin {
+    @handler getEntityList
+    post /entity/list (GetEntityListReq) returns (GetEntityListResp)
+
+    @handler createEntity
+    post /entity/create (CreateEntityReq)
+
+    @handler updateEntity
+    post /entity/update (UpdateEntityReq)
+
+    @handler deleteEntities
+    post /entity/delete (DeleteEntitiesReq)
+
+
+    @handler getPropList
+    post /prop/list (GetPropListReq) returns (GetPropListResp)
+
+    @handler createProp
+    post /prop/create (CreatePropReq)
+
+    @handler updateProp
+    post /prop/update (UpdatePropReq)
+
+    @handler deleteProps
+    post /prop/delete (DeletePropsReq)
+
+
+    @handler getRelationshipList
+    post /relationship/list (GetRelationshipListReq) returns (GetRelationshipListResp)
+
+    @handler createRelationship
+    post /relationship/create (CreateRelationshipReq)
+
+    @handler updateRelationship
+    post /relationship/update (UpdateRelationshipReq)
+
+    @handler deleteRelationships
+    post /relationship/delete (DeleteRelationshipsReq)
+
+}

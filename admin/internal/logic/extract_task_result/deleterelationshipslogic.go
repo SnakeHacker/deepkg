@@ -1,4 +1,4 @@
-package extract_task
+package extract_task_result
 
 import (
 	"context"
@@ -11,26 +11,27 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type PublishExtractTaskLogic struct {
+type DeleteRelationshipsLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewPublishExtractTaskLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PublishExtractTaskLogic {
-	return &PublishExtractTaskLogic{
+func NewDeleteRelationshipsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DeleteRelationshipsLogic {
+	return &DeleteRelationshipsLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *PublishExtractTaskLogic) PublishExtractTask(req *types.PublishExtractTaskReq) (err error) {
-	err = dao.UpdateExtractTaskPublished(l.svcCtx.DB, int(req.ID), true)
+func (l *DeleteRelationshipsLogic) DeleteRelationships(req *types.DeleteRelationshipsReq) (err error) {
+	err = dao.DeleteRelationshipsByIDs(l.svcCtx.DB, req.IDs)
 	if err != nil {
 		glog.Error(err)
 		return
 	}
 
 	return
+
 }

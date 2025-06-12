@@ -322,16 +322,18 @@ type DeleteUsersReq struct {
 }
 
 type ExtractTask struct {
-	ID          int64  `json:"id,optional"`
-	TaskName    string `json:"task_name"`
-	Remark      string `json:"remark,optional"`
-	WorkSpaceID int64  `json:"work_space_id"`
-	TaskStatus  int    `json:"task_status,optional"`
-	Published   bool   `json:"published"`
-	CreatorID   int64  `json:"creator_id,optional"`
-	CreatorName string `json:"creator_name,optional"`
-	CreatedAt   string `json:"created_at,optional"`
-	UpdatedAt   string `json:"updated_at,optional"`
+	ID          int64   `json:"id"`
+	DocIDs      []int64 `json:"doc_ids"`
+	TripleIDs   []int64 `json:"triple_ids"`
+	TaskName    string  `json:"task_name"`
+	Remark      string  `json:"remark,optional"`
+	WorkSpaceID int64   `json:"work_space_id"`
+	TaskStatus  int     `json:"task_status,optional"`
+	Published   bool    `json:"published"`
+	CreatorID   int64   `json:"creator_id,optional"`
+	CreatorName string  `json:"creator_name,optional"`
+	CreatedAt   string  `json:"created_at,optional"`
+	UpdatedAt   string  `json:"updated_at,optional"`
 }
 
 type GetExtractTaskListReq struct {
@@ -366,11 +368,102 @@ type DeleteExtractTasksReq struct {
 	IDs []int64 `json:"ids"`
 }
 
-type UpdateExtractTaskStatusReq struct {
-	ID         int64 `json:"id"`
-	TaskStatus int   `json:"task_status"`
-}
-
 type PublishExtractTaskReq struct {
 	ID int64 `json:"id"`
+}
+
+type Entity struct {
+	ID         int64  `json:"id"`
+	TaskID     int64  `json:"task_id"`
+	EntityName string `json:"entity_name"`
+}
+
+type GetEntityListReq struct {
+	TaskID int64 `json:"task_id"`
+	PaginationParams
+}
+
+type GetEntityListResp struct {
+	Total      int64    `json:"total"`       // 总记录数
+	Entities   []Entity `json:"entities"`    // 列表
+	PageSize   int      `json:"page_size"`   // 每页大小
+	PageNumber int      `json:"page_number"` // 当前页码
+}
+
+type CreateEntityReq struct {
+	Entity Entity `json:"entity"`
+}
+
+type UpdateEntityReq struct {
+	Entity Entity `json:"entity"`
+}
+
+type DeleteEntitiesReq struct {
+	IDs []int64 `json:"ids"`
+}
+
+type EntityProp struct {
+	ID        int64  `json:"id"`
+	TaskID    int64  `json:"task_id"`
+	EntityID  int64  `json:"entity_id"`
+	PropName  string `json:"prop_name"`
+	PropValue string `json:"prop_value"`
+}
+
+type GetPropListReq struct {
+	EntityID int64 `json:"entity_id"`
+	PaginationParams
+}
+
+type GetPropListResp struct {
+	Total      int64        `json:"total"`       // 总记录数
+	Props      []EntityProp `json:"props"`       // 列表
+	PageSize   int          `json:"page_size"`   // 每页大小
+	PageNumber int          `json:"page_number"` // 当前页码
+}
+
+type CreatePropReq struct {
+	Prop EntityProp `json:"prop"`
+}
+
+type UpdatePropReq struct {
+	Prop EntityProp `json:"prop"`
+}
+
+type DeletePropsReq struct {
+	IDs []int64 `json:"ids"`
+}
+
+type Relationship struct {
+	ID               int64  `json:"id"`
+	TaskID           int64  `json:"task_id"`
+	SourceEntityID   int64  `json:"source_entity_id"`
+	SourceEntityName string `json:"source_entity_name"`
+	TargetEntityID   int64  `json:"target_entity_id"`
+	TargetEntityName string `json:"target_entity_name"`
+	RelationshipName string `json:"relationship_name"`
+}
+
+type GetRelationshipListReq struct {
+	TaskID int64 `json:"task_id"`
+	PaginationParams
+}
+
+type GetRelationshipListResp struct {
+	Total         int64          `json:"total"`         // 总记录数
+	Relationships []Relationship `json:"relationships"` // 列表
+	PageSize      int            `json:"page_size"`     // 每页大小
+	PageNumber    int            `json:"page_number"`   // 当前页码
+}
+
+type CreateRelationshipReq struct {
+	Relationship Relationship `json:"relationship"`
+}
+
+type UpdateRelationshipReq struct {
+	Relationship Relationship `json:"relationship"`
+}
+
+type DeleteRelationshipsReq struct {
+	IDs []int64 `json:"ids"`
 }

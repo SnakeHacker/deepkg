@@ -2,6 +2,7 @@ package schema_triple
 
 import (
 	"context"
+
 	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/golang/glog"
 
@@ -37,7 +38,8 @@ func (l *UpdateSchemaTripleLogic) UpdateSchemaTriple(req *types.UpdateSchemaTrip
 	tripleModel.TargetOntologyID = int(triple.TargetOntologyID)
 	tripleModel.Relationship = triple.Relationship
 	tripleModel.WorkSpaceID = int(triple.WorkSpaceID)
-	tripleModel.CreatorID = int(triple.CreatorID)
+	// TODO
+	tripleModel.CreatorID = 0
 
 	err = dao.UpdateSchemaTriple(l.svcCtx.DB, &tripleModel)
 	if err != nil {

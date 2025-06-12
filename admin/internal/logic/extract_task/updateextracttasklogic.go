@@ -3,8 +3,10 @@ package extract_task
 import (
 	"context"
 
+	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 	"github.com/SnakeHacker/deepkg/admin/internal/types"
+	"github.com/golang/glog"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -23,8 +25,23 @@ func NewUpdateExtractTaskLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 	}
 }
 
-func (l *UpdateExtractTaskLogic) UpdateExtractTask(req *types.UpdateExtractTaskReq) error {
-	// todo: add your logic here and delete this line
+func (l *UpdateExtractTaskLogic) UpdateExtractTask(req *types.UpdateExtractTaskReq) (err error) {
+	et := req.ExtractTask
+	etModel, err := dao.SelectExtractTaskByID(l.svcCtx.DB, int(et.ID))
+	if err != nil {
+		glog.Error(err)
+		return err
+	}
 
-	return nil
+	etModel.TaskName = et.TaskName
+	etModel.Remark = et.Remark
+	etModel.WorkSpaceID = et.WorkSpaceID
+
+	err = dao.UpdateExtractTask(l.svcCtx.DB, &etModel)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	return
 }

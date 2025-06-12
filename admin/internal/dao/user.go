@@ -73,7 +73,7 @@ func SelectUserByID(db *gorm.DB, id int64) (user *types.User, err error) {
 	return
 }
 
-func SelectUserModleByID(db *gorm.DB, id int64) (user *m.User, err error) {
+func SelectUserModelByID(db *gorm.DB, id int64) (user *m.User, err error) {
 	err = db.Where("id = ?", id).First(&user).Error
 	if err != nil {
 		glog.Error(err)

@@ -10,4 +10,5 @@ import (
 	"schema_triple.api"
 	"user.api"
 	"extract_task.api"
+	"extract_task_result.api"
 )

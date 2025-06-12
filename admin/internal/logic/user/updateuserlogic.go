@@ -25,7 +25,7 @@ func NewUpdateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Update
 }
 
 func (l *UpdateUserLogic) UpdateUser(req *types.UpdateUserReq) (err error) {
-	userModel, err := dao.SelectUserModleByID(l.svcCtx.DB, req.User.ID)
+	userModel, err := dao.SelectUserModelByID(l.svcCtx.DB, req.User.ID)
 	if err != nil {
 		glog.Error(err)
 		return
