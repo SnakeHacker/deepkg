@@ -2,6 +2,8 @@ package schema_triple
 
 import (
 	"context"
+	"github.com/SnakeHacker/deepkg/admin/internal/dao"
+	"github.com/golang/glog"
 
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 	"github.com/SnakeHacker/deepkg/admin/internal/types"
@@ -23,8 +25,11 @@ func NewDeleteSchemaTriplesLogic(ctx context.Context, svcCtx *svc.ServiceContext
 	}
 }
 
-func (l *DeleteSchemaTriplesLogic) DeleteSchemaTriples(req *types.DeleteSchemaTriplesReq) error {
-	// todo: add your logic here and delete this line
-
-	return nil
+func (l *DeleteSchemaTriplesLogic) DeleteSchemaTriples(req *types.DeleteSchemaTriplesReq) (err error) {
+	err = dao.DeleteSchemaTriplesByIDs(l.svcCtx.DB, req.IDs)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+	return
 }

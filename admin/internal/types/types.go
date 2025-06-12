@@ -16,7 +16,7 @@ type Document struct {
 	DocDesc     string `json:"doc_desc"`
 	DocPath     string `json:"doc_path"`
 	DirID       int64  `json:"dir_id"`
-	CreatorID   int64  `json:"creator_id,ptional"`
+	CreatorID   int64  `json:"creator_id,optional"`
 	CreatorName string `json:"creator_name,optional"`
 	CreatedAt   string `json:"created_at,optional"`
 	UpdatedAt   string `json:"updated_at,optional"`
@@ -147,7 +147,7 @@ type SchemaOntology struct {
 	OntologyDesc string `json:"ontology_desc"`
 	OntologyName string `json:"ontology_name"`
 	WorkSpaceID  int64  `json:"work_space_id"`
-	CreatorID    int64  `json:"creator_id,ptional"`
+	CreatorID    int64  `json:"creator_id,optional"`
 	CreatorName  string `json:"creator_name,optional"`
 	CreatedAt    string `json:"created_at,optional"`
 	UpdatedAt    string `json:"updated_at,optional"`
@@ -191,7 +191,7 @@ type SchemaOntologyProp struct {
 	PropName    string `json:"prop_name"`
 	WorkSpaceID int64  `json:"work_space_id"`
 	OntologyID  int64  `json:"ontology_id"`
-	CreatorID   int64  `json:"creator_id,ptional"`
+	CreatorID   int64  `json:"creator_id,optional"`
 	CreatorName string `json:"creator_name,optional"`
 	CreatedAt   string `json:"created_at,optional"`
 	UpdatedAt   string `json:"updated_at,optional"`
@@ -235,10 +235,10 @@ type SchemaTriple struct {
 	TargetOntologyID int64  `json:"target_ontology_id"`
 	Relationship     string `json:"relationship"`
 	WorkSpaceID      int64  `json:"work_space_id"`
-	CreatorID        int64  `json:"creator_id,ptional"`
-	CreatorName      string `json:"creator_name,optional"`
-	CreatedAt        string `json:"created_at,optional"`
-	UpdatedAt        string `json:"updated_at,optional"`
+	CreatorID        int64  `json:"creator_id, optional"`
+	CreatorName      string `json:"creator_name, optional"`
+	CreatedAt        string `json:"created_at, optional"`
+	UpdatedAt        string `json:"updated_at, optional"`
 }
 
 type GetSchemaTripleListReq struct {
@@ -319,4 +319,58 @@ type UpdateUserReq struct {
 
 type DeleteUsersReq struct {
 	Ids []int64 `json:"ids"`
+}
+
+type ExtractTask struct {
+	ID          int64  `json:"id,optional"`
+	TaskName    string `json:"task_name"`
+	Remark      string `json:"remark,optional"`
+	WorkSpaceID int64  `json:"work_space_id"`
+	TaskStatus  int    `json:"task_status,optional"`
+	Published   bool   `json:"published"`
+	CreatorID   int64  `json:"creator_id,optional"`
+	CreatorName string `json:"creator_name,optional"`
+	CreatedAt   string `json:"created_at,optional"`
+	UpdatedAt   string `json:"updated_at,optional"`
+}
+
+type GetExtractTaskListReq struct {
+	WorkSpaceID int64 `json:"work_space_id"`
+	PaginationParams
+}
+
+type GetExtractTaskListResp struct {
+	Total        int64         `json:"total"`         // 总记录数
+	ExtractTasks []ExtractTask `json:"extract_tasks"` // 列表
+	PageSize     int           `json:"page_size"`     // 每页大小
+	PageNumber   int           `json:"page_number"`   // 当前页码
+}
+
+type GetExtractTaskReq struct {
+	ID int64 `json:"id"`
+}
+
+type GetExtractTaskResp struct {
+	ExtractTask ExtractTask `json:"extract_task"`
+}
+
+type CreateExtractTaskReq struct {
+	ExtractTask ExtractTask `json:"extract_task"`
+}
+
+type UpdateExtractTaskReq struct {
+	ExtractTask ExtractTask `json:"extract_task"`
+}
+
+type DeleteExtractTasksReq struct {
+	IDs []int64 `json:"ids"`
+}
+
+type UpdateExtractTaskStatusReq struct {
+	ID         int64 `json:"id"`
+	TaskStatus int   `json:"task_status"`
+}
+
+type PublishExtractTaskReq struct {
+	ID int64 `json:"id"`
 }

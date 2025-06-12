@@ -7,6 +7,7 @@ import (
 	admin "github.com/SnakeHacker/deepkg/admin/internal/handler/admin"
 	document "github.com/SnakeHacker/deepkg/admin/internal/handler/document"
 	document_dir "github.com/SnakeHacker/deepkg/admin/internal/handler/document_dir"
+	extract_task "github.com/SnakeHacker/deepkg/admin/internal/handler/extract_task"
 	file "github.com/SnakeHacker/deepkg/admin/internal/handler/file"
 	org "github.com/SnakeHacker/deepkg/admin/internal/handler/org"
 	schema_ontology "github.com/SnakeHacker/deepkg/admin/internal/handler/schema_ontology"
@@ -253,6 +254,47 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/user/delete",
 				Handler: user.DeleteUsersHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/extract_task/get",
+				Handler: extract_task.GetExtractTaskHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/extract_task/list",
+				Handler: extract_task.GetExtractTaskListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/extract_task/create",
+				Handler: extract_task.CreateExtractTaskHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/extract_task/update",
+				Handler: extract_task.UpdateExtractTaskHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/extract_task/delete",
+				Handler: extract_task.DeleteExtractTasksHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/extract_task/update_status",
+				Handler: extract_task.UpdateExtractTaskStatusHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/extract_task/publish",
+				Handler: extract_task.PublishExtractTaskHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/api"),
