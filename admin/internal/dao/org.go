@@ -95,8 +95,11 @@ func CheckOrgNameExists(db *gorm.DB, orgName string) (exists bool, err error) {
 	var org *m.Organization
 	err = db.Where("org_name = ?", orgName).First(&org).Error
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return false, nil // 组织不存在
+		}
 		glog.Error(err)
 		return false, err // 查询出错
 	}
-	return true, nil // 如果查询到组织，则返回存在
+	return true, nil // 没有查询到组织，返回false
 }

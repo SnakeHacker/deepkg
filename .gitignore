@@ -28,7 +28,7 @@ go.work.sum
 .env
 
 # Editor/IDE
-# .idea/
+ .idea/
 # .vscode/
 
 .DS_Store
@@ -38,3 +38,4 @@ logs/
 
 *.tar
 .VSCodeCounter
+server
