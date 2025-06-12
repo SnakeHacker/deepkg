@@ -10,11 +10,11 @@ type (
         Relationship     string `json:"relationship"`
         WorkSpaceID      int64  `json:"work_space_id"`
 
-        CreatorID    int64  `json:"creator_id,ptional"`
-        CreatorName  string `json:"creator_name,optional"`
+        CreatorID    int64  `json:"creator_id, optional"`
+        CreatorName  string `json:"creator_name, optional"`
 
-        CreatedAt    string   `json:"created_at,optional"`
-        UpdatedAt    string   `json:"updated_at,optional"`
+        CreatedAt    string   `json:"created_at, optional"`
+        UpdatedAt    string   `json:"updated_at, optional"`
     }
 
     GetSchemaTripleListReq {

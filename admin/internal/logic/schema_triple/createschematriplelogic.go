@@ -2,6 +2,9 @@ package schema_triple
 
 import (
 	"context"
+	"github.com/SnakeHacker/deepkg/admin/internal/dao"
+	"github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
+	"github.com/golang/glog"
 
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 	"github.com/SnakeHacker/deepkg/admin/internal/types"
@@ -23,8 +26,22 @@ func NewCreateSchemaTripleLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 	}
 }
 
-func (l *CreateSchemaTripleLogic) CreateSchemaTriple(req *types.CreateSchemaTripleReq) error {
-	// todo: add your logic here and delete this line
+func (l *CreateSchemaTripleLogic) CreateSchemaTriple(req *types.CreateSchemaTripleReq) (err error) {
+	triple := req.SchemaTriple
 
-	return nil
+	tripleModel := gorm_model.SchemaTriple{
+		WorkSpaceID:      int(triple.WorkSpaceID),
+		SourceOntologyID: int(triple.SourceOntologyID),
+		TargetOntologyID: int(triple.TargetOntologyID),
+		Relationship:     triple.Relationship,
+		CreatorID:        int(triple.CreatorID),
+	}
+
+	err = dao.CreateSchemaTriple(l.svcCtx.DB, &tripleModel)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	return
 }
