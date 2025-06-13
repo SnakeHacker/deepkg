@@ -107,7 +107,7 @@ func DoExtractTask(svcCtx *svc.ServiceContext, taskID int) (err error) {
 				continue
 			}
 
-			glog.Info(propsStr)
+			glog.Infof("Entity: %v, props: ", entity.EntityName, propsStr)
 
 			prompt = ExtractPropsPrompt(content, entity.EntityName, propsStr)
 			result, err = svcCtx.LLM.Infer(prompt, llm.History{})

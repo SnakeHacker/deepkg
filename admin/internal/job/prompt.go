@@ -67,6 +67,11 @@ func ExtractTriplePrompt(content string, entities []knowledge_graph.Entity, trip
 	for _, entity := range entities {
 		entitiesInfo += fmt.Sprintf("{实体: %s, 本体: %s} \n", entity.EntityName, entity.Type)
 	}
+
+	tripleInfo := ""
+	for _, triple := range tripleContent {
+		tripleInfo += fmt.Sprintf("%s \n", triple)
+	}
 	result := fmt.Sprintf(`
 语料如下:
 %s
@@ -74,7 +79,7 @@ func ExtractTriplePrompt(content string, entities []knowledge_graph.Entity, trip
 已知有实体如下:
 %v
 
-实体是本体的实例化，已知有三元组概念（本体1、关系、本体2）如下:
+实体是本体的实例化，已知有三元组概念（源本体1、关系、目标本体2）如下:
 %v
 
 请从语料中根据已有的实体抽取对应的三元组，三元组范围请限定在上述提供的三元组中，如果不存在则忽略。以JSON格式返回
@@ -93,6 +98,6 @@ func ExtractTriplePrompt(content string, entities []knowledge_graph.Entity, trip
 		]
 	}
 }
-`, content, entitiesInfo, tripleContent)
+`, content, entitiesInfo, tripleInfo)
 	return result
 }
