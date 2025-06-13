@@ -8,8 +8,9 @@ import (
 
 	"github.com/SnakeHacker/deepkg/admin/internal/config"
 	"github.com/SnakeHacker/deepkg/admin/internal/handler"
+	"github.com/SnakeHacker/deepkg/admin/internal/job"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
-	"github.com/SnakeHacker/deepkg/admin/internal/utils/io"
+	"github.com/SnakeHacker/deepkg/admin/internal/utils/io_util"
 	"github.com/golang/glog"
 
 	"github.com/zeromicro/go-zero/core/conf"
@@ -24,7 +25,7 @@ func main() {
 	flag.Set("alsologtostderr", "true")
 	flag.Parse()
 
-	err := io.CreateDirIfNotExist("./logs")
+	err := io_util.CreateDirIfNotExist("./logs")
 	if err != nil {
 		glog.Fatal(err)
 	}
@@ -59,6 +60,12 @@ func main() {
 		glog.Infof("Starting server at %s:%d...\n", c.Host, c.Port)
 		server.Start()
 	}()
+
+	err = job.DoExtractTask(ctx, 4)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
 
 	<-idleConnsClosed
 	glog.Flush()

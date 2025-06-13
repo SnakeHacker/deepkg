@@ -6,7 +6,9 @@ type (
     SchemaTriple {
         ID           int64  `json:"id, optional"`
         SourceOntologyID int64  `json:"source_ontology_id"`
+        SourceOntologyName string `json:"source_ontology_name, optional"`
         TargetOntologyID int64  `json:"target_ontology_id"`
+        TargetOntologyName string `json:"target_ontology_name, optional"`
         Relationship     string `json:"relationship"`
         WorkSpaceID      int64  `json:"work_space_id"`
 

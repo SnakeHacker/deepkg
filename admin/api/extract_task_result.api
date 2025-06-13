@@ -4,7 +4,7 @@ import (
 
 type (
     Entity {
-        ID             int64  `json:"id"`
+        ID             int64  `json:"id,optional"`
         TaskID         int64  `json:"task_id"`
         EntityName         string `json:"entity_name"`
     }
@@ -34,7 +34,7 @@ type (
     }
 
     EntityProp {
-        ID             int64  `json:"id"`
+        ID             int64  `json:"id,optional"`
         TaskID         int64  `json:"task_id"`
         EntityID       int64  `json:"entity_id"`
         PropName       string `json:"prop_name"`
@@ -66,12 +66,12 @@ type (
     }
 
     Relationship {
-        ID               int64  `json:"id"`
+        ID               int64  `json:"id,optional"`
         TaskID           int64  `json:"task_id"`
         SourceEntityID   int64  `json:"source_entity_id"`
-        SourceEntityName string `json:"source_entity_name"`
+        SourceEntityName string `json:"source_entity_name,optional"`
         TargetEntityID   int64  `json:"target_entity_id"`
-        TargetEntityName string `json:"target_entity_name"`
+        TargetEntityName string `json:"target_entity_name,optional"`
         RelationshipName string `json:"relationship_name"`
     }
 

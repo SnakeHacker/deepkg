@@ -7,9 +7,9 @@ type (
         ID           int64  `json:"id, optional"`
         DirName      string `json:"dir_name"`
         ParentID     int64  `json:"parent_id"`
-        Children     []DocumentDir `json:"children"`
-        SortIndex    int  `json:"sort_index"`
-        Remark       string `json:"remark"`
+        Children     []DocumentDir `json:"children, optional"`
+        SortIndex    int  `json:"sort_index, optional"`
+        Remark       string `json:"remark, optional"`
 
         CreatedAt    string   `json:"created_at,optional"`
         UpdatedAt    string   `json:"updated_at,optional"`

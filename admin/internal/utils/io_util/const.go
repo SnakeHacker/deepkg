@@ -1,4 +1,4 @@
-package io
+package io_util
 
 type GetFileContentReq struct {
 	FileID string `json:"file_id"`

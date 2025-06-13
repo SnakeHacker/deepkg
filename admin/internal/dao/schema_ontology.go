@@ -66,6 +66,16 @@ func SelectSchemaOntologyByID(db *gorm.DB, id int64) (ontology m.SchemaOntology,
 	return
 }
 
+func SelectSchemaOntologiesByIDs(db *gorm.DB, ids []int64) (ontologies []*m.SchemaOntology, err error) {
+	err = db.Where("id IN (?)", ids).Find(&ontologies).Error
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	return
+}
+
 func UpdateSchemaOntology(db *gorm.DB, ontology *m.SchemaOntology) (err error) {
 	if ontology == nil {
 		err = errors.New("missing schema ontology object")

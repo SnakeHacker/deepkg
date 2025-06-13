@@ -66,6 +66,16 @@ func SelectSchemaOntologyPropByID(db *gorm.DB, id int64) (prop m.SchemaOntologyP
 	return
 }
 
+func SelectSchemaOntologyPropsByOntologyIDs(db *gorm.DB, ids []int64) (props []*m.SchemaOntologyProp, err error) {
+	err = db.Where("ontology_id IN (?)", ids).Find(&props).Error
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	return
+}
+
 func UpdateSchemaOntologyProp(db *gorm.DB, prop *m.SchemaOntologyProp) (err error) {
 	if prop == nil {
 		err = errors.New("missing schema ontology prop object")
