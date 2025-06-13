@@ -1,0 +1,69 @@
+import (
+    "common.api"
+)
+
+type (
+    KnowledgeGraphWorkspace {
+        ID          int64  `json:"id, optional"`
+        KnowledgeGraphWorkspaceName string  `json:"knowledge_graph_workspace_name"`
+
+        CreatorID   int64  `json:"creator_id, optional"`
+        CreatorName string `json:"creator_name, optional"`
+
+        CreatedAt   string `json:"created_at, optional"`
+        UpdatedAt   string `json:"updated_at, optional"`
+    }
+
+    GetKnowledgeGraphWorkspaceListReq {
+        CreatorID   int64   `json:"creator_id"`
+        PaginationParams
+    }
+
+    GetKnowledgeGraphWorkspaceListResp {
+        Total          int64       `json:"total"`        // 总记录数
+        KnowledgeGraphWorkspaces     []KnowledgeGraphWorkspace `json:"knowledge_graph_workspaces"`   // 列表
+        PageSize       int         `json:"page_size"`    // 每页大小
+        PageNumber     int         `json:"page_number"`  // 当前页码
+    }
+
+    GetKnowledgeGraphWorkspaceReq {
+        ID    int64  `json:"id"`
+    }
+
+    GetKnowledgeGraphWorkspaceResp {
+        KnowledgeGraphWorkspace KnowledgeGraphWorkspace `json:"knowledge_graph_workspace"`
+    }
+
+    CreateKnowledgeGraphWorkspaceReq {
+        KnowledgeGraphWorkspace  KnowledgeGraphWorkspace  `json:"knowledge_graph_workspace"`
+    }
+
+    UpdateKnowledgeGraphWorkspaceReq {
+        KnowledgeGraphWorkspace  KnowledgeGraphWorkspace  `json:"knowledge_graph_workspace"`
+    }
+
+    DeleteKnowledgeGraphWorkspacesReq {
+        IDs []int64 `json:"ids"`
+    }
+)
+
+@server(
+    prefix: api
+    group: knowledge_graph_workspace
+)
+service admin {
+    @handler getKnowledgeGraphWorkspace
+    post /knowledge_graph_workspace/get (GetKnowledgeGraphWorkspaceReq) returns (GetKnowledgeGraphWorkspaceResp)
+
+    @handler getKnowledgeGraphWorkspaceList
+    post /knowledge_graph_workspace/list (GetKnowledgeGraphWorkspaceListReq) returns (GetKnowledgeGraphWorkspaceListResp)
+
+    @handler createKnowledgeGraphWorkspace
+    post /knowledge_graph_workspace/create (CreateKnowledgeGraphWorkspaceReq)
+
+    @handler updateKnowledgeGraphWorkspace
+    post /knowledge_graph_workspace/update (UpdateKnowledgeGraphWorkspaceReq)
+
+    @handler deleteKnowledgeGraphWorkspaces
+    post /knowledge_graph_workspace/delete (DeleteKnowledgeGraphWorkspacesReq)
+}

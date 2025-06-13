@@ -33,9 +33,9 @@ func DeleteKnowledgeGraphWorkspacesByIDs(db *gorm.DB, ids []int64) (err error) {
 	return
 }
 
-func SelectKnowledgeGraphWorkspaces(db *gorm.DB, pageIndex int, pageSize int) (wsps []*m.KnowledgeGraphWorkspace, total int64, err error) {
+func SelectKnowledgeGraphWorkspaces(db *gorm.DB, creatorID int, pageIndex int, pageSize int) (wsps []*m.KnowledgeGraphWorkspace, total int64, err error) {
 
-	statement := db.Model(&m.KnowledgeGraphWorkspace{})
+	statement := db.Model(&m.KnowledgeGraphWorkspace{}).Where("creator_id = ?", creatorID)
 
 	err = statement.Count(&total).Error
 	if err != nil {
