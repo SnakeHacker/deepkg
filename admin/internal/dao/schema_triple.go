@@ -56,8 +56,18 @@ func SelectSchemaTriples(db *gorm.DB, workspaceID int, pageIndex int, pageSize i
 	return
 }
 
-func SelectSchemaTripleByID(db *gorm.DB, id int64) (triples m.SchemaTriple, err error) {
-	err = db.Where("id = ?", id).First(&triples).Error
+func SelectSchemaTripleByID(db *gorm.DB, id int64) (triple m.SchemaTriple, err error) {
+	err = db.Where("id = ?", id).First(&triple).Error
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	return
+}
+
+func SelectSchemaTriplesByIDs(db *gorm.DB, ids []int64) (triples []*m.SchemaTriple, err error) {
+	err = db.Where("id IN (?)", ids).Find(&triples).Error
 	if err != nil {
 		glog.Error(err)
 		return

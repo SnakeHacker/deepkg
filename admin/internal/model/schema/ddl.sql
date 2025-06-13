@@ -12,7 +12,7 @@ CREATE TABLE `document` (
   `creator_id` int(11) NOT NULL COMMENT '创建者ID',
   PRIMARY KEY (`id`),
   KEY `idx_document_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 
 -- deepkg_db.document_dir definition
@@ -28,6 +28,66 @@ CREATE TABLE `document_dir` (
   `remark` text NOT NULL COMMENT '备注',
   PRIMARY KEY (`id`),
   KEY `idx_document_dir_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+
+
+-- deepkg_db.entity definition
+
+CREATE TABLE `entity` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `entity_name` varchar(255) NOT NULL COMMENT '实体名称',
+  `task_id` int(11) NOT NULL COMMENT '任务ID',
+  PRIMARY KEY (`id`),
+  KEY `idx_entity_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- deepkg_db.extract_task definition
+
+CREATE TABLE `extract_task` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `task_name` varchar(255) NOT NULL COMMENT '任务名称',
+  `remark` text NOT NULL COMMENT '备注',
+  `work_space_id` int(11) NOT NULL COMMENT '工作空间ID',
+  `task_status` int(11) NOT NULL COMMENT '任务状态',
+  `published` tinyint(1) NOT NULL COMMENT '是否发布',
+  `creator_id` int(11) NOT NULL COMMENT '创建者ID',
+  PRIMARY KEY (`id`),
+  KEY `idx_extract_task_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+
+
+-- deepkg_db.extract_task_document definition
+
+CREATE TABLE `extract_task_document` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `task_id` int(11) NOT NULL COMMENT '任务ID',
+  `doc_id` int(11) NOT NULL COMMENT '文档ID',
+  PRIMARY KEY (`id`),
+  KEY `idx_extract_task_document_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- deepkg_db.extract_task_triple definition
+
+CREATE TABLE `extract_task_triple` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `task_id` int(11) NOT NULL COMMENT '任务ID',
+  `triple_id` int(11) NOT NULL COMMENT '三元组ID',
+  PRIMARY KEY (`id`),
+  KEY `idx_extract_task_triple_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -58,6 +118,38 @@ CREATE TABLE `organization` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
+-- deepkg_db.prop definition
+
+CREATE TABLE `prop` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `entity_id` int(11) NOT NULL COMMENT '实体ID',
+  `prop_name` varchar(255) NOT NULL COMMENT '属性名称',
+  `prop_value` varchar(255) NOT NULL COMMENT '属性值',
+  `task_id` int(11) NOT NULL COMMENT '任务ID',
+  PRIMARY KEY (`id`),
+  KEY `idx_prop_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- deepkg_db.relationship definition
+
+CREATE TABLE `relationship` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` datetime(3) DEFAULT NULL,
+  `updated_at` datetime(3) DEFAULT NULL,
+  `deleted_at` datetime(3) DEFAULT NULL,
+  `source_entity_id` int(11) NOT NULL COMMENT '源实体ID',
+  `target_entity_id` int(11) NOT NULL COMMENT '目标实体ID',
+  `relationship_name` varchar(255) NOT NULL COMMENT '关系名称',
+  `task_id` int(11) NOT NULL COMMENT '任务ID',
+  PRIMARY KEY (`id`),
+  KEY `idx_relationship_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
 -- deepkg_db.schema_ontology definition
 
 CREATE TABLE `schema_ontology` (
@@ -71,7 +163,7 @@ CREATE TABLE `schema_ontology` (
   `creator_id` int(11) NOT NULL COMMENT '创建者ID',
   PRIMARY KEY (`id`),
   KEY `idx_schema_ontology_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 
 
 -- deepkg_db.schema_ontology_prop definition
@@ -105,7 +197,7 @@ CREATE TABLE `schema_triple` (
   `creator_id` int(11) NOT NULL COMMENT '创建者ID',
   PRIMARY KEY (`id`),
   KEY `idx_schema_triple_deleted_at` (`deleted_at`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 
 -- deepkg_db.`user` definition

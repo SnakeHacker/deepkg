@@ -27,6 +27,13 @@ func NewCreateExtractTaskLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 }
 
 func (l *CreateExtractTaskLogic) CreateExtractTask(req *types.CreateExtractTaskReq) (err error) {
+	tx := l.svcCtx.DB.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
 	et := req.ExtractTask
 
 	etModel := gorm_model.ExtractTask{
@@ -38,11 +45,48 @@ func (l *CreateExtractTaskLogic) CreateExtractTask(req *types.CreateExtractTaskR
 		// TODO
 		CreatorID: 0,
 	}
-	err = dao.CreateExtractTask(l.svcCtx.DB, &etModel)
+	err = dao.CreateExtractTask(tx, &etModel)
 	if err != nil {
 		glog.Error(err)
+		tx.Rollback()
 		return
 	}
+
+	for _, docID := range et.DocIDs {
+		etd := gorm_model.ExtractTaskDocument{
+			TaskID: int(etModel.ID),
+			DocID:  int(docID),
+		}
+		err = dao.CreateExtractTaskDocument(tx, &etd)
+		if err != nil {
+			glog.Error(err)
+			tx.Rollback()
+			return
+		}
+	}
+
+	for _, tripleID := range et.TripleIDs {
+		ett := gorm_model.ExtractTaskTriple{
+			TaskID:   int(etModel.ID),
+			TripleID: int(tripleID),
+		}
+
+		err = dao.CreateExtractTaskTriple(tx, &ett)
+		if err != nil {
+			glog.Error(err)
+			tx.Rollback()
+			return
+		}
+	}
+
+	err = tx.Commit().Error
+	if err != nil {
+		glog.Error(err)
+		tx.Rollback()
+		return
+	}
+
+	// TODO(mickey): 后台异步执行抽取任务
 
 	return
 }

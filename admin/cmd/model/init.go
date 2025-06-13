@@ -36,6 +36,8 @@ func main() {
 		&gorm_model.SchemaOntologyProp{},
 		&gorm_model.SchemaTriple{},
 		&gorm_model.ExtractTask{},
+		&gorm_model.ExtractTaskDocument{},
+		&gorm_model.ExtractTaskTriple{},
 		&gorm_model.Entity{},
 		&gorm_model.Prop{},
 		&gorm_model.Relationship{},

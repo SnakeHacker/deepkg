@@ -58,9 +58,9 @@ type DocumentDir struct {
 	ID        int64         `json:"id, optional"`
 	DirName   string        `json:"dir_name"`
 	ParentID  int64         `json:"parent_id"`
-	Children  []DocumentDir `json:"children"`
-	SortIndex int           `json:"sort_index"`
-	Remark    string        `json:"remark"`
+	Children  []DocumentDir `json:"children, optional"`
+	SortIndex int           `json:"sort_index, optional"`
+	Remark    string        `json:"remark, optional"`
 	CreatedAt string        `json:"created_at,optional"`
 	UpdatedAt string        `json:"updated_at,optional"`
 }
@@ -230,15 +230,17 @@ type DeleteSchemaOntologyPropsReq struct {
 }
 
 type SchemaTriple struct {
-	ID               int64  `json:"id, optional"`
-	SourceOntologyID int64  `json:"source_ontology_id"`
-	TargetOntologyID int64  `json:"target_ontology_id"`
-	Relationship     string `json:"relationship"`
-	WorkSpaceID      int64  `json:"work_space_id"`
-	CreatorID        int64  `json:"creator_id, optional"`
-	CreatorName      string `json:"creator_name, optional"`
-	CreatedAt        string `json:"created_at, optional"`
-	UpdatedAt        string `json:"updated_at, optional"`
+	ID                 int64  `json:"id, optional"`
+	SourceOntologyID   int64  `json:"source_ontology_id"`
+	SourceOntologyName string `json:"source_ontology_name, optional"`
+	TargetOntologyID   int64  `json:"target_ontology_id"`
+	TargetOntologyName string `json:"target_ontology_name, optional"`
+	Relationship       string `json:"relationship"`
+	WorkSpaceID        int64  `json:"work_space_id"`
+	CreatorID          int64  `json:"creator_id, optional"`
+	CreatorName        string `json:"creator_name, optional"`
+	CreatedAt          string `json:"created_at, optional"`
+	UpdatedAt          string `json:"updated_at, optional"`
 }
 
 type GetSchemaTripleListReq struct {
@@ -322,14 +324,14 @@ type DeleteUsersReq struct {
 }
 
 type ExtractTask struct {
-	ID          int64   `json:"id"`
+	ID          int64   `json:"id,optional"`
 	DocIDs      []int64 `json:"doc_ids"`
 	TripleIDs   []int64 `json:"triple_ids"`
 	TaskName    string  `json:"task_name"`
 	Remark      string  `json:"remark,optional"`
 	WorkSpaceID int64   `json:"work_space_id"`
 	TaskStatus  int     `json:"task_status,optional"`
-	Published   bool    `json:"published"`
+	Published   bool    `json:"published,optional"`
 	CreatorID   int64   `json:"creator_id,optional"`
 	CreatorName string  `json:"creator_name,optional"`
 	CreatedAt   string  `json:"created_at,optional"`
@@ -373,7 +375,7 @@ type PublishExtractTaskReq struct {
 }
 
 type Entity struct {
-	ID         int64  `json:"id"`
+	ID         int64  `json:"id,optional"`
 	TaskID     int64  `json:"task_id"`
 	EntityName string `json:"entity_name"`
 }
@@ -403,7 +405,7 @@ type DeleteEntitiesReq struct {
 }
 
 type EntityProp struct {
-	ID        int64  `json:"id"`
+	ID        int64  `json:"id,optional"`
 	TaskID    int64  `json:"task_id"`
 	EntityID  int64  `json:"entity_id"`
 	PropName  string `json:"prop_name"`
@@ -435,12 +437,12 @@ type DeletePropsReq struct {
 }
 
 type Relationship struct {
-	ID               int64  `json:"id"`
+	ID               int64  `json:"id,optional"`
 	TaskID           int64  `json:"task_id"`
 	SourceEntityID   int64  `json:"source_entity_id"`
-	SourceEntityName string `json:"source_entity_name"`
+	SourceEntityName string `json:"source_entity_name,optional"`
 	TargetEntityID   int64  `json:"target_entity_id"`
-	TargetEntityName string `json:"target_entity_name"`
+	TargetEntityName string `json:"target_entity_name,optional"`
 	RelationshipName string `json:"relationship_name"`
 }
 

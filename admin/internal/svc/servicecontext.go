@@ -3,12 +3,12 @@ package svc
 import (
 	"crypto/rsa"
 
+	"github.com/SnakeHacker/deepkg/admin/common/ai/llm"
 	"github.com/SnakeHacker/deepkg/admin/common/captcha"
 	rsa2 "github.com/SnakeHacker/deepkg/admin/common/rsa"
 	"github.com/SnakeHacker/deepkg/admin/internal/config"
 	"github.com/SnakeHacker/deepkg/admin/internal/middleware"
 	"github.com/SnakeHacker/deepkg/admin/internal/utils/mysql"
-	"github.com/SnakeHacker/deepkg/admin/internal/utils/nebula"
 	"github.com/SnakeHacker/deepkg/admin/internal/utils/s3/minio"
 	"github.com/go-redis/redis/v8"
 	"github.com/go-resty/resty/v2"
@@ -29,6 +29,7 @@ type ServiceContext struct {
 	Nebula     *nebula_go.Session
 	PrivateKey *rsa.PrivateKey
 	Captcha    *base64Captcha.Captcha
+	LLM        llm.Client
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -48,10 +49,10 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	// Init redis client
 	redisClient := NewRedisClient(c)
 
-	nebulaSession, err := nebula.NewNebulaSession(c.Nebula)
-	if err != nil {
-		glog.Fatal(err)
-	}
+	// nebulaSession, err := nebula.NewNebulaSession(c.Nebula)
+	// if err != nil {
+	// 	glog.Fatal(err)
+	// }
 
 	// Init RSA key
 	privateKey, err := rsa2.GenerateKey(2048)
@@ -71,10 +72,14 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		HTTPClient: httpClient,
 		Minio:      minioClient,
 		Redis:      redisClient,
-		Nebula:     nebulaSession,
+		// Nebula:     nebulaSession,
 		PrivateKey: privateKey,
 		JwtX:       middleware.NewJwtXMiddleware(redisClient, c).Handle,
 		Captcha:    svcCaptcha,
+		LLM: llm.Client{
+			Config:     c.LLM,
+			HTTPClient: httpClient,
+		},
 	}
 }
 

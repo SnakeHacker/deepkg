@@ -87,6 +87,16 @@ func SelectDocumentModelByID(db *gorm.DB, id int64) (doc *m.Document, err error)
 	return
 }
 
+func SelectDocumentModelByIDs(db *gorm.DB, ids []int64) (docs []*m.Document, err error) {
+	err = db.Where("id IN (?)", ids).Find(&docs).Error
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	return
+}
+
 func UpdateDocument(db *gorm.DB, doc *m.Document) (err error) {
 	if doc == nil {
 		err = errors.New("missing document object")
