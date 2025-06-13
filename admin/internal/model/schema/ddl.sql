@@ -101,6 +101,7 @@ CREATE TABLE `knowledge_graph_workspace` (
   `work_space_name` varchar(255) NOT NULL COMMENT '知识库名称',
   `creator_id` int(11) NOT NULL COMMENT '创建者ID',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `uni_knowledge_graph_workspace_work_space_name` (`work_space_name`),
   KEY `idx_knowledge_graph_workspace_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

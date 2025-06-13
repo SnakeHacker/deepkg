@@ -11,4 +11,6 @@ import (
 	"user.api"
 	"extract_task.api"
 	"extract_task_result.api"
+	"knowledge_graph_workspace.api"
 )
+
