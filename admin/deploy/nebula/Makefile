@@ -1,5 +1,5 @@
 .PHONY: up\
-down
+down\
 ps
 
 up:
