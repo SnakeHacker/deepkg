@@ -35,8 +35,8 @@ func (u *SchemaOntologyProp) TableName() string {
 type SchemaTriple struct {
 	gorm.Model
 	WorkSpaceID      int    `gorm:"column:work_space_id; type:int(11); not null; comment:工作空间ID" json:"work_space_id"`
-	SourceOntologyID int    `gorm:"column:source_ontology_id; type:int(11); not null; comment:源实体ID" json:"source_ontology_id"`
-	TargetOntologyID int    `gorm:"column:target_ontology_id; type:int(11); not null; comment:目标实体ID" json:"target_ontology_id"`
+	SourceOntologyID int    `gorm:"column:source_ontology_id; type:int(11); not null; comment:源本体ID" json:"source_ontology_id"`
+	TargetOntologyID int    `gorm:"column:target_ontology_id; type:int(11); not null; comment:目标本体ID" json:"target_ontology_id"`
 	Relationship     string `gorm:"column:relationship; type:varchar(255); not null; comment:实体关系" json:"relationship"`
 
 	CreatorID int `gorm:"column:creator_id; type:int(11); not null; comment:创建者ID" json:"creator_id"`

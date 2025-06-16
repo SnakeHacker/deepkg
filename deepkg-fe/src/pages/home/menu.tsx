@@ -9,42 +9,42 @@ export const menuList = [
     {
         key: '/document_center',
         icon: <RobotOutlined />,
-        label: '文档中心',
+        label: '文档管理',
         children: [
             {
-                key: '/document_center/dir',
+                key: '/document_dir',
                 icon: <BankOutlined />,
                 label: '目录管理',
             },
             {
-                key: '/document_center/document',
+                key: '/document',
                 icon: <BankOutlined />,
                 label: '文件管理',
             },
         ]
     },
     {
-        key: '/extraction',
+        key: '/knowledge',
         icon: <RobotOutlined />,
-        label: '知识抽取',
+        label: '知识管理',
         children: [
             {
-                key: '/extraction/workspace',
+                key: '/workspace',
                 icon: <BankOutlined />,
                 label: '图空间管理',
             },
             {
-                key: '/extraction/ontology',
+                key: '/ontology',
                 icon: <BankOutlined />,
                 label: '本体管理',
             },
             {
-                key: '/extraction/relationship',
+                key: '/triple',
                 icon: <BankOutlined />,
                 label: '关系管理',
             },
             {
-                key: '/user',
+                key: '/extract_task',
                 icon: <UserOutlined />,
                 label: '非结构化抽取',
             },
