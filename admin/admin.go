@@ -8,7 +8,6 @@ import (
 
 	"github.com/SnakeHacker/deepkg/admin/internal/config"
 	"github.com/SnakeHacker/deepkg/admin/internal/handler"
-	"github.com/SnakeHacker/deepkg/admin/internal/job"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 	"github.com/SnakeHacker/deepkg/admin/internal/utils/io_util"
 	"github.com/golang/glog"
@@ -61,11 +60,11 @@ func main() {
 		server.Start()
 	}()
 
-	err = job.DoExtractTask(ctx, 4)
-	if err != nil {
-		glog.Error(err)
-		return
-	}
+	// err = job.DoExtractTask(ctx, 4)
+	// if err != nil {
+	// 	glog.Error(err)
+	// 	return
+	// }
 
 	<-idleConnsClosed
 	glog.Flush()

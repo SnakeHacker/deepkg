@@ -15,6 +15,7 @@ import (
 	schema_ontology "github.com/SnakeHacker/deepkg/admin/internal/handler/schema_ontology"
 	schema_ontology_prop "github.com/SnakeHacker/deepkg/admin/internal/handler/schema_ontology_prop"
 	schema_triple "github.com/SnakeHacker/deepkg/admin/internal/handler/schema_triple"
+	session "github.com/SnakeHacker/deepkg/admin/internal/handler/session"
 	user "github.com/SnakeHacker/deepkg/admin/internal/handler/user"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 
@@ -227,6 +228,41 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: schema_triple.DeleteSchemaTriplesHandler(serverCtx),
 			},
 		},
+		rest.WithPrefix("/api"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/session/login",
+				Handler: session.LoginHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/session/captcha",
+				Handler: session.GetCaptchaHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/session/publickey",
+				Handler: session.GetPublicKeyHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.JwtX},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/session/logout",
+					Handler: session.LogoutHandler(serverCtx),
+				},
+			}...,
+		),
 		rest.WithPrefix("/api"),
 	)
 

@@ -8,6 +8,7 @@ import (
 	"schema_ontology.api"
 	"schema_ontology_prop.api"
 	"schema_triple.api"
+	"session.api"
 	"user.api"
 	"extract_task.api"
 	"extract_task_result.api"

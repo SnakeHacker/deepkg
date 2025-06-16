@@ -1,0 +1,61 @@
+type (
+    LoginReq {
+        Account      string `json:"account"`
+        Password     string `json:"password"`
+        CaptchaID    string `json:"captcha_id"`
+        CaptchaValue string `json:"captcha_value"`
+    }
+
+    LoginResp {
+        ID           int64  `json:"id"`
+        Account      string `json:"account"`
+        Role         int    `json:"role"`
+        Username     string `json:"username"`
+        UserCode     string `json:"user_code"`
+        AccessToken  string `json:"accessToken"`
+        AccessExpire int64  `json:"accessExpire"`
+        RefreshAfter int64  `json:"refreshAfter"`
+    }
+
+    LogoutReq {
+        UserID           int64  `json:"user_id"`
+        Authorization    string `header:"Authorization"`
+    }
+
+    GetCaptchaResp {
+        CaptchaID     string `json:"captcha_id"`
+        CaptchaBase64 string `json:"captcha_base64"`
+    }
+
+    GetPublickeyResp {
+        PublicKey string `json:"public_key"`
+    }
+
+)
+
+@server(
+    prefix: api
+    group: session
+)
+service admin {
+    @handler login
+    post /session/login (LoginReq) returns (LoginResp)
+
+    @handler getCaptcha
+    get /session/captcha returns (GetCaptchaResp)
+
+    @handler getPublicKey
+    get /session/publickey returns (GetPublickeyResp)
+
+}
+
+@server(
+    prefix: api
+    middleware: JwtX
+    group: session
+)
+service admin {
+
+    @handler logout
+    post /session/logout (LogoutReq)
+}

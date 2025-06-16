@@ -1,3 +1,15 @@
+USE deepkg_db;
+SET character_set_client=utf8mb4;
+SET character_set_connection=utf8mb4;
+SET character_set_server=utf8mb4;
+SET character_set_results=utf8mb4;
+
+INSERT INTO `deepkg_db`.`organization` (`id`, `created_at`, `updated_at`, `deleted_at`, `org_name`)
+VALUES (1, '2025-03-17 21:24:19.918', '2025-03-17 21:24:19.918', NULL, '中国移动上海产业研究院');
+
+INSERT INTO `deepkg_db`.`user` (`id`, `created_at`, `updated_at`, `deleted_at`, `user_code`, `org_id`, `account`, `username`, `password_hash`, `phone`, `mail`, `enable`, `role`, `avatar`)
+VALUES (1, '2025-03-17 21:27:05.869', '2025-03-17 21:27:05.869', NULL, '671dffb9-2646-49a1-b917-bcf53d97ceea', 1, 'admin', '超级管理员', 'pbkdf2:sha256:150000$IgdfguYC$bd08f26f7de930fd65360c4fd49b6b365714692ce8d34acbccac9a83dee1a245', '13919999999', 'admin@chinamobile.com', 1, 1, '');
+
 INSERT INTO deepkg_db.document (created_at,updated_at,deleted_at,doc_name,doc_desc,doc_path,dir_id,creator_id) VALUES
 	 ('2025-06-13 13:59:55.498','2025-06-13 13:59:55.498',NULL,'data.txt','test','http://127.0.0.1:9003/file/ed4c9cac700f14d4a191f69fee9c8136.txt',1,0);
 INSERT INTO deepkg_db.document_dir (created_at,updated_at,deleted_at,dir_name,parent_id,sort_index,remark) VALUES

@@ -5,6 +5,7 @@ go 1.20
 require (
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-resty/resty/v2 v2.16.5
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/golang/glog v1.2.1
 	github.com/google/uuid v1.6.0
 	github.com/minio/minio-go/v7 v7.0.7

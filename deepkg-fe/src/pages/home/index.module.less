@@ -1,0 +1,77 @@
+.container{
+    height: 100vh;
+    width: 100vw;
+    // background-color: white;
+
+
+    .logoContainer {
+        flex: 11;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        cursor: pointer;
+        height: 45px;
+
+        .title{
+            font-size: 15px;
+            color: black;
+            font-style: italic;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        .logo{
+            height: 32px;
+            width: 32px;
+            margin-left: 10px;
+        }
+    }
+
+    .trigger {
+        position: fixed; // 固定定位
+        left: 20px; // 距离页面左侧 20px
+        bottom: 20px; // 距离页面底部 20px
+        cursor: pointer; // 鼠标指针变为手型
+        z-index: 100; // 设置 z-index，确保元素显示在最上层
+        font-size: 20px;
+    }
+
+    .backgroundImage {
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%; /* 添加高度以确保背景图铺满 */
+        object-fit: cover; /* 让背景图覆盖整个区域 */
+    }
+
+    .header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        padding-left: 0;
+        height: 50px;
+        width: 100%;
+        background-color: white;
+
+        .userInfo{
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            float: right;
+            margin-top: 16px;
+            color: rgb(61, 91, 241);
+
+            .avatar {
+                background-color: white;
+                color: rgb(61, 91, 241);
+            }
+        }
+    }
+
+
+
+}

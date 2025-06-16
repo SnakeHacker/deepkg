@@ -12,4 +12,7 @@ const (
 	LETTERS_UPPERCASE        = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	NUMBER                   = "1234567890"
 	EN_SPECIAL_CHAR          = "~`!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?"
+
+	USER_ENABLE  = 1
+	USER_DISABLE = 2
 )

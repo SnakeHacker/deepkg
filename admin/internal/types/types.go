@@ -275,6 +275,38 @@ type DeleteSchemaTriplesReq struct {
 	IDs []int64 `json:"ids"`
 }
 
+type LoginReq struct {
+	Account      string `json:"account"`
+	Password     string `json:"password"`
+	CaptchaID    string `json:"captcha_id"`
+	CaptchaValue string `json:"captcha_value"`
+}
+
+type LoginResp struct {
+	ID           int64  `json:"id"`
+	Account      string `json:"account"`
+	Role         int    `json:"role"`
+	Username     string `json:"username"`
+	UserCode     string `json:"user_code"`
+	AccessToken  string `json:"accessToken"`
+	AccessExpire int64  `json:"accessExpire"`
+	RefreshAfter int64  `json:"refreshAfter"`
+}
+
+type LogoutReq struct {
+	UserID        int64  `json:"user_id"`
+	Authorization string `header:"Authorization"`
+}
+
+type GetCaptchaResp struct {
+	CaptchaID     string `json:"captcha_id"`
+	CaptchaBase64 string `json:"captcha_base64"`
+}
+
+type GetPublickeyResp struct {
+	PublicKey string `json:"public_key"`
+}
+
 type User struct {
 	ID        int64  `json:"id, optional"`
 	UserCode  string `json:"user_code, optional"` // 自动生成
