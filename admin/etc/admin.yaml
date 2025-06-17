@@ -19,7 +19,7 @@ Minio:
   Host: 127.0.0.1
   Port: 9003
   Secure: false
-  PublicURL: http://127.0.0.1:9003/
+  PublicURL: http://127.0.0.1:9003
 
 Redis:
   IsCluster: false

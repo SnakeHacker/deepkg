@@ -9,8 +9,8 @@ import { PlusOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
-interface DataType {
-    key: React.ReactNode;
+export interface DataType {
+    key: string;
     dir_name: string;
     parent_id?: number;
     id: number;
@@ -20,7 +20,7 @@ interface DataType {
 }
 const DocumentDirPage: React.FC = () => {
 
-    const [total, setTotal] = useState(0);
+
     const [dirs, setDirs] = useState<DataType[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [dirID, setDirID] = useState(0);
@@ -33,24 +33,21 @@ const DocumentDirPage: React.FC = () => {
     const listDirs = async () => {
         const res = await ListDocumentDir();
         console.log(res)
-
-        setTotal(res.total)
-
-    // 定义一个递归函数来处理多级目录
-    const processDir = (dir: DataType): DataType => {
-        return {
-            dir_name: dir.dir_name,
-            parent_id: dir.parent_id,
-            id: dir.id,
-            key: dir.id,
-            created_at: dir.created_at,
-            children: dir.children && dir.children.length > 0
-                ? dir.children.map((child: DataType) => processDir(child))
-                : undefined
+        // 定义一个递归函数来处理多级目录
+        const processDir = (dir: DataType): DataType => {
+            return {
+                dir_name: dir.dir_name,
+                parent_id: dir.parent_id,
+                id: dir.id,
+                key: dir.id.toString(),
+                created_at: dir.created_at,
+                children: dir.children && dir.children.length > 0
+                    ? dir.children.map((child: DataType) => processDir(child))
+                    : undefined
+            };
         };
-    };
 
-    const document_dirs = (res.document_dirs || []).map((dir: DataType) => processDir(dir));
+        const document_dirs = (res.document_dirs || []).map((dir: DataType) => processDir(dir));
 
         setDirs(document_dirs);
     };
@@ -189,7 +186,7 @@ const DocumentDirPage: React.FC = () => {
                 </Button>
             </div>
             <div className={styles.body}>
-            <Modal
+                <Modal
                     title={
                         dirID > 0 ? '编辑目录' : `新建目录`
                     }

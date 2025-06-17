@@ -34,7 +34,7 @@ func (l *CreateSchemaOntologyLogic) CreateSchemaOntology(req *types.CreateSchema
 		OntologyDesc: ontology.OntologyDesc,
 		WorkSpaceID:  int(ontology.WorkSpaceID),
 		// TODO
-		CreatorID: 0,
+		CreatorID: 1,
 	}
 
 	err = dao.CreateSchemaOntology(l.svcCtx.DB, &ontologyModel)

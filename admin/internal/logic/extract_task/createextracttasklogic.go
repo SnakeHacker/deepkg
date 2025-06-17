@@ -43,7 +43,7 @@ func (l *CreateExtractTaskLogic) CreateExtractTask(req *types.CreateExtractTaskR
 		Published:   false,
 		Remark:      et.Remark,
 		// TODO
-		CreatorID: 0,
+		CreatorID: 1,
 	}
 	err = dao.CreateExtractTask(tx, &etModel)
 	if err != nil {
