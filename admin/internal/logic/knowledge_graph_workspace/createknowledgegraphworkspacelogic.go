@@ -2,6 +2,7 @@ package knowledge_graph_workspace
 
 import (
 	"context"
+
 	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 	"github.com/golang/glog"
@@ -31,7 +32,8 @@ func (l *CreateKnowledgeGraphWorkspaceLogic) CreateKnowledgeGraphWorkspace(req *
 
 	workspaceModel := gorm_model.KnowledgeGraphWorkspace{
 		WorkSpaceName: workspace.KnowledgeGraphWorkspaceName,
-		CreatorID:     int(workspace.CreatorID),
+		// TODO
+		CreatorID: 1,
 	}
 
 	err = dao.CreateKnowledgeGraphWorkspace(l.svcCtx.DB, &workspaceModel)

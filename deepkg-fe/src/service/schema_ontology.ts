@@ -3,7 +3,7 @@ import type { SchemaOntology } from '../model/schema_ontology';
 import request from '../utils/req';
 
 export interface ListSchemaOntologyParams {
-  work_space_id?: number;
+  work_space_id: number;
   page_size: number;
   page_number: number;
 }

@@ -52,6 +52,22 @@ func (l *GetSchemaTripleListLogic) GetSchemaTripleList(req *types.GetSchemaTripl
 		userMap[int64(userModel.ID)] = *userModel
 	}
 
+	ontologyIDs := []int64{}
+	for _, tripleModel := range tripleModels {
+		ontologyIDs = append(ontologyIDs, int64(tripleModel.SourceOntologyID), int64(tripleModel.TargetOntologyID))
+	}
+
+	ontologyModels, err := dao.SelectSchemaOntologiesByIDs(l.svcCtx.DB, ontologyIDs)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	ontologyMap := make(map[int64]gorm_model.SchemaOntology)
+	for _, ontologyModel := range ontologyModels {
+		ontologyMap[int64(ontologyModel.ID)] = *ontologyModel
+	}
+
 	triples := []types.SchemaTriple{}
 	for _, tripleModel := range tripleModels {
 		creator, ok := userMap[int64(tripleModel.CreatorID)]
@@ -61,15 +77,31 @@ func (l *GetSchemaTripleListLogic) GetSchemaTripleList(req *types.GetSchemaTripl
 			return
 		}
 
+		sourceOntology, ok := ontologyMap[int64(tripleModel.SourceOntologyID)]
+		if !ok {
+			err = errors.New("source ontology not found")
+			glog.Error(err)
+			return
+		}
+
+		targetOntology, ok := ontologyMap[int64(tripleModel.TargetOntologyID)]
+		if !ok {
+			err = errors.New("target ontology not found")
+			glog.Error(err)
+			return
+		}
+
 		triple := types.SchemaTriple{
-			ID:               int64(tripleModel.ID),
-			SourceOntologyID: int64(tripleModel.SourceOntologyID),
-			TargetOntologyID: int64(tripleModel.TargetOntologyID),
-			Relationship:     tripleModel.Relationship,
-			WorkSpaceID:      int64(tripleModel.WorkSpaceID),
-			CreatorID:        int64(tripleModel.CreatorID),
-			CreatorName:      creator.Username,
-			CreatedAt:        tripleModel.CreatedAt.Format(common.TIME_FORMAT),
+			ID:                 int64(tripleModel.ID),
+			SourceOntologyID:   int64(tripleModel.SourceOntologyID),
+			SourceOntologyName: sourceOntology.OntologyName,
+			TargetOntologyID:   int64(tripleModel.TargetOntologyID),
+			TargetOntologyName: targetOntology.OntologyName,
+			Relationship:       tripleModel.Relationship,
+			WorkSpaceID:        int64(tripleModel.WorkSpaceID),
+			CreatorID:          int64(tripleModel.CreatorID),
+			CreatorName:        creator.Username,
+			CreatedAt:          tripleModel.CreatedAt.Format(common.TIME_FORMAT),
 		}
 		triples = append(triples, triple)
 	}

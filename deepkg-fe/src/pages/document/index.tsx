@@ -9,7 +9,6 @@ import type { Document } from "../../model/document";
 import request from "../../utils/req";
 import  { type MessageInfo , useStore}from "../../store";
 
-const { Option } = Select;
 const { Dragger } = Upload;
 
 export interface DataType {
