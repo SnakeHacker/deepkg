@@ -356,18 +356,18 @@ type DeleteUsersReq struct {
 }
 
 type ExtractTask struct {
-	ID          int64   `json:"id,optional"`
-	DocIDs      []int64 `json:"doc_ids"`
-	TripleIDs   []int64 `json:"triple_ids"`
-	TaskName    string  `json:"task_name"`
-	Remark      string  `json:"remark,optional"`
-	WorkSpaceID int64   `json:"work_space_id"`
-	TaskStatus  int     `json:"task_status,optional"`
-	Published   bool    `json:"published,optional"`
-	CreatorID   int64   `json:"creator_id,optional"`
-	CreatorName string  `json:"creator_name,optional"`
-	CreatedAt   string  `json:"created_at,optional"`
-	UpdatedAt   string  `json:"updated_at,optional"`
+	ID          int64          `json:"id,optional"`
+	Docs        []Document     `json:"docs"`
+	Triples     []SchemaTriple `json:"triples"`
+	TaskName    string         `json:"task_name"`
+	Remark      string         `json:"remark,optional"`
+	WorkSpaceID int64          `json:"work_space_id"`
+	TaskStatus  int            `json:"task_status,optional"`
+	Published   bool           `json:"published,optional"`
+	CreatorID   int64          `json:"creator_id,optional"`
+	CreatorName string         `json:"creator_name,optional"`
+	CreatedAt   string         `json:"created_at,optional"`
+	UpdatedAt   string         `json:"updated_at,optional"`
 }
 
 type GetExtractTaskListReq struct {

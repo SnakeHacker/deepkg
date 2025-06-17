@@ -52,7 +52,12 @@ func (l *CreateExtractTaskLogic) CreateExtractTask(req *types.CreateExtractTaskR
 		return
 	}
 
-	for _, docID := range et.DocIDs {
+	docIDs := []int64{}
+	for _, doc := range et.Docs {
+		docIDs = append(docIDs, doc.ID)
+	}
+
+	for _, docID := range docIDs {
 		etd := gorm_model.ExtractTaskDocument{
 			TaskID: int(etModel.ID),
 			DocID:  int(docID),
@@ -65,7 +70,12 @@ func (l *CreateExtractTaskLogic) CreateExtractTask(req *types.CreateExtractTaskR
 		}
 	}
 
-	for _, tripleID := range et.TripleIDs {
+	tripleIDs := []int64{}
+	for _, triple := range et.Triples {
+		tripleIDs = append(tripleIDs, triple.ID)
+	}
+
+	for _, tripleID := range tripleIDs {
 		ett := gorm_model.ExtractTaskTriple{
 			TaskID:   int(etModel.ID),
 			TripleID: int(tripleID),

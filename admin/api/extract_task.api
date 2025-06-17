@@ -6,8 +6,8 @@ type (
     ExtractTask {
         ID          int64  `json:"id,optional"`
 
-        DocIDs []int64 `json:"doc_ids"`
-        TripleIDs  []int64 `json:"triple_ids"`
+        Docs        []Document `json:"docs"`
+        Triples   []SchemaTriple `json:"triples"`
 
         TaskName    string `json:"task_name"`
         Remark      string `json:"remark,optional"`

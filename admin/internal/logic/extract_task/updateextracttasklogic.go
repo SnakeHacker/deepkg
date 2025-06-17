@@ -33,6 +33,7 @@ func (l *UpdateExtractTaskLogic) UpdateExtractTask(req *types.UpdateExtractTaskR
 		return err
 	}
 
+	// TODO(mickey): update more
 	etModel.TaskName = et.TaskName
 	etModel.Remark = et.Remark
 	etModel.WorkSpaceID = et.WorkSpaceID
