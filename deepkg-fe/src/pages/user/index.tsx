@@ -60,7 +60,7 @@ const UserListPage: React.FC = () => {
         }));
     };
 
-    const handleCreateOrgOk = async () => {
+    const handleCreateUserOk = async () => {
         const values = await form.validateFields();
         const { password, enable } = values;
         try {
@@ -96,7 +96,7 @@ const UserListPage: React.FC = () => {
         }
     }
 
-    const handleCancelCreateOrg = () => {
+    const handleCancelCreateUser = () => {
         setIsModalOpen(false);
         form.resetFields();
         setUserID(0);
@@ -283,8 +283,8 @@ const UserListPage: React.FC = () => {
                         userID > 0 ? '编辑用户' : `新建用户`
                     }
                     open={isModalOpen}
-                    onOk={handleCreateOrgOk}
-                    onCancel={handleCancelCreateOrg}
+                    onOk={handleCreateUserOk}
+                    onCancel={handleCancelCreateUser}
                     okText="确定"
                     cancelText="取消"
                     width={420}

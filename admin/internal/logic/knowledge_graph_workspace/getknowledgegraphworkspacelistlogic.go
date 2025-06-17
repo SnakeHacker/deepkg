@@ -2,8 +2,10 @@ package knowledge_graph_workspace
 
 import (
 	"context"
+
 	"github.com/SnakeHacker/deepkg/admin/common"
 	"github.com/SnakeHacker/deepkg/admin/internal/dao"
+	"github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 	"github.com/golang/glog"
 
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
@@ -27,16 +29,26 @@ func NewGetKnowledgeGraphWorkspaceListLogic(ctx context.Context, svcCtx *svc.Ser
 }
 
 func (l *GetKnowledgeGraphWorkspaceListLogic) GetKnowledgeGraphWorkspaceList(req *types.GetKnowledgeGraphWorkspaceListReq) (resp *types.GetKnowledgeGraphWorkspaceListResp, err error) {
-	workspaceModels, total, err := dao.SelectKnowledgeGraphWorkspaces(l.svcCtx.DB, int(req.CreatorID), req.PageNumber, req.PageSize)
+
+	workspaceModels, total, err := dao.SelectKnowledgeGraphWorkspaces(l.svcCtx.DB, req.PageNumber, req.PageSize)
 	if err != nil {
 		glog.Error(err)
 		return
 	}
 
-	userModel, err := dao.SelectUserModelByID(l.svcCtx.DB, int64(int(req.CreatorID)))
+	userIDs := []int64{}
+	for _, workspace := range workspaceModels {
+		userIDs = append(userIDs, int64(workspace.CreatorID))
+	}
+
+	userModels, err := dao.SelectUserModelsByIDs(l.svcCtx.DB, userIDs)
 	if err != nil {
 		glog.Error(err)
 		return
+	}
+	userMap := map[int64]*gorm_model.User{}
+	for _, userModel := range userModels {
+		userMap[int64(userModel.ID)] = userModel
 	}
 
 	workspaces := []types.KnowledgeGraphWorkspace{}
@@ -45,7 +57,7 @@ func (l *GetKnowledgeGraphWorkspaceListLogic) GetKnowledgeGraphWorkspaceList(req
 			ID:                          int64(workspaceModel.ID),
 			KnowledgeGraphWorkspaceName: workspaceModel.WorkSpaceName,
 			CreatorID:                   int64(workspaceModel.CreatorID),
-			CreatorName:                 userModel.Username,
+			CreatorName:                 userMap[int64(workspaceModel.CreatorID)].Username,
 			CreatedAt:                   workspaceModel.CreatedAt.Format(common.TIME_FORMAT),
 		})
 	}

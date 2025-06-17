@@ -6,7 +6,7 @@ type (
     DocumentDir {
         ID           int64  `json:"id, optional"`
         DirName      string `json:"dir_name"`
-        ParentID     int64  `json:"parent_id"`
+        ParentID     int64  `json:"parent_id, optional"`
         Children     []DocumentDir `json:"children, optional"`
         SortIndex    int  `json:"sort_index, optional"`
         Remark       string `json:"remark, optional"`

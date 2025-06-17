@@ -3,6 +3,7 @@ package document_dir
 import (
 	"context"
 
+	"github.com/SnakeHacker/deepkg/admin/common"
 	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 	"github.com/SnakeHacker/deepkg/admin/internal/types"
@@ -45,6 +46,7 @@ func (l *GetDocumentDirLogic) GetDocumentDir(req *types.GetDocumentDirReq) (resp
 		Children:  []types.DocumentDir{},
 		SortIndex: dModel.SortIndex,
 		Remark:    dModel.Remark,
+		CreatedAt: dModel.CreatedAt.Format(common.TIME_FORMAT),
 	}
 
 	for _, child := range childrenDirModels {
@@ -55,6 +57,7 @@ func (l *GetDocumentDirLogic) GetDocumentDir(req *types.GetDocumentDirReq) (resp
 			Children:  []types.DocumentDir{},
 			SortIndex: child.SortIndex,
 			Remark:    child.Remark,
+			CreatedAt: dModel.CreatedAt.Format(common.TIME_FORMAT),
 		})
 	}
 

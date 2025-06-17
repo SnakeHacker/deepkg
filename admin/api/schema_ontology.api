@@ -5,8 +5,8 @@ import (
 type (
     SchemaOntology {
         ID           int64  `json:"id, optional"`
-        OntologyDesc      string `json:"ontology_desc"`
         OntologyName      string `json:"ontology_name"`
+        OntologyDesc      string `json:"ontology_desc, optional"`
         WorkSpaceID        int64  `json:"work_space_id"`
 
         CreatorID    int64  `json:"creator_id,optional"`

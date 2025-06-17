@@ -3,6 +3,7 @@ package document_dir
 import (
 	"context"
 
+	"github.com/SnakeHacker/deepkg/admin/common"
 	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
 	"github.com/SnakeHacker/deepkg/admin/internal/types"
@@ -41,6 +42,7 @@ func (l *GetDocumentDirListLogic) GetDocumentDirList(req *types.GetDocumentDirLi
 			Children:  []types.DocumentDir{},
 			SortIndex: model.SortIndex,
 			Remark:    model.Remark,
+			CreatedAt: model.CreatedAt.Format(common.TIME_FORMAT),
 		}
 		dirMap[int64(model.ID)] = &dir
 	}

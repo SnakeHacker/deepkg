@@ -13,7 +13,7 @@ type PaginationParams struct {
 type Document struct {
 	ID          int64  `json:"id, optional"`
 	DocName     string `json:"doc_name"`
-	DocDesc     string `json:"doc_desc"`
+	DocDesc     string `json:"doc_desc, optional"`
 	DocPath     string `json:"doc_path"`
 	DirID       int64  `json:"dir_id"`
 	CreatorID   int64  `json:"creator_id,optional"`
@@ -57,7 +57,7 @@ type DeleteDocumentsReq struct {
 type DocumentDir struct {
 	ID        int64         `json:"id, optional"`
 	DirName   string        `json:"dir_name"`
-	ParentID  int64         `json:"parent_id"`
+	ParentID  int64         `json:"parent_id, optional"`
 	Children  []DocumentDir `json:"children, optional"`
 	SortIndex int           `json:"sort_index, optional"`
 	Remark    string        `json:"remark, optional"`
@@ -144,8 +144,8 @@ type DeleteOrgsReq struct {
 
 type SchemaOntology struct {
 	ID           int64  `json:"id, optional"`
-	OntologyDesc string `json:"ontology_desc"`
 	OntologyName string `json:"ontology_name"`
+	OntologyDesc string `json:"ontology_desc, optional"`
 	WorkSpaceID  int64  `json:"work_space_id"`
 	CreatorID    int64  `json:"creator_id,optional"`
 	CreatorName  string `json:"creator_name,optional"`
@@ -187,8 +187,8 @@ type DeleteSchemaOntologysReq struct {
 
 type SchemaOntologyProp struct {
 	ID          int64  `json:"id, optional"`
-	PropDesc    string `json:"prop_desc"`
 	PropName    string `json:"prop_name"`
+	PropDesc    string `json:"prop_desc, optional"`
 	WorkSpaceID int64  `json:"work_space_id"`
 	OntologyID  int64  `json:"ontology_id"`
 	CreatorID   int64  `json:"creator_id,optional"`
@@ -512,7 +512,6 @@ type KnowledgeGraphWorkspace struct {
 }
 
 type GetKnowledgeGraphWorkspaceListReq struct {
-	CreatorID int64 `json:"creator_id"`
 	PaginationParams
 }
 

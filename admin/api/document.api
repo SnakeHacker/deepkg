@@ -6,7 +6,7 @@ type (
     Document {
         ID           int64  `json:"id, optional"`
         DocName      string `json:"doc_name"`
-        DocDesc      string `json:"doc_desc"`
+        DocDesc      string `json:"doc_desc, optional"`
         DocPath      string `json:"doc_path"`
         DirID        int64  `json:"dir_id"`
 

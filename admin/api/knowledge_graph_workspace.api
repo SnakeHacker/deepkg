@@ -15,7 +15,6 @@ type (
     }
 
     GetKnowledgeGraphWorkspaceListReq {
-        CreatorID   int64   `json:"creator_id"`
         PaginationParams
     }
 

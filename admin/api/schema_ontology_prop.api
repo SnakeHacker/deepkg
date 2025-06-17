@@ -5,8 +5,8 @@ import (
 type (
     SchemaOntologyProp {
         ID           int64  `json:"id, optional"`
-        PropDesc     string `json:"prop_desc"`
         PropName     string `json:"prop_name"`
+        PropDesc     string `json:"prop_desc, optional"`
         WorkSpaceID  int64  `json:"work_space_id"`
         OntologyID   int64  `json:"ontology_id"`
 
