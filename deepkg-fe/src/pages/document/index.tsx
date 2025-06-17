@@ -84,14 +84,14 @@ const DocumentPage: React.FC = () => {
 
     const handleCreateDocOk = async () => {
         const values = await form.validateFields();
-        const { doc_name, doc_path, doc_desc } = values;
+        const { doc_name, doc_path, doc_desc, dir_id } = values;
         try {
             setIsModalOpen(false);
-            if (dirID > 0) {
+            if (docID > 0) {
                 const res = await UpdateDocument({
                     document: {
-                        id: dirID,
-                        dir_id: dirID,
+                        id: docID,
+                        dir_id: dir_id,
                         doc_name: doc_name,
                         doc_path: doc_path,
                         doc_desc: doc_desc,
@@ -105,7 +105,7 @@ const DocumentPage: React.FC = () => {
 
                 const res = await CreateDocument({
                     document: {
-                        dir_id: dirID,
+                        dir_id: dir_id,
                         doc_name: doc_name,
                         doc_path: doc_path,
                         doc_desc: doc_desc,
@@ -134,12 +134,12 @@ const DocumentPage: React.FC = () => {
     }
 
     const handleEdit = (record: Document) => {
-        setDirID(record.id!);
+        setDocID(record.id!);
         form.setFieldsValue({
             doc_name: record.doc_name,
             doc_path: record.doc_path,
             doc_desc: record.doc_desc,
-            dir_id: record.dir_id,
+            dir_id: record.dir_id === 0 ? '': record.dir_id,
         });
         setIsModalOpen(true);
     }
@@ -279,7 +279,7 @@ const DocumentPage: React.FC = () => {
                         type="primary"
                         icon={<PlusOutlined />}
                         onClick={() => {
-                            setDirID(0);
+                            setDocID(0);
                             form.resetFields();
                             setIsModalOpen(true)
                         }}
@@ -315,12 +315,12 @@ const DocumentPage: React.FC = () => {
                                     style={{'width': '100%'}}
                                     placeholder="所属目录"
                                     disabled={dirs.length === 0}
+                                    options={[
+                                        ...dirs.map((dir) => (
+                                            {key: dir.id, label: dir.dir_name, value: Number(dir.key)}
+                                        )),
+                                    ]}
                                 >
-                                    {dirs.map((dir) => (
-                                        <Option key={dir.key} value={dir.key}>
-                                            {dir.dir_name}
-                                        </Option>
-                                    ))}
                                 </Select>
                             </Form.Item>
                             <Form.Item
