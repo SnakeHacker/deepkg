@@ -130,7 +130,7 @@ const DocumentPage: React.FC = () => {
     const deleteDoc = async (id: number) => {
         const res = await DeleteDocuments({ ids: [id] });
         console.log(res)
-        listDirs();
+        listDocuments();
     }
 
     const handleEdit = (record: Document) => {

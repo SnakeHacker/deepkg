@@ -26,7 +26,7 @@ func NewDeleteDocumentsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *D
 }
 
 func (l *DeleteDocumentsLogic) DeleteDocuments(req *types.DeleteDocumentsReq) (err error) {
-	err = dao.DeleteDocumentsByIDs(l.svcCtx.DB, []int64{})
+	err = dao.DeleteDocumentsByIDs(l.svcCtx.DB, req.IDs)
 	if err != nil {
 		glog.Error(err)
 		return
