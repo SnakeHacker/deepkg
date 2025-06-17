@@ -1,4 +1,17 @@
-import { RobotOutlined, DashboardOutlined, BankOutlined, UserOutlined, SettingOutlined} from "@ant-design/icons";
+import {
+    ApartmentOutlined,
+    AppstoreOutlined,
+    BookOutlined,
+    DashboardOutlined,
+    DatabaseOutlined,
+    FileSearchOutlined,
+    FileTextOutlined,
+    FolderOpenOutlined,
+    SettingOutlined,
+    ShareAltOutlined,
+    TagsOutlined,
+    UserOutlined
+} from "@ant-design/icons";
 
 export const menuList = [
     {
@@ -8,44 +21,44 @@ export const menuList = [
     },
     {
         key: '/document_center',
-        icon: <RobotOutlined />,
+        icon: <BookOutlined />,
         label: '文档管理',
         children: [
             {
                 key: '/document_dir',
-                icon: <BankOutlined />,
+                icon: <FolderOpenOutlined />,
                 label: '目录管理',
             },
             {
                 key: '/document',
-                icon: <BankOutlined />,
+                icon: <FileTextOutlined />,
                 label: '文件管理',
             },
         ]
     },
     {
         key: '/knowledge',
-        icon: <RobotOutlined />,
+        icon: <DatabaseOutlined />,
         label: '知识管理',
         children: [
             {
                 key: '/workspace',
-                icon: <BankOutlined />,
+                icon: <AppstoreOutlined />,
                 label: '图空间管理',
             },
             {
                 key: '/ontology',
-                icon: <BankOutlined />,
+                icon: <TagsOutlined />,
                 label: '本体管理',
             },
             {
                 key: '/triple',
-                icon: <BankOutlined />,
+                icon: <ShareAltOutlined />,
                 label: '关系管理',
             },
             {
                 key: '/extract_task',
-                icon: <UserOutlined />,
+                icon: <FileSearchOutlined />,
                 label: '非结构化抽取',
             },
         ]
@@ -57,7 +70,7 @@ export const menuList = [
         children: [
             {
                 key: '/org',
-                icon: <BankOutlined />,
+                icon: <ApartmentOutlined />,
                 label: '组织管理',
             },
             {
