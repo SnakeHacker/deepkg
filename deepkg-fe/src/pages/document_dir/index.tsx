@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./index.module.less";
 import BgSVG from '../../assets/bg.png';
-import type { DocumentDir } from "../../model/document_dir";
-import { Button, Form, Input, Modal, Select, Table, Popconfirm } from "antd";
-import type { TableColumnsType, TableProps } from 'antd';
-import { CreateDocumentDir, DeleteDocumentDirs, ListDocumentDir, UpdateDocumentDir } from "../../service/document_dir";
-import { PlusOutlined } from "@ant-design/icons";
+import type {DocumentDir} from "../../model/document_dir";
+import type {TableColumnsType} from 'antd';
+import {Button, Form, Input, Modal, Popconfirm, Select, Table} from "antd";
+import {CreateDocumentDir, DeleteDocumentDirs, ListDocumentDir, UpdateDocumentDir} from "../../service/document_dir";
+import {PlusOutlined} from "@ant-design/icons";
 
 const { Option } = Select;
 
@@ -25,6 +25,8 @@ const DocumentDirPage: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [dirID, setDirID] = useState(0);
     const [form] = Form.useForm();
+    const [parentIdChosen, setParentIdChosen] = useState(false);
+    const [dirsList, setDirsList] = useState<DataType[]>([]);
 
     useEffect(() => {
         listDirs();
@@ -50,6 +52,20 @@ const DocumentDirPage: React.FC = () => {
         const document_dirs = (res.document_dirs || []).map((dir: DataType) => processDir(dir));
 
         setDirs(document_dirs);
+
+        const flattenDirs = (dirs: DataType[]): DataType[] => {
+            return dirs.reduce<DataType[]>((acc, { children, ...rest }) => {
+                acc.push(rest as DataType)
+                if (children) {
+                    acc.push(...flattenDirs(children))
+                }
+                return acc
+            }, [])
+        }
+
+        const list = flattenDirs(document_dirs);
+        setDirsList(list);
+        console.log(list);
     };
 
     const handleCreateDirOk = async () => {
@@ -91,6 +107,7 @@ const DocumentDirPage: React.FC = () => {
         setIsModalOpen(false);
         form.resetFields();
         setDirID(0);
+        setParentIdChosen(false)
     }
 
     const deleteDir = async (id: number) => {
@@ -136,6 +153,22 @@ const DocumentDirPage: React.FC = () => {
             width: 200,
             render: (_: any, record: DocumentDir) => (
                 <div key={record.id}>
+                    <Button
+                        style={{ marginRight: '10px' }}
+                        icon={<PlusOutlined />}
+                        onClick={() => {
+                            setDirID(0);
+                            form.setFieldsValue({
+                                parent_id: record.id
+                            });
+                            setParentIdChosen(true)
+                            setIsModalOpen(true)
+                        }}
+                        size='small'
+                    >
+                        新建子目录
+                    </Button>
+
                     <Button
                         style={{ marginRight: '10px' }}
                         onClick={() => handleEdit(record)}
@@ -212,9 +245,10 @@ const DocumentDirPage: React.FC = () => {
                             <Select
                                 style={{'width': '100%'}}
                                 placeholder="请选择父级目录"
-                                disabled={dirs.length === 0}
+                                disabled={dirsList.length === 0 || parentIdChosen}
+                                allowClear
                             >
-                                {dirs.map((dir) => (
+                                {dirsList.map((dir) => (
                                 <Option key={dir.id} value={dir.id}>
                                     {dir.dir_name}
                                 </Option>
