@@ -96,6 +96,7 @@ const DocumentDirPage: React.FC = () => {
                 setDirID(0);
                 listDirs();
             }
+            setParentIdChosen(false)
         } catch (errorInfo) {
             console.log('Failed:', errorInfo);
         }
