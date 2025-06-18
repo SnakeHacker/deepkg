@@ -2,12 +2,10 @@ import React, {useEffect, useState} from "react";
 import styles from "./index.module.less";
 import BgSVG from '../../assets/bg.png';
 import type {DocumentDir} from "../../model/document_dir";
-import type {TableColumnsType} from 'antd';
-import {Button, Form, Input, Modal, Popconfirm, Select, Table} from "antd";
+import {Button, Form, Input, Modal, Popconfirm, Table, type TableColumnsType, TreeSelect} from 'antd';
 import {CreateDocumentDir, DeleteDocumentDirs, ListDocumentDir, UpdateDocumentDir} from "../../service/document_dir";
 import {PlusOutlined} from "@ant-design/icons";
 
-const { Option } = Select;
 
 export interface DataType {
     key: string;
@@ -241,19 +239,18 @@ const DocumentDirPage: React.FC = () => {
                             label="父级目录"
                             name="parent_id"
                         >
-
-                            <Select
+                            <TreeSelect
                                 style={{'width': '100%'}}
                                 placeholder="请选择父级目录"
                                 disabled={dirsList.length === 0 || parentIdChosen}
                                 allowClear
-                            >
-                                {dirsList.map((dir) => (
-                                <Option key={dir.id} value={dir.id}>
-                                    {dir.dir_name}
-                                </Option>
-                                ))}
-                            </Select>
+                                treeData={dirs}
+                                fieldNames={{
+                                    label: 'dir_name',
+                                    value: 'id',
+                                    children: 'children'
+                                }}
+                            />
                         </Form.Item>
                         <Form.Item
                             label="目录名称"
