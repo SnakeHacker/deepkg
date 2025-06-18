@@ -7,7 +7,7 @@ type (
         ID          int64  `json:"id,optional"`
 
         Docs        []Document `json:"docs"`
-        Triples   []SchemaTriple `json:"triples"`
+        Triples     []SchemaTriple `json:"triples"`
 
         TaskName    string `json:"task_name"`
         Remark      string `json:"remark,optional"`

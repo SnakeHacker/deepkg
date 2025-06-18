@@ -99,7 +99,8 @@ const HomePage: React.FC = () => {
                     mode="inline"
                     //   selectedKeys={selectedKeys}
                     defaultSelectedKeys={[location.pathname]}
-                    // openKeys={['/system']}
+                    // 默认全部展开，获取所有菜单项的 key 作为 openKeys
+                    defaultOpenKeys={(menus|| []).map(item => item!.key as string)}
                     onClick={({ key }) => toMenu(key)}
                     items={menus}
                     style={{ height: 'calc(100vh - 90px)', overflowY: 'auto' }}

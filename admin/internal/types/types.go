@@ -12,10 +12,10 @@ type PaginationParams struct {
 
 type Document struct {
 	ID          int64  `json:"id, optional"`
-	DocName     string `json:"doc_name"`
+	DocName     string `json:"doc_name, optional"`
 	DocDesc     string `json:"doc_desc, optional"`
-	DocPath     string `json:"doc_path"`
-	DirID       int64  `json:"dir_id"`
+	DocPath     string `json:"doc_path, optional"`
+	DirID       int64  `json:"dir_id, optional"`
 	CreatorID   int64  `json:"creator_id,optional"`
 	CreatorName string `json:"creator_name,optional"`
 	CreatedAt   string `json:"created_at,optional"`
@@ -231,12 +231,12 @@ type DeleteSchemaOntologyPropsReq struct {
 
 type SchemaTriple struct {
 	ID                 int64  `json:"id, optional"`
-	SourceOntologyID   int64  `json:"source_ontology_id"`
+	SourceOntologyID   int64  `json:"source_ontology_id, optional"`
 	SourceOntologyName string `json:"source_ontology_name, optional"`
-	TargetOntologyID   int64  `json:"target_ontology_id"`
+	TargetOntologyID   int64  `json:"target_ontology_id, optional"`
 	TargetOntologyName string `json:"target_ontology_name, optional"`
-	Relationship       string `json:"relationship"`
-	WorkSpaceID        int64  `json:"work_space_id"`
+	Relationship       string `json:"relationship, optional"`
+	WorkSpaceID        int64  `json:"work_space_id, optional"`
 	CreatorID          int64  `json:"creator_id, optional"`
 	CreatorName        string `json:"creator_name, optional"`
 	CreatedAt          string `json:"created_at, optional"`

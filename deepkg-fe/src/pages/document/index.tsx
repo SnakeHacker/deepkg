@@ -11,12 +11,12 @@ import  { type MessageInfo , useStore}from "../../store";
 
 const { Dragger } = Upload;
 
-export interface DataType {
-    key: string;
+export interface DocumentDirDataType {
+    key: React.Key;
     dir_name: string;
     title: string;
     id: number;
-    children?: DataType[];
+    children?: DocumentDirDataType[];
 }
 const DocumentPage: React.FC = () => {
     const { success, error } = useStore() as MessageInfo;
@@ -26,7 +26,7 @@ const DocumentPage: React.FC = () => {
     });
 
     const [total, setTotal] = useState(0);
-    const [dirs, setDirs] = useState<DataType[]>([]);
+    const [dirs, setDirs] = useState<DocumentDirDataType[]>([]);
     const [dirID, setDirID] = useState(0);
     const [docs, setDocs] = useState<Document[]>([]);
     const [docID, setDocID] = useState(0);
@@ -45,19 +45,19 @@ const DocumentPage: React.FC = () => {
         const res = await ListDocumentDir();
         console.log(res)
         // 定义一个递归函数来处理多级目录
-        const processDir = (dir: DataType): DataType => {
+        const processDir = (dir: DocumentDirDataType): DocumentDirDataType => {
             return {
                 id: dir.id,
                 dir_name: dir.dir_name,
                 title: dir.dir_name,
                 key: dir.id.toString(),
                 children: dir.children && dir.children.length > 0
-                    ? dir.children.map((child: DataType) => processDir(child))
+                    ? dir.children.map((child: DocumentDirDataType) => processDir(child))
                     : []
             };
         };
 
-        const document_dirs = (res.document_dirs || []).map((dir: DataType) => processDir(dir));
+        const document_dirs = (res.document_dirs || []).map((dir: DocumentDirDataType) => processDir(dir));
 
         setDirs(document_dirs);
     };

@@ -8,6 +8,8 @@ export interface ExtractTask {
     docs? : Document[];
     triples?: SchemaTriple[];
     remark?: string;
+    published?: boolean;
+    task_status?: number;
 
     creator_id?: number;
     creator_name?: string;

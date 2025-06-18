@@ -1,10 +1,10 @@
 
 export interface Document {
     id?: number;
-    doc_name: string;
+    doc_name?: string;
     doc_desc?: string;
-    doc_path: string;
-    dir_id: number;
+    doc_path?: string;
+    dir_id?: number;
 
     creator_id?: number;
     creator_name?: string;

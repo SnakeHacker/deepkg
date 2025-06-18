@@ -1,14 +1,25 @@
 import React, { useEffect, useState } from "react";
 import styles from "./index.module.less";
 import BgSVG from '../../assets/bg.png';
-import { Button, Form, Input, Modal, Select, Table, Tree, type TreeDataNode, Popconfirm, Pagination } from "antd";
+import { Button, Form, Input, Modal, Table, Popconfirm, Pagination, Select } from "antd";
 import type { ExtractTask } from "../../model/extract_task";
-import { CreateExtractTask, DeleteExtractTasks, ListExtractTask, UpdateExtractTask } from "../../service/extract_task";
+import { CreateExtractTask, DeleteExtractTasks, GetExtractTask, ListExtractTask, UpdateExtractTask } from "../../service/extract_task";
 import { PlusOutlined } from "@ant-design/icons";
 import type { KnowledgeGraphWorkspace } from "../../model/kg_workspace";
 import { ListKnowledgeGraphWorkspace } from "../../service/workspace";
+import LoadDocComponent from "./components/load_doc/load_doc";
+import LoadTripleComponent from "./components/load_triple/load_triple";
+import { useStore, type LoadDoc, type LoadTriple } from "../../store";
+
+const EXTRACT_TASK_STATUS_WAITING = 1;
+const EXTRACT_TASK_STATUS_RUNNING = 2;
+const EXTRACT_TASK_STATUS_FAILED = 3;
+const EXTRACT_TASK_STATUS_SUCCESSED = 4;
 
 const ExtractTaskPage: React.FC = () => {
+    const { docList, removeDocListItem, clearDocList, setDocList  } = useStore() as LoadDoc;
+    const { tripleList, removeTripleListItem, clearTripleList, setTripleList  } = useStore() as LoadTriple;
+
     const [pagination, setPagination] = useState({
         current: 1,
         pageSize: 10,
@@ -20,6 +31,7 @@ const ExtractTaskPage: React.FC = () => {
     const [taskID, setTaskID] = useState(0);
     const [workspaceID, setWorkspaceID] = useState(0);
     const [workspaces, setWorkspaces] = useState<KnowledgeGraphWorkspace[]>([]);
+    const [curWorkspaceID, setCurWorkspaceID] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoadDocModalOpen, setIsLoadDocModalOpen] = useState(false);
     const [isLoadTripleModalOpen, setIsLoadTripleModalOpen] = useState(false);
@@ -31,8 +43,12 @@ const ExtractTaskPage: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        listTasks();
-    }, []);
+        workspaceID >0 && listTasks();
+    }, [workspaceID]);
+
+    useEffect(() => {
+        console.log(docList)
+    }, [docList]);
 
     const listTasks = async () => {
         const res = await ListExtractTask(
@@ -55,13 +71,28 @@ const ExtractTaskPage: React.FC = () => {
         });
         setWorkspaces(res.knowledge_graph_workspaces);
         if (res.knowledge_graph_workspaces.length > 0){
-            setWorkspaceID(res.knowledge_graph_workspaces[0].id)
+            setWorkspaceID(res.knowledge_graph_workspaces[res.knowledge_graph_workspaces.length-1].id)
         }
     };
 
+    const getExtractTask = async(tid: number)=>{
+        const res = await GetExtractTask({
+            id: tid,
+        });
+
+        const curTask = res.extract_task
+        setDocList(curTask.docs)
+        setTripleList(curTask.triples)
+
+
+    }
+
     const handleCreateTaskOk = async () => {
-        const values = await form.validateFields();
-        const { doc_ids, triple_ids, work_space_id, task_name, remark } = values;
+        const values = await  form.validateFields(['task_name', 'work_space_id', 'remark', 'doc_ids', 'triple_ids'])
+        const { work_space_id, task_name, remark } = values;
+        const newDocList = docList.map(item => ({ id: item.id }));
+        const newTripleList = tripleList.map(item => ({ id: item.id }));
+
         try {
             setIsModalOpen(false);
             if (taskID > 0) {
@@ -71,13 +102,14 @@ const ExtractTaskPage: React.FC = () => {
                         task_name: task_name,
                         remark: remark,
                         work_space_id: work_space_id,
-                        docs: [],
-                        triples: [],
+                        docs: newDocList,
+                        triples: newTripleList,
                     },
                 });
                 console.log(res)
                 form.resetFields();
                 setTaskID(0);
+                setCurWorkspaceID(0);
                 listTasks();
             } else {
                 const res = await CreateExtractTask({
@@ -85,13 +117,14 @@ const ExtractTaskPage: React.FC = () => {
                         task_name: task_name,
                         remark: remark,
                         work_space_id: work_space_id,
-                        docs: [],
-                        triples: [],
+                        docs: newDocList,
+                        triples: newTripleList,
                     }
                 });
                 console.log(res)
                 form.resetFields();
                 setTaskID(0);
+                setCurWorkspaceID(0);
                 listTasks();
             }
         } catch (errorInfo) {
@@ -99,10 +132,21 @@ const ExtractTaskPage: React.FC = () => {
         }
     }
 
+    const handleLoadDocsOk = async () => {
+        setIsLoadDocModalOpen(false);
+    }
+
+    const handleLoadTriplesOk = async () => {
+        setIsLoadTripleModalOpen(false);
+    }
+
     const handleCancelCreateTask = () => {
         setIsModalOpen(false);
         form.resetFields();
         setTaskID(0);
+        setCurWorkspaceID(0);
+        clearDocList();
+        clearTripleList();
     }
 
     const handleCancelLoadDocModal = () => {
@@ -119,16 +163,15 @@ const ExtractTaskPage: React.FC = () => {
         listTasks();
     }
 
-    const handleEdit = (record: ExtractTask) => {
+    const handleEdit = async (record: ExtractTask) => {
         setTaskID(record.id!);
+        await getExtractTask(record.id!);
         form.setFieldsValue({
             task_name: record.task_name,
             remark: record.remark,
-            // TODO(mickey)
-            // docs: record.docs,
-            // triples: record.triples,
             work_space_id: record.work_space_id=== 0 ? '': record.work_space_id,
         });
+        setCurWorkspaceID(record.work_space_id);
         setIsModalOpen(true);
     }
 
@@ -151,7 +194,32 @@ const ExtractTaskPage: React.FC = () => {
           title: '任务名称',
           dataIndex: 'task_name',
           key: 'task_name',
-          width: '60%',
+          width: '30%',
+        },
+        {
+            title: '发布状态',
+            dataIndex: 'published',
+            key: 'published',
+            width: '15%',
+            render: (_: any, record: ExtractTask) => (
+                <div key={record.id}>
+                    {record.published ? '已发布' : '未发布'}
+                </div>
+            )
+        },
+        {
+            title: '任务状态',
+            dataIndex: 'task_status',
+            key: 'task_status',
+            width: '10%',
+            render: (_: any, record: ExtractTask) => (
+                <div key={record.id}>
+                    {record.task_status == EXTRACT_TASK_STATUS_WAITING ? '等待' :
+                        record.task_status == EXTRACT_TASK_STATUS_RUNNING ? '运行' :
+                            record.task_status == EXTRACT_TASK_STATUS_FAILED ? '失败' :
+                                record.task_status == EXTRACT_TASK_STATUS_SUCCESSED ? '成功' : '未知'}
+                </div>
+            )
         },
         {
             title: '创建时间',
@@ -201,6 +269,18 @@ const ExtractTaskPage: React.FC = () => {
         >
 
             <div className={styles.header}>
+                <Select
+                    style={{'width': '200px', 'marginRight': '10px'}}
+                    placeholder="工作空间"
+                    disabled={workspaces.length === 0}
+                    onSelect={(value) => setWorkspaceID(value)}
+                    value={workspaceID}
+                    options={[
+                        ...workspaces.map((workspaces) => (
+                            {key: workspaces.id, label: workspaces.knowledge_graph_workspace_name, value: workspaces.id}
+                        )),
+                    ]}
+                />
                 <Button
                     type="primary"
                     icon={<PlusOutlined />}
@@ -223,11 +303,11 @@ const ExtractTaskPage: React.FC = () => {
                     onCancel={handleCancelCreateTask}
                     okText="确定"
                     cancelText="取消"
-                    width={600}
+                    width={1000}
                 >
                     <Form
                         form={form}
-                        name="userForm"
+                        name="extract_task_form"
                         labelAlign='left'
                         labelCol={{ span: 5 }}
                     >
@@ -244,23 +324,149 @@ const ExtractTaskPage: React.FC = () => {
                         </Form.Item>
 
                         <Form.Item
+                            label="工作空间"
+                            name="work_space_id"
+                            rules={[{ required: true, message: '请选择工作空间' }]}
+                        >
+                            <Select
+                                style={{'width': '100%'}}
+                                placeholder="工作空间"
+                                disabled={workspaces.length === 0}
+                                onChange={(value)=>setCurWorkspaceID(value)}
+                                options={[
+                                    ...workspaces.map((workspaces) => (
+                                        {key: workspaces.id, label: workspaces.knowledge_graph_workspace_name, value: workspaces.id}
+                                    )),
+                                ]}
+                            >
+                            </Select>
+                        </Form.Item>
+
+                        <Form.Item
                             label="导入文件"
                             name="doc_ids"
-                            rules={[{ required: true, message: '请选择文件' }]}
+                            rules={[{
+                                required: true,
+                                validator: () => {
+                                    if (docList.length == 0) {
+                                      return Promise.reject('请导入文件');
+                                    }
+                                    return Promise.resolve();
+                                }
+                            }]}
                         >
-                            <Button onClick={()=>{setIsLoadDocModalOpen(true)}}>
+                            <Button
+                                style={{'marginBottom': '15px'}}
+                                onClick={()=>{setIsLoadDocModalOpen(true)}}
+                                disabled={taskID !=0}
+                            >
                               导入文件
                             </Button>
+
+                            <Table
+                                dataSource={docList}
+                                style={{'height': '230px', 'overflowY': 'auto'}}
+                                columns={[
+                                    {
+                                        title: 'ID',
+                                        dataIndex: 'id',
+                                        key: 'id',
+                                        width: '50px'
+                                    },
+                                    {
+                                        title: '名称',
+                                        dataIndex: 'doc_name',
+                                        key: 'doc_name',
+                                    },
+                                    {
+                                        title: '操作',
+                                        key: 'action',
+                                        width: '100px',
+                                        render: (_, record) => (
+                                            <Button
+                                                danger
+                                                size='small'
+                                                onClick={() => {
+                                                    removeDocListItem(record.id)
+                                                }}
+                                                disabled={taskID !=0}
+                                            >
+                                                删除
+                                            </Button>
+                                        ),
+                                    },
+                                ]}
+                                rowKey="id"
+                            />
                         </Form.Item>
 
                         <Form.Item
                             label="导入三元组"
                             name="triple_ids"
-                            rules={[{ required: true, message: '请选择三元组' }]}
+                            rules={[{
+                                required: true,
+                                validator: () => {
+                                    if (tripleList.length == 0) {
+                                      return Promise.reject('请导入三元组');
+                                    }
+                                    return Promise.resolve();
+                                }
+                            }]}
                         >
-                            <Button onClick={()=>{setIsLoadTripleModalOpen(true)}}>
+                            <Button
+                                style={{'marginBottom': '15px'}}
+                                onClick={()=>{setIsLoadTripleModalOpen(true)}}
+                                disabled={curWorkspaceID == 0 || taskID !=0}
+
+                            >
                                 导入三元组
                             </Button>
+
+                            <Table
+                                dataSource={tripleList}
+                                style={{'height': '230px', 'overflowY': 'auto'}}
+                                columns={[
+                                    {
+                                        title: 'ID',
+                                        dataIndex: 'id',
+                                        key: 'id',
+                                        width: '50px'
+                                    },
+                                    {
+                                        title: '起始节点',
+                                        dataIndex: 'source_ontology_name',
+                                        key: 'source_ontology_name',
+                                    },
+                                    {
+                                        title: '关系名称',
+                                        dataIndex: 'relationship',
+                                        key: 'relationship',
+                                    },
+                                    {
+                                        title: '目标节点',
+                                        dataIndex: 'target_ontology_name',
+                                        key: 'target_ontology_name',
+                                    },
+                                    {
+                                        title: '操作',
+                                        key: 'action',
+                                        width: '100px',
+                                        render: (_, record) => (
+                                            <Button
+                                                danger
+                                                size='small'
+                                                onClick={() => {
+                                                    removeTripleListItem(record.id)
+                                                }}
+                                                disabled={taskID !=0 }
+                                            >
+                                                删除
+                                            </Button>
+                                        ),
+                                    },
+                                ]}
+                                rowKey="id"
+                            />
                         </Form.Item>
 
                         <Form.Item
@@ -274,25 +480,19 @@ const ExtractTaskPage: React.FC = () => {
                     </Form>
                 </Modal>
 
-                <Modal
-                    title={"导入文件"}
-                    open={isLoadDocModalOpen}
-                    // onOk={handleCreateTaskOk}
-                    onCancel={handleCancelLoadDocModal}
-                    okText="确定"
-                    cancelText="取消"
-                    width={800}
-                ></Modal>
 
-<Modal
-                    title={"导入三元组"}
-                    open={isLoadTripleModalOpen}
-                    // onOk={handleCreateTaskOk}
+                <LoadDocComponent
+                    visible={isLoadDocModalOpen}
+                    onOk={handleLoadDocsOk}
+                    onCancel={handleCancelLoadDocModal}
+                />
+
+                <LoadTripleComponent
+                    visible={isLoadTripleModalOpen}
+                    onOk={handleLoadTriplesOk}
                     onCancel={handleCancelLoadTripleModal}
-                    okText="确定"
-                    cancelText="取消"
-                    width={800}
-                ></Modal>
+                    workspaceID={curWorkspaceID}
+                />
 
                 <Table
                     style={{ width: '100%' }}

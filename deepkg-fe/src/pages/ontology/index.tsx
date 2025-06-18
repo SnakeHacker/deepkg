@@ -50,7 +50,7 @@ const OntologyPage: React.FC = () => {
         });
         setWorkspaces(res.knowledge_graph_workspaces);
         if (res.knowledge_graph_workspaces.length > 0){
-            setWorkspaceID(res.knowledge_graph_workspaces[0].id)
+            setWorkspaceID(res.knowledge_graph_workspaces[res.knowledge_graph_workspaces.length-1].id)
         }
     };
 
