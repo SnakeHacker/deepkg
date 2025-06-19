@@ -5,8 +5,8 @@ import {isAuthenticated, setAuthenticated} from '../../service/auth';
 import {GetCaptcha, GetPublicKey, Login} from '../../service/session';
 import {JSEncrypt} from 'jsencrypt';
 import {useNavigate} from 'react-router-dom';
-// import LogoSVG from '../../assets/logo.svg';
-import BgSVG from '../../assets/background.png';
+import LogoHorizontal from '../../assets/logo_horizontal.png';
+import LeftBg from '../../assets/left_bg.png';
 import {KeyOutlined, SafetyOutlined, UserOutlined} from "@ant-design/icons";
 
 
@@ -36,10 +36,7 @@ const LoginPage: React.FC = () => {
 
         const res = await Login(payload)
 
-        console.log(res)
-
         if (res.id != null) {
-            console.log(res)
             messageApi.success('登录成功');
             setAuthenticated(res)
             navigate('/')
@@ -48,9 +45,6 @@ const LoginPage: React.FC = () => {
             getCaptcha();
         }
     };
-
-    const [init, setInit] = useState(false);
-
 
     useEffect(() => {
         console.log('%c:)', 'color: green; font-size: 32px;');
@@ -76,14 +70,15 @@ const LoginPage: React.FC = () => {
         <div className={styles.container}>
             {contextHolder}
             <Row align="middle" style={{ height: '100%' }}>
-                {/* 左侧图片 */}
                 <Col span={12} className={styles.leftSide}>
-                    <img src={BgSVG} alt="background" className={styles.leftImage} />
+                    <img src={LeftBg} alt="background" className={styles.leftImage} />
                 </Col>
 
                 {/* 右侧登录表单 */}
-                <Col span={12}>
+                <Col span={12} className={styles.rightSide}>
+                    <img src={LogoHorizontal} alt="background" className={styles.logo} />
                     <div className={styles.logoContainer}>
+
                         <Tabs centered size={"large"} items={[
                             {
                                 key: "1",
@@ -135,7 +130,7 @@ const LoginPage: React.FC = () => {
                                     </Form.Item>
                                     <Form.Item>
                                         <Button
-                                            style={{background: '#1F35DB', color: 'white', height: '48px'}}
+                                            style={{background: '#408aff', color: 'white', height: '48px'}}
                                             variant="solid"
                                             htmlType="submit"
                                             className={styles.loginFormButton}
