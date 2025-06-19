@@ -355,6 +355,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/extract_task/publish",
 					Handler: extract_task.PublishExtractTaskHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/extract_task/run",
+					Handler: extract_task.RunExtractTaskHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/api"),

@@ -62,6 +62,13 @@ func DoExtractTask(svcCtx *svc.ServiceContext, taskID int) (err error) {
 
 	// 开始抽取文本
 	for _, content := range contents {
+		tx := svcCtx.DB.Begin()
+		defer func() {
+			if r := recover(); r != nil {
+				tx.Rollback()
+			}
+		}()
+
 		ontoligiesStrList := []string{}
 		for _, ontology := range ontologies {
 			ontoligiesStrList = append(ontoligiesStrList, ontology.OntologyName)
@@ -87,6 +94,24 @@ func DoExtractTask(svcCtx *svc.ServiceContext, taskID int) (err error) {
 			return err
 		}
 
+		entitiesMap := make(map[string]gorm_model.Entity)
+		// 实体入库
+		for idx, et := range entities.Entities {
+			etModel := &gorm_model.Entity{
+				EntityName: et.EntityName,
+				TaskID:     taskID,
+			}
+			err = dao.CreateEntity(tx, etModel)
+			if err != nil {
+				glog.Error(err)
+				tx.Rollback()
+				return err
+			}
+
+			entities.Entities[idx].ID = int(etModel.ID)
+			entitiesMap[etModel.EntityName] = *etModel
+		}
+
 		// 抽取实体属性
 		for _, entity := range entities.Entities {
 			ontology, ok := ontologyNameMap[entity.Type]
@@ -97,19 +122,19 @@ func DoExtractTask(svcCtx *svc.ServiceContext, taskID int) (err error) {
 			glog.Infof("Extracting Entity: %v - Ontology: %v props...", entity.EntityName, entity.Type)
 
 			propModels := propsMap[int64(ontology.ID)]
-			propsStr := []string{}
+			propNameList := []string{}
 			for _, prop := range propModels {
-				propsStr = append(propsStr, prop.PropName)
+				propNameList = append(propNameList, prop.PropName)
 			}
 
-			if len(propsStr) == 0 {
+			if len(propNameList) == 0 {
 				glog.Infof("Ontology: %v has not props...", entity.Type)
 				continue
 			}
 
-			glog.Infof("Entity: %v, props: ", entity.EntityName, propsStr)
+			glog.Infof("Entity: %v, props: ", entity.EntityName, propNameList)
 
-			prompt = ExtractPropsPrompt(content, entity.EntityName, propsStr)
+			prompt = ExtractPropsPrompt(content, entity.EntityName, propNameList)
 			result, err = svcCtx.LLM.Infer(prompt, llm.History{})
 			if err != nil {
 				glog.Error(err)
@@ -128,10 +153,27 @@ func DoExtractTask(svcCtx *svc.ServiceContext, taskID int) (err error) {
 			}
 
 			glog.Info(props)
+
+			for _, prop := range props.Props {
+				propModel := &gorm_model.Prop{
+					PropName:  prop.PropName,
+					PropValue: prop.Value,
+					EntityID:  entity.ID,
+					TaskID:    taskID,
+				}
+
+				err = dao.CreateProp(tx, propModel)
+				if err != nil {
+					glog.Error(err)
+					tx.Rollback()
+					return err
+				}
+			}
+
 		}
 
 		// 抽取三元组
-		prompt = ExtractTriplePrompt(content, entities.Entities, tripleContent)
+		prompt = ExtractRelationshipPrompt(content, entities.Entities, tripleContent)
 		glog.Info(prompt)
 		result, err = svcCtx.LLM.Infer(prompt, llm.History{})
 		if err != nil {
@@ -139,6 +181,55 @@ func DoExtractTask(svcCtx *svc.ServiceContext, taskID int) (err error) {
 			return err
 		}
 		glog.Info(result)
+
+		result = io_util.CleanJsonStr(result)
+
+		relationships := knowledge_graph.Relationships{}
+		err = json.Unmarshal([]byte(result), &relationships)
+		if err != nil {
+			glog.Error(err)
+			return err
+		}
+
+		// 关系入库
+		for _, relationship := range relationships.Relationships {
+			sourceEntity, ok := entitiesMap[relationship.Source]
+			if !ok {
+				err = errors.New("source entity not found")
+				glog.Error(err)
+				tx.Rollback()
+				return err
+			}
+
+			targetEntity, ok := entitiesMap[relationship.Target]
+			if !ok {
+				err = errors.New("source entity not found")
+				glog.Error(err)
+				tx.Rollback()
+				return err
+			}
+
+			relModel := &gorm_model.Relationship{
+				SourceEntityID:   int(sourceEntity.ID),
+				TargetEntityID:   int(targetEntity.ID),
+				RelationshipName: relationship.Rel,
+				TaskID:           taskID,
+			}
+			err = dao.CreateRelationship(tx, relModel)
+			if err != nil {
+				glog.Error(err)
+				tx.Rollback()
+				return err
+			}
+
+		}
+
+		err = tx.Commit().Error
+		if err != nil {
+			glog.Error(err)
+			tx.Rollback()
+			return err
+		}
 
 	}
 

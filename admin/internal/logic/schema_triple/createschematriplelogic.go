@@ -41,8 +41,7 @@ func (l *CreateSchemaTripleLogic) CreateSchemaTriple(req *types.CreateSchemaTrip
 		SourceOntologyID: int(triple.SourceOntologyID),
 		TargetOntologyID: int(triple.TargetOntologyID),
 		Relationship:     triple.Relationship,
-		// TODO
-		CreatorID: int(creator.ID),
+		CreatorID:        int(creator.ID),
 	}
 
 	err = dao.CreateSchemaTriple(l.svcCtx.DB, &tripleModel)

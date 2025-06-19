@@ -418,6 +418,10 @@ type PublishExtractTaskReq struct {
 	ID int64 `json:"id"`
 }
 
+type RunExtractTaskReq struct {
+	ID int64 `json:"id"`
+}
+
 type Entity struct {
 	ID         int64  `json:"id,optional"`
 	TaskID     int64  `json:"task_id"`

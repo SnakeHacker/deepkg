@@ -33,11 +33,16 @@ func (l *UpdateSchemaOntologyLogic) UpdateSchemaOntology(req *types.UpdateSchema
 		return err
 	}
 
+	creator, err := l.svcCtx.GetUserFromCache(req.Authorization)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
 	ontologyModel.OntologyName = ontology.OntologyName
 	ontologyModel.OntologyDesc = ontology.OntologyDesc
 	ontologyModel.WorkSpaceID = int(ontology.WorkSpaceID)
-	// TODO
-	ontologyModel.CreatorID = 1
+	ontologyModel.CreatorID = int(creator.ID)
 
 	err = dao.UpdateSchemaOntology(l.svcCtx.DB, &ontologyModel)
 	if err != nil {

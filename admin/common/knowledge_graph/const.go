@@ -5,6 +5,7 @@ type Entities struct {
 }
 
 type Entity struct {
+	ID         int    `json:"id"`
 	EntityName string `json:"entity"`
 	Type       string `json:"type"`
 }
@@ -18,7 +19,11 @@ type Prop struct {
 	Value    string `json:"value"`
 }
 
-type Triple struct {
+type Relationships struct {
+	Relationships []Relationship `json:"relationships"`
+}
+
+type Relationship struct {
 	Source string `json:"source"`
 	Rel    string `json:"rel"`
 	Target string `json:"target"`

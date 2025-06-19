@@ -29,7 +29,6 @@ func NewGetSchemaOntologyListLogic(ctx context.Context, svcCtx *svc.ServiceConte
 }
 
 func (l *GetSchemaOntologyListLogic) GetSchemaOntologyList(req *types.GetSchemaOntologyListReq) (resp *types.GetSchemaOntologyListResp, err error) {
-
 	ontologyModels, total, err := dao.SelectSchemaOntologys(l.svcCtx.DB, int(req.WorkSpaceID), req.PageNumber, req.PageSize)
 	if err != nil {
 		glog.Error(err)

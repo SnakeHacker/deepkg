@@ -38,8 +38,6 @@ func (l *UpdateSchemaTripleLogic) UpdateSchemaTriple(req *types.UpdateSchemaTrip
 	tripleModel.TargetOntologyID = int(triple.TargetOntologyID)
 	tripleModel.Relationship = triple.Relationship
 	tripleModel.WorkSpaceID = int(triple.WorkSpaceID)
-	// TODO
-	tripleModel.CreatorID = 0
 
 	err = dao.UpdateSchemaTriple(l.svcCtx.DB, &tripleModel)
 	if err != nil {
@@ -47,5 +45,5 @@ func (l *UpdateSchemaTripleLogic) UpdateSchemaTriple(req *types.UpdateSchemaTrip
 		return err
 	}
 
-	return nil
+	return
 }

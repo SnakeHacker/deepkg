@@ -60,12 +60,6 @@ func main() {
 		server.Start()
 	}()
 
-	// err = job.DoExtractTask(ctx, 4)
-	// if err != nil {
-	// 	glog.Error(err)
-	// 	return
-	// }
-
 	<-idleConnsClosed
 	glog.Flush()
 }

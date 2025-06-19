@@ -61,7 +61,7 @@ func ExtractPropsPrompt(content string, entity string, props []string) string {
 	return result
 }
 
-func ExtractTriplePrompt(content string, entities []knowledge_graph.Entity, tripleContent []string) string {
+func ExtractRelationshipPrompt(content string, entities []knowledge_graph.Entity, tripleContent []string) string {
 
 	entitiesInfo := ""
 	for _, entity := range entities {
@@ -84,7 +84,7 @@ func ExtractTriplePrompt(content string, entities []knowledge_graph.Entity, trip
 
 请从语料中根据已有的实体抽取对应的三元组，三元组范围请限定在上述提供的三元组中，如果不存在则忽略。以JSON格式返回
 {
-	"triples": [
+	"relationships": [
 			{
 				"source": "源实体1",
 				"rel": "关系1",
