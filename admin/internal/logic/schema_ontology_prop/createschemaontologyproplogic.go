@@ -29,10 +29,16 @@ func NewCreateSchemaOntologyPropLogic(ctx context.Context, svcCtx *svc.ServiceCo
 func (l *CreateSchemaOntologyPropLogic) CreateSchemaOntologyProp(req *types.CreateSchemaOntologyPropReq) (err error) {
 	prop := req.SchemaOntologyProp
 
+	ontologyModel, err := dao.SelectSchemaOntologyByID(l.svcCtx.DB, prop.OntologyID)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
 	ontologyPropModel := gorm_model.SchemaOntologyProp{
 		PropName:    prop.PropName,
 		PropDesc:    prop.PropDesc,
-		WorkSpaceID: int(prop.WorkSpaceID),
+		WorkSpaceID: int(ontologyModel.WorkSpaceID),
 		OntologyID:  int(prop.OntologyID),
 		// TODO
 		CreatorID: 1,

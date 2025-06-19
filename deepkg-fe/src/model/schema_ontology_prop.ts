@@ -3,7 +3,7 @@ export interface SchemaOntologyProp {
     id?: number;
     prop_name: string;
     prop_desc?: string;
-    work_space_id: number;
+    work_space_id?: number;
     ontology_id: number;
 
     creator_id?: number;

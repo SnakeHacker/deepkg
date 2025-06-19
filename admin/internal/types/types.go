@@ -189,7 +189,7 @@ type SchemaOntologyProp struct {
 	ID          int64  `json:"id, optional"`
 	PropName    string `json:"prop_name"`
 	PropDesc    string `json:"prop_desc, optional"`
-	WorkSpaceID int64  `json:"work_space_id"`
+	WorkSpaceID int64  `json:"work_space_id, optional"`
 	OntologyID  int64  `json:"ontology_id"`
 	CreatorID   int64  `json:"creator_id,optional"`
 	CreatorName string `json:"creator_name,optional"`

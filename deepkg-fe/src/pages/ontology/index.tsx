@@ -7,9 +7,10 @@ import type { SchemaOntology } from "../../model/schema_ontology";
 import { CreateSchemaOntology, DeleteSchemaOntologys, ListSchemaOntology, UpdateSchemaOntology } from "../../service/schema_ontology";
 import type { KnowledgeGraphWorkspace } from "../../model/kg_workspace";
 import { ListKnowledgeGraphWorkspace } from "../../service/workspace";
+import { useNavigate } from "react-router-dom";
 
 const OntologyPage: React.FC = () => {
-
+    const navigate = useNavigate();
     const [pagination, setPagination] = useState({
         current: 1,
         pageSize: 10,
@@ -28,7 +29,6 @@ const OntologyPage: React.FC = () => {
 
     useEffect(() => {
         if (workspaceID > 0){
-            console.log(2333)
             listOntologies()
         }
     }, [workspaceID]);
@@ -113,6 +113,11 @@ const OntologyPage: React.FC = () => {
         setIsModalOpen(true);
     }
 
+    const handleEditProp = (record: SchemaOntology) => {
+        console.log(record.id)
+        navigate(`/ontology_prop?ontology_id=${record.id}`);
+    }
+
     const columns = [
         {
           title: 'ID',
@@ -130,13 +135,13 @@ const OntologyPage: React.FC = () => {
             title: '本体描述',
             dataIndex: 'ontology_desc',
             key: 'ontology_desc',
-            width: '40%',
+            width: '30%',
         },
         {
             title: '创建时间',
             dataIndex: 'created_at',
             key: 'created_at',
-            width: 350,
+            width: 300,
         },
         {
             title: '操作',
@@ -150,6 +155,14 @@ const OntologyPage: React.FC = () => {
                         size='small'
                     >
                         编辑
+                    </Button>
+
+                    <Button
+                        style={{ marginRight: '10px' }}
+                        onClick={() => handleEditProp(record)}
+                        size='small'
+                    >
+                        属性
                     </Button>
 
                     <Popconfirm
@@ -220,7 +233,7 @@ const OntologyPage: React.FC = () => {
             <div className={styles.body}>
                 <Modal
                     title={
-                        ontologyID > 0 ? '编辑空间' : `新建空间`
+                        ontologyID > 0 ? '编辑本体' : `新建本体`
                     }
                     open={isModalOpen}
                     onOk={handleCreateOntologyOk}

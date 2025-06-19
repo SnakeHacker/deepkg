@@ -35,8 +35,8 @@ func (l *UpdateSchemaOntologyPropLogic) UpdateSchemaOntologyProp(req *types.Upda
 
 	propModel.PropName = prop.PropName
 	propModel.PropDesc = prop.PropDesc
-	propModel.WorkSpaceID = int(prop.WorkSpaceID)
-	propModel.CreatorID = int(prop.CreatorID)
+	// TODO
+	propModel.CreatorID = 1
 
 	err = dao.UpdateSchemaOntologyProp(l.svcCtx.DB, &propModel)
 	if err != nil {
