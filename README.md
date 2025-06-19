@@ -4,18 +4,18 @@ English | [简体中文](README_zh.md)
 
 DeepKG is a LLM-powered multi-modal knowledge graph platform, designed to facilitate the construction, management, and inference of knowledge graphs.
 
-## Screenshots
+## Demonstration
 
-| Features                | Screenshots                                           |
-|-------------------------|-------------------------------------------------------|
-| Directories             | ![Directories](assets/screenshots/directory.png "Directories")      |
-| Documents               | ![Documents](assets/screenshots/document.png "Documents")       |
-| Workspaces              | !["Workspaces"](assets/screenshots/workspace.png "Workspaces")  |
-| Ontologies              | ![Ontologies](assets/screenshots/ontology.png "Ontologies")       |
-| Relations               | ![Relations](assets/screenshots/relationship.png "Relations")   |
-| unstructured extraction | ![unstructured extraction](assets/screenshots/extraction.png "unstructured extraction") |
-| Organizations           | ![Organizations](assets/screenshots/organization.png "Organizations")   |
-| Users                   | ![Users](assets/screenshots/user.png "Users")           |
+|        Features         |                                                       Screenshots                                                       |
+|:-----------------------:|:-----------------------------------------------------------------------------------------------------------------------:|
+|       Directories       |             <div style="width: 250pt">![Directories](assets/screenshots/directory.png "Directories")</div>              |
+|        Documents        |                <div style="width: 250pt">![Documents](assets/screenshots/document.png "Documents")</div>                |
+|       Workspaces        |             <div style="width: 250pt">!["Workspaces"](assets/screenshots/workspace.png "Workspaces")</div>              |
+|       Ontologies        |               <div style="width: 250pt">![Ontologies](assets/screenshots/ontology.png "Ontologies")</div>               |
+|        Relations        |              <div style="width: 250pt">![Relations](assets/screenshots/relationship.png "Relations")</div>              |
+| unstructured extraction | <div style="width: 250pt">![unstructured extraction](assets/screenshots/extraction.png "unstructured extraction")</div> |
+|      Organizations      |          <div style="width: 250pt">![Organizations](assets/screenshots/organization.png "Organizations")</div>          |
+|          Users          |                      <div style="width: 250pt">![Users](assets/screenshots/user.png "Users")</div>                      |
 
 ## Dependencies
 
