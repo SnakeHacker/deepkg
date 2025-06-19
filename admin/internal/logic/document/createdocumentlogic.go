@@ -36,11 +36,10 @@ func (l *CreateDocumentLogic) CreateDocument(req *types.CreateDocumentReq) (err 
 
 	doc := req.Document
 	docModel := gorm_model.Document{
-		DocName: doc.DocName,
-		DocDesc: doc.DocDesc,
-		DocPath: doc.DocPath,
-		DirID:   int(doc.DirID),
-		// TODO
+		DocName:   doc.DocName,
+		DocDesc:   doc.DocDesc,
+		DocPath:   doc.DocPath,
+		DirID:     int(doc.DirID),
 		CreatorID: int(creator.ID),
 	}
 
