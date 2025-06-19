@@ -31,10 +31,12 @@ type (
 
     CreateOrgReq {
         Organization  Organization  `json:"organization"`
+        Authorization    string `header:"Authorization"`
     }
 
     UpdateOrgReq {
-         Organization  Organization  `json:"organization"`
+        Organization  Organization  `json:"organization"`
+        Authorization    string `header:"Authorization"`
     }
 
     DeleteOrgsReq {
@@ -44,6 +46,7 @@ type (
 
 @server(
     prefix: api
+    middleware: JwtX
     group: org
 )
 service admin {

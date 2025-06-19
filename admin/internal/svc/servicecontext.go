@@ -1,13 +1,19 @@
 package svc
 
 import (
+	"context"
 	"crypto/rsa"
+	"encoding/json"
+	"net/http"
+
+	"github.com/zeromicro/x/errors"
 
 	"github.com/SnakeHacker/deepkg/admin/common/ai/llm"
 	"github.com/SnakeHacker/deepkg/admin/common/captcha"
 	rsa2 "github.com/SnakeHacker/deepkg/admin/common/rsa"
 	"github.com/SnakeHacker/deepkg/admin/internal/config"
 	"github.com/SnakeHacker/deepkg/admin/internal/middleware"
+	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 	"github.com/SnakeHacker/deepkg/admin/internal/utils/mysql"
 	"github.com/SnakeHacker/deepkg/admin/internal/utils/s3/minio"
 	"github.com/go-redis/redis/v8"
@@ -95,4 +101,39 @@ func NewRedisClient(c config.Config) redis.UniversalClient {
 		Addr:     c.Redis.Hosts[0],
 		Password: c.Redis.Pass,
 	})
+}
+
+func (svcCtx *ServiceContext) GetUserFromCache(token string) (user m.User, err error) {
+
+	cmd := svcCtx.Redis.Get(context.Background(), token)
+	if cmd.Err() != nil {
+		if cmd.Err() == redis.Nil {
+			err = errors.New(http.StatusUnauthorized, "用户未登录")
+		} else {
+			err = cmd.Err()
+		}
+
+		glog.Error(err)
+		return
+	}
+
+	userJSON, err := cmd.Bytes()
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	err = json.Unmarshal(userJSON, &user)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	if user.ID == 0 {
+		err = errors.New(http.StatusUnauthorized, "用戶未登录")
+		glog.Error(err)
+		return
+	}
+
+	return
 }

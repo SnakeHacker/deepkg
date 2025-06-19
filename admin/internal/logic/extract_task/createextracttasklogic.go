@@ -36,14 +36,19 @@ func (l *CreateExtractTaskLogic) CreateExtractTask(req *types.CreateExtractTaskR
 
 	et := req.ExtractTask
 
+	creator, err := l.svcCtx.GetUserFromCache(req.Authorization)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
 	etModel := gorm_model.ExtractTask{
 		TaskName:    et.TaskName,
 		WorkSpaceID: et.WorkSpaceID,
 		TaskStatus:  EXTRACT_TASK_STATUS_WAITING,
 		Published:   false,
 		Remark:      et.Remark,
-		// TODO
-		CreatorID: 1,
+		CreatorID:   int(creator.ID),
 	}
 	err = dao.CreateExtractTask(tx, &etModel)
 	if err != nil {

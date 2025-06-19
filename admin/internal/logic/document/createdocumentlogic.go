@@ -28,6 +28,12 @@ func NewCreateDocumentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Cr
 
 func (l *CreateDocumentLogic) CreateDocument(req *types.CreateDocumentReq) (err error) {
 
+	creator, err := l.svcCtx.GetUserFromCache(req.Authorization)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
 	doc := req.Document
 	docModel := gorm_model.Document{
 		DocName: doc.DocName,
@@ -35,7 +41,7 @@ func (l *CreateDocumentLogic) CreateDocument(req *types.CreateDocumentReq) (err 
 		DocPath: doc.DocPath,
 		DirID:   int(doc.DirID),
 		// TODO
-		CreatorID: 1,
+		CreatorID: int(creator.ID),
 	}
 
 	err = dao.CreateDocument(l.svcCtx.DB, &docModel)

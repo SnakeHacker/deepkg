@@ -39,10 +39,12 @@ type (
 
     CreateDocumentReq {
         Document  Document  `json:"document"`
+        Authorization    string `header:"Authorization"`
     }
 
     UpdateDocumentReq {
         Document  Document  `json:"document"`
+        Authorization    string `header:"Authorization"`
     }
 
     DeleteDocumentsReq {
@@ -52,6 +54,7 @@ type (
 
 @server(
     prefix: api
+    middleware: JwtX
     group: document
 )
 service admin {

@@ -41,10 +41,12 @@ type (
 
     CreateSchemaTripleReq {
         SchemaTriple  SchemaTriple  `json:"schema_triple"`
+        Authorization    string `header:"Authorization"`
     }
 
     UpdateSchemaTripleReq {
         SchemaTriple  SchemaTriple  `json:"schema_triple"`
+        Authorization    string `header:"Authorization"`
     }
 
     DeleteSchemaTriplesReq {

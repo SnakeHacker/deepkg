@@ -30,10 +30,15 @@ func NewCreateKnowledgeGraphWorkspaceLogic(ctx context.Context, svcCtx *svc.Serv
 func (l *CreateKnowledgeGraphWorkspaceLogic) CreateKnowledgeGraphWorkspace(req *types.CreateKnowledgeGraphWorkspaceReq) (err error) {
 	workspace := req.KnowledgeGraphWorkspace
 
+	creator, err := l.svcCtx.GetUserFromCache(req.Authorization)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
 	workspaceModel := gorm_model.KnowledgeGraphWorkspace{
 		WorkSpaceName: workspace.KnowledgeGraphWorkspaceName,
-		// TODO
-		CreatorID: 1,
+		CreatorID:     int(creator.ID),
 	}
 
 	err = dao.CreateKnowledgeGraphWorkspace(l.svcCtx.DB, &workspaceModel)

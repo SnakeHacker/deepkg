@@ -43,11 +43,13 @@ type GetDocumentResp struct {
 }
 
 type CreateDocumentReq struct {
-	Document Document `json:"document"`
+	Document      Document `json:"document"`
+	Authorization string   `header:"Authorization"`
 }
 
 type UpdateDocumentReq struct {
-	Document Document `json:"document"`
+	Document      Document `json:"document"`
+	Authorization string   `header:"Authorization"`
 }
 
 type DeleteDocumentsReq struct {
@@ -131,11 +133,13 @@ type GetOrgResp struct {
 }
 
 type CreateOrgReq struct {
-	Organization Organization `json:"organization"`
+	Organization  Organization `json:"organization"`
+	Authorization string       `header:"Authorization"`
 }
 
 type UpdateOrgReq struct {
-	Organization Organization `json:"organization"`
+	Organization  Organization `json:"organization"`
+	Authorization string       `header:"Authorization"`
 }
 
 type DeleteOrgsReq struct {
@@ -175,10 +179,12 @@ type GetSchemaOntologyResp struct {
 
 type CreateSchemaOntologyReq struct {
 	SchemaOntology SchemaOntology `json:"schema_ontology"`
+	Authorization  string         `header:"Authorization"`
 }
 
 type UpdateSchemaOntologyReq struct {
 	SchemaOntology SchemaOntology `json:"schema_ontology"`
+	Authorization  string         `header:"Authorization"`
 }
 
 type DeleteSchemaOntologysReq struct {
@@ -219,10 +225,12 @@ type GetSchemaOntologyPropResp struct {
 
 type CreateSchemaOntologyPropReq struct {
 	SchemaOntologyProp SchemaOntologyProp `json:"schema_ontology_prop"`
+	Authorization      string             `header:"Authorization"`
 }
 
 type UpdateSchemaOntologyPropReq struct {
 	SchemaOntologyProp SchemaOntologyProp `json:"schema_ontology_prop"`
+	Authorization      string             `header:"Authorization"`
 }
 
 type DeleteSchemaOntologyPropsReq struct {
@@ -264,11 +272,13 @@ type GetSchemaTripleResp struct {
 }
 
 type CreateSchemaTripleReq struct {
-	SchemaTriple SchemaTriple `json:"schema_triple"`
+	SchemaTriple  SchemaTriple `json:"schema_triple"`
+	Authorization string       `header:"Authorization"`
 }
 
 type UpdateSchemaTripleReq struct {
-	SchemaTriple SchemaTriple `json:"schema_triple"`
+	SchemaTriple  SchemaTriple `json:"schema_triple"`
+	Authorization string       `header:"Authorization"`
 }
 
 type DeleteSchemaTriplesReq struct {
@@ -391,11 +401,13 @@ type GetExtractTaskResp struct {
 }
 
 type CreateExtractTaskReq struct {
-	ExtractTask ExtractTask `json:"extract_task"`
+	ExtractTask   ExtractTask `json:"extract_task"`
+	Authorization string      `header:"Authorization"`
 }
 
 type UpdateExtractTaskReq struct {
-	ExtractTask ExtractTask `json:"extract_task"`
+	ExtractTask   ExtractTask `json:"extract_task"`
+	Authorization string      `header:"Authorization"`
 }
 
 type DeleteExtractTasksReq struct {
@@ -532,10 +544,12 @@ type GetKnowledgeGraphWorkspaceResp struct {
 
 type CreateKnowledgeGraphWorkspaceReq struct {
 	KnowledgeGraphWorkspace KnowledgeGraphWorkspace `json:"knowledge_graph_workspace"`
+	Authorization           string                  `header:"Authorization"`
 }
 
 type UpdateKnowledgeGraphWorkspaceReq struct {
 	KnowledgeGraphWorkspace KnowledgeGraphWorkspace `json:"knowledge_graph_workspace"`
+	Authorization           string                  `header:"Authorization"`
 }
 
 type DeleteKnowledgeGraphWorkspacesReq struct {

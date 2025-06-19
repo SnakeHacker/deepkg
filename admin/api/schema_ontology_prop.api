@@ -39,10 +39,12 @@ type (
 
     CreateSchemaOntologyPropReq {
         SchemaOntologyProp SchemaOntologyProp `json:"schema_ontology_prop"`
+        Authorization    string `header:"Authorization"`
     }
 
     UpdateSchemaOntologyPropReq {
         SchemaOntologyProp SchemaOntologyProp `json:"schema_ontology_prop"`
+        Authorization    string `header:"Authorization"`
     }
 
     DeleteSchemaOntologyPropsReq {
@@ -52,6 +54,7 @@ type (
 
 @server(
     prefix: api
+    middleware: JwtX
     group: schema_ontology_prop
 )
 service admin {

@@ -30,13 +30,19 @@ func NewCreateSchemaTripleLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 func (l *CreateSchemaTripleLogic) CreateSchemaTriple(req *types.CreateSchemaTripleReq) (err error) {
 	triple := req.SchemaTriple
 
+	creator, err := l.svcCtx.GetUserFromCache(req.Authorization)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
 	tripleModel := gorm_model.SchemaTriple{
 		WorkSpaceID:      int(triple.WorkSpaceID),
 		SourceOntologyID: int(triple.SourceOntologyID),
 		TargetOntologyID: int(triple.TargetOntologyID),
 		Relationship:     triple.Relationship,
 		// TODO
-		CreatorID: 1,
+		CreatorID: int(creator.ID),
 	}
 
 	err = dao.CreateSchemaTriple(l.svcCtx.DB, &tripleModel)

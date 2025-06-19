@@ -46,6 +46,7 @@ type (
 
 @server(
     prefix: api
+    middleware: JwtX
     group: document_dir
 )
 service admin {

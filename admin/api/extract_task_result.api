@@ -102,6 +102,7 @@ type (
 
 @server(
     prefix: api
+    middleware: JwtX
     group: extract_task_result
 )
 service admin {

@@ -35,10 +35,12 @@ type (
 
     CreateKnowledgeGraphWorkspaceReq {
         KnowledgeGraphWorkspace  KnowledgeGraphWorkspace  `json:"knowledge_graph_workspace"`
+        Authorization    string `header:"Authorization"`
     }
 
     UpdateKnowledgeGraphWorkspaceReq {
         KnowledgeGraphWorkspace  KnowledgeGraphWorkspace  `json:"knowledge_graph_workspace"`
+        Authorization    string `header:"Authorization"`
     }
 
     DeleteKnowledgeGraphWorkspacesReq {
@@ -48,6 +50,7 @@ type (
 
 @server(
     prefix: api
+    middleware: JwtX
     group: knowledge_graph_workspace
 )
 service admin {

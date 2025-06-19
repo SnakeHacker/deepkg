@@ -29,12 +29,17 @@ func NewCreateSchemaOntologyLogic(ctx context.Context, svcCtx *svc.ServiceContex
 func (l *CreateSchemaOntologyLogic) CreateSchemaOntology(req *types.CreateSchemaOntologyReq) (err error) {
 	ontology := req.SchemaOntology
 
+	creator, err := l.svcCtx.GetUserFromCache(req.Authorization)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
 	ontologyModel := gorm_model.SchemaOntology{
 		OntologyName: ontology.OntologyName,
 		OntologyDesc: ontology.OntologyDesc,
 		WorkSpaceID:  int(ontology.WorkSpaceID),
-		// TODO
-		CreatorID: 1,
+		CreatorID:    int(creator.ID),
 	}
 
 	err = dao.CreateSchemaOntology(l.svcCtx.DB, &ontologyModel)

@@ -44,10 +44,12 @@ type (
 
     CreateExtractTaskReq {
         ExtractTask  ExtractTask  `json:"extract_task"`
+        Authorization    string `header:"Authorization"`
     }
 
     UpdateExtractTaskReq {
         ExtractTask  ExtractTask  `json:"extract_task"`
+        Authorization    string `header:"Authorization"`
     }
 
     DeleteExtractTasksReq {
@@ -61,6 +63,7 @@ type (
 
 @server(
     prefix: api
+    middleware: JwtX
     group: extract_task
 )
 service admin {

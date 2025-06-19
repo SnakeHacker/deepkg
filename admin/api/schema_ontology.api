@@ -38,10 +38,12 @@ type (
 
     CreateSchemaOntologyReq {
         SchemaOntology  SchemaOntology  `json:"schema_ontology"`
+        Authorization    string `header:"Authorization"`
     }
 
     UpdateSchemaOntologyReq {
         SchemaOntology  SchemaOntology  `json:"schema_ontology"`
+        Authorization    string `header:"Authorization"`
     }
 
     DeleteSchemaOntologysReq {
@@ -51,6 +53,7 @@ type (
 
 @server(
     prefix: api
+    middleware: JwtX
     group: schema_ontology
 )
 service admin {

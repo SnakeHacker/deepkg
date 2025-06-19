@@ -54,6 +54,7 @@ type (
 
 @server(
     prefix: api
+    middleware: JwtX
     group: user
 )
 service admin {

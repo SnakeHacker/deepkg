@@ -16,6 +16,7 @@ type (
 
 @server(
 	prefix: api
+    middleware: JwtX
 	group: file
 )
 service admin {

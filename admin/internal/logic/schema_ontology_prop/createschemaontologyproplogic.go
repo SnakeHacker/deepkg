@@ -34,14 +34,18 @@ func (l *CreateSchemaOntologyPropLogic) CreateSchemaOntologyProp(req *types.Crea
 		glog.Error(err)
 		return
 	}
+	creator, err := l.svcCtx.GetUserFromCache(req.Authorization)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
 
 	ontologyPropModel := gorm_model.SchemaOntologyProp{
 		PropName:    prop.PropName,
 		PropDesc:    prop.PropDesc,
 		WorkSpaceID: int(ontologyModel.WorkSpaceID),
 		OntologyID:  int(prop.OntologyID),
-		// TODO
-		CreatorID: 1,
+		CreatorID:   int(creator.ID),
 	}
 
 	err = dao.CreateSchemaOntologyProp(l.svcCtx.DB, &ontologyPropModel)
