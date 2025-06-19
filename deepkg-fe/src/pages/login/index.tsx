@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, message } from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Button, Col, Form, Input, message, Row, Tabs} from 'antd';
 import styles from './index.module.less';
-import { isAuthenticated, setAuthenticated } from '../../service/auth';
-import { GetCaptcha, GetPublicKey, Login } from '../../service/session';
+import {isAuthenticated, setAuthenticated} from '../../service/auth';
+import {GetCaptcha, GetPublicKey, Login} from '../../service/session';
 import {JSEncrypt} from 'jsencrypt';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 // import LogoSVG from '../../assets/logo.svg';
 import BgSVG from '../../assets/background.png';
+import {KeyOutlined, SafetyOutlined, UserOutlined} from "@ant-design/icons";
 
 
 const LoginPage: React.FC = () => {
@@ -74,83 +75,82 @@ const LoginPage: React.FC = () => {
     return (
         <div className={styles.container}>
             {contextHolder}
-            <img src={BgSVG} className={styles.backgroundImage}/>
+            <Row align="middle" style={{ height: '100%' }}>
+                {/* 左侧图片 */}
+                <Col span={12} className={styles.leftSide}>
+                    <img src={BgSVG} alt="background" className={styles.leftImage} />
+                </Col>
 
-            {/* <div style={{ width: '100%', height: '50px', top: '10%', position: 'absolute' }}>
-                <Orb
-                    hoverIntensity={0.5}
-                    rotateOnHover={true}
-                    hue={0}
-                    forceHoverState={false}
-                />
-            </div> */}
-            <div className={styles.logoContainer}>
-                {/* <img src={LogoSVG} className={styles.logo} /> */}
-                <h1 className={styles.loginTitle}>知识图谱平台</h1>
+                {/* 右侧登录表单 */}
+                <Col span={12}>
+                    <div className={styles.logoContainer}>
+                        <Tabs centered size={"large"} items={[
+                            {
+                                key: "1",
+                                label: "账号登录",
+                                children: (<Form
+                                    className={styles.loginForm}
+                                    name="login"
+                                    initialValues={{ remember: true }}
+                                    onFinish={onFinish}
+                                    autoComplete="off"
+                                >
+                                    <Form.Item
+                                        name="account"
+                                        rules={[{ required: true, message: '请输入用户名!' }]}
+                                    >
+                                        <Input
+                                            style={{height: '48px'}}
+                                            placeholder="用户名"
+                                            prefix={<UserOutlined/>}
+                                        />
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="password"
+                                        rules={[{ required: true, message: '请输入密码!' }]}
+                                    >
+                                        <Input.Password
+                                            style={{height: '48px'}}
+                                            placeholder="密码"
+                                            prefix={<KeyOutlined/>}
+                                        />
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="captcha_value"
+                                        rules={[{ required: true, message: '请输入验证码!' }]}
+                                        style={{ display: 'flex', alignItems: 'center' }}
+                                    >
+                                        <div className={styles.captcha}>
+                                            <Input
+                                                style={{ height:'48px', flex: 1, marginRight: 10 }}
+                                                placeholder="验证码"
+                                                prefix={<SafetyOutlined/>}
+                                            />
+                                            {captchaBase64 && <img
+                                                onClick={getCaptcha}
+                                                src={captchaBase64}
+                                                style={{ height: 45 }}
+                                            />}
+                                        </div>
+                                    </Form.Item>
+                                    <Form.Item>
+                                        <Button
+                                            style={{background: '#1F35DB', color: 'white', height: '48px'}}
+                                            variant="solid"
+                                            htmlType="submit"
+                                            className={styles.loginFormButton}
+                                        >
+                                            登录
+                                        </Button>
+                                    </Form.Item>
+                                </Form>)
+                            }
+                        ]}>
+                        </Tabs>
 
-                <Form
-                    className={styles.loginForm}
-                    name="login"
-                    initialValues={{ remember: true }}
-                    onFinish={onFinish}
-                    autoComplete="off"
-                >
-                    <div style={{marginBottom:'10px'}}>
-                        用户名
                     </div>
-                    <Form.Item
-                        name="account"
-                        rules={[{ required: true, message: '请输入用户名!' }]}
-                    >
-                        <Input
-                            style={{height: '48px'}}
-                            placeholder="用户名"
-                        />
-                    </Form.Item>
-                    <div style={{marginBottom:'10px'}}>
-                        密码
-                    </div>
-                    <Form.Item
-                        name="password"
-                        rules={[{ required: true, message: '请输入密码!' }]}
-                    >
-                        <Input.Password
-                            style={{height: '48px'}}
-                            placeholder="密码"
-                        />
-                    </Form.Item>
-                    <div style={{marginBottom:'10px'}}>
-                        验证码
-                    </div>
-                    <Form.Item
-                        name="captcha_value"
-                        rules={[{ required: true, message: '请输入验证码!' }]}
-                        style={{ display: 'flex', alignItems: 'center' }}
-                    >
-                        <div className={styles.captcha}>
-                            <Input
-                                style={{ height:'48px', flex: 1, marginRight: 10 }}
-                                placeholder="验证码"
-                            />
-                            {captchaBase64 && <img
-                                onClick={getCaptcha}
-                                src={captchaBase64}
-                                style={{ height: 45 }}
-                            />}
-                        </div>
-                    </Form.Item>
-                    <Form.Item>
-                        <Button
-                            style={{background: '#1F35DB', color: 'white', height: '48px'}}
-                            variant="solid"
-                            htmlType="submit"
-                            className={styles.loginFormButton}
-                        >
-                            登录
-                        </Button>
-                    </Form.Item>
-                </Form>
-            </div>
+                </Col>
+            </Row>
         </div>
     );
 };
