@@ -13,6 +13,7 @@ import DocumentDirPage from "./pages/document_dir";
 import DocumentPage from "./pages/document";
 import ExtractTaskPage from "./pages/extract_task";
 import OntologyPropPage from "./pages/ontology_prop";
+import ExtractTaskResultPage from "./pages/extract_task_result";
 function App() {
 
   return (
@@ -32,6 +33,7 @@ function App() {
                 <Route path="ontology_prop" element={<OntologyPropPage />} />
                 <Route path="triple" element={<TriplePage />} />
                 <Route path="extract_task" element={<ExtractTaskPage />} />
+                <Route path="extract_task_result" element={<ExtractTaskResultPage />} />
 
                 <Route path="org" element={<OrganizationListPage />} />
                 <Route path="user" element={<UserListPage />} />
