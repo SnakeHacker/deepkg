@@ -18,6 +18,10 @@ DeepKG is a LLM-powered multi-modal knowledge graph platform, designed to facili
 |-----------------------------------------------------|---------------------------------------------|
 | ![Organizations](assets/screenshots/organization.png "Organizations") | ![Users](assets/screenshots/user.png "Users") |
 
+## Sequence Diagram
+
+![Sequence Diagram](assets/sequence_diagram.png "Sequence Diagram")
+
 ## Dependencies
 
 - Go 1.20
