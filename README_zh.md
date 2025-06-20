@@ -6,19 +6,6 @@ DeepKG是一个基于大模型的多模态知识图谱平台，旨在简化知�
 
 ## 系统展示
 
-<table>
-  <tr>
-    <th>功能</th>
-    <th>截图</th>
-  </tr>
-  <tr>
-    <td style="width: 60pt">目录管理</td>
-    <td>
-      <img src="assets/screenshots/directory.png" alt="目录管理" title="目录管理" style="object-fit: fill" />
-    </td>
-  </tr>
-</table>
-
 |                  功能                   |                                          截图                                           |
 |:-------------------------------------:|:-------------------------------------------------------------------------------------:|
 |  <div style="width: 60pt">目录管理</div>  |   <div style="width: 200pt">![目录管理](assets/screenshots/directory.png "目录管理")</div>    |
@@ -29,6 +16,10 @@ DeepKG是一个基于大模型的多模态知识图谱平台，旨在简化知�
 | <div style="width: 60pt">非结构化抽取</div> | <div style="width: 200pt">![非结构化抽取](assets/screenshots/extraction.png "非结构化抽取")</div> |
 |  <div style="width: 60pt">组织管理</div>  |  <div style="width: 200pt">![组织管理](assets/screenshots/organization.png "组织管理")</div>  |
 |  <div style="width: 60pt">用户管理</div>  |      <div style="width: 200pt">![用户管理](assets/screenshots/user.png "用户管理")</div>      |
+
+| 目录管理 | 文件管理 | 图空间管理 | 本体管理 | 关系管理 | 非结构化抽取 | 组织管理 | 用户管理 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| <div style="width: 200pt">![目录管理](assets/screenshots/directory.png "目录管理")</div> | <div style="width: 200pt">![文件管理](assets/screenshots/document.png "文件管理")</div> | <div style="width: 200pt">!["图空间管理"](assets/screenshots/workspace.png "图空间管理")</div> | <div style="width: 200pt">![本体管理](assets/screenshots/ontology.png "本体管理")</div> | <div style="width: 200pt">![关系管理](assets/screenshots/relationship.png "关系管理")</div>| <div style="width: 200pt">![非结构化抽取](assets/screenshots/extraction.png "非结构化抽取")</div> | <div style="width: 200pt">![组织管理](assets/screenshots/organization.png "组织管理")</div> | <div style="width: 200pt">![用户管理](assets/screenshots/user.png "用户管理")</div> |
 
 ## 依赖
 
