@@ -13,8 +13,8 @@ DeepKG是一个基于大模型的多模态知识图谱平台，旨在简化知�
   </tr>
   <tr>
     <td style="width: 60pt">目录管理</td>
-    <td style="width: 200pt">
-      <img src="assets/screenshots/directory.png" alt="目录管理" title="目录管理" />
+    <td>
+      <img src="assets/screenshots/directory.png" alt="目录管理" title="目录管理" style="object-fit: fill" />
     </td>
   </tr>
 </table>
