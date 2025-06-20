@@ -6,7 +6,8 @@ type (
     Entity {
         ID             int64  `json:"id,optional"`
         TaskID         int64  `json:"task_id"`
-        EntityName         string `json:"entity_name"`
+        EntityName     string `json:"entity_name"`
+        Props          []EntityProp `json:"props, optional"`
     }
 
     GetEntityListReq {
@@ -16,7 +17,7 @@ type (
 
     GetEntityListResp {
         Total              int64    `json:"total"`        // 总记录数
-        Entities           []Entity `json:"entities"`    // 列表
+        Entities           []Entity `json:"entities"`     // 列表
         PageSize           int      `json:"page_size"`    // 每页大小
         PageNumber         int      `json:"page_number"`  // 当前页码
     }
@@ -98,6 +99,20 @@ type (
     DeleteRelationshipsReq {
         IDs []int64 `json:"ids"`
     }
+
+    ExtractTaskResult {
+        TaskID int64 `json:"task_id"`
+        Entities []Entity `json:"entities"`
+        Relationships []Relationship `json:"relationships"`
+    }
+
+    GetExtractTaskResultReq {
+        TaskID    int64  `json:"task_id"`
+    }
+
+    GetExtractTaskResultResp {
+        ExtractTaskResult ExtractTaskResult `json:"extract_task_result"`
+    }
 )
 
 @server(
@@ -118,7 +133,6 @@ service admin {
     @handler deleteEntities
     post /entity/delete (DeleteEntitiesReq)
 
-
     @handler getPropList
     post /prop/list (GetPropListReq) returns (GetPropListResp)
 
@@ -131,7 +145,6 @@ service admin {
     @handler deleteProps
     post /prop/delete (DeletePropsReq)
 
-
     @handler getRelationshipList
     post /relationship/list (GetRelationshipListReq) returns (GetRelationshipListResp)
 
@@ -143,5 +156,8 @@ service admin {
 
     @handler deleteRelationships
     post /relationship/delete (DeleteRelationshipsReq)
+
+    @handler getExtractTaskResult
+    post /extract_task_result/get (GetExtractTaskResultReq) returns (GetExtractTaskResultResp)
 
 }

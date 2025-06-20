@@ -429,6 +429,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/relationship/delete",
 					Handler: extract_task_result.DeleteRelationshipsHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/extract_task_result/get",
+					Handler: extract_task_result.GetExtractTaskResultHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/api"),

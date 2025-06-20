@@ -10,6 +10,7 @@ import { ListKnowledgeGraphWorkspace } from "../../service/workspace";
 import LoadDocComponent from "./components/load_doc/load_doc";
 import LoadTripleComponent from "./components/load_triple/load_triple";
 import { useStore, type LoadDoc, type LoadTriple } from "../../store";
+import { useNavigate } from "react-router-dom";
 
 const EXTRACT_TASK_STATUS_WAITING = 1;
 const EXTRACT_TASK_STATUS_RUNNING = 2;
@@ -17,6 +18,8 @@ const EXTRACT_TASK_STATUS_FAILED = 3;
 const EXTRACT_TASK_STATUS_SUCCESSED = 4;
 
 const ExtractTaskPage: React.FC = () => {
+    const navigate = useNavigate();
+
     const { docList, removeDocListItem, clearDocList, setDocList  } = useStore() as LoadDoc;
     const { tripleList, removeTripleListItem, clearTripleList, setTripleList  } = useStore() as LoadTriple;
 
@@ -175,6 +178,10 @@ const ExtractTaskPage: React.FC = () => {
         setIsModalOpen(true);
     }
 
+    const handleViewResult = (id: number) =>{
+        navigate(`/extract_task_result?task_id=${id}`);
+    }
+
     const handlePageChange = (page: number, pageSize?: number) => {
         setPagination(prev => ({
             ...prev,
@@ -194,7 +201,7 @@ const ExtractTaskPage: React.FC = () => {
           title: '任务名称',
           dataIndex: 'task_name',
           key: 'task_name',
-          width: '30%',
+          width: '20%',
         },
         {
             title: '发布状态',
@@ -215,7 +222,7 @@ const ExtractTaskPage: React.FC = () => {
             render: (_: any, record: ExtractTask) => (
                 <div key={record.id}>
                     {record.task_status == EXTRACT_TASK_STATUS_WAITING ? '等待' :
-                        record.task_status == EXTRACT_TASK_STATUS_RUNNING ? '运行' :
+                        record.task_status == EXTRACT_TASK_STATUS_RUNNING ? '执行中' :
                             record.task_status == EXTRACT_TASK_STATUS_FAILED ? '失败' :
                                 record.task_status == EXTRACT_TASK_STATUS_SUCCESSED ? '成功' : '未知'}
                 </div>
@@ -229,30 +236,32 @@ const ExtractTaskPage: React.FC = () => {
         {
             title: '操作',
             key: 'action',
-            width: 300,
+            width: 350,
             render: (_: any, record: ExtractTask) => (
                 <div key={record.id}>
-                    {
-                        record.task_status != EXTRACT_TASK_STATUS_RUNNING && (
-                            <Button
-                                style={{ marginRight: '10px' }}
-                                size='small'
-                                onClick={() => handleRunTask(record.id!)}
-                            >
-                                执行
-                            </Button>
-                    )}
                     {
                         record.task_status === EXTRACT_TASK_STATUS_SUCCESSED && (
                             <Button
                                 style={{ marginRight: '10px' }}
-                                // onClick={() => handleView(record)}
+                                type='primary'
+                                onClick={() => handleViewResult(record.id!)}
                                 size='small'
                             >
                                 查看结果
                             </Button>
                         )
                     }
+                    {
+                        record.task_status != EXTRACT_TASK_STATUS_RUNNING && (
+                            <Button
+                                style={{ marginRight: '10px' }}
+                                size='small'
+                                onClick={() => handleRunTask(record.id!)}
+                                disabled={record.published}
+                            >
+                                { record.task_status === EXTRACT_TASK_STATUS_SUCCESSED ? '重新执行' : '执行' }
+                            </Button>
+                    )}
                     <Button
                         style={{ marginRight: '10px' }}
                         onClick={() => handleEdit(record)}
