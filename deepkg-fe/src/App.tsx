@@ -13,8 +13,9 @@ import DocumentDirPage from "./pages/document_dir";
 import DocumentPage from "./pages/document";
 import ExtractTaskPage from "./pages/extract_task";
 import OntologyPropPage from "./pages/ontology_prop";
-function App() {
+import Dashboard from "./pages/dashboard";
 
+function App() {
   return (
     <>
       <HashRouter>
@@ -24,9 +25,9 @@ function App() {
             <Route path="/" element={<AuthRoute><HomePage /></AuthRoute>}>
 
                 <Route index element={<UserListPage />} />
+                <Route path="dashboard" element={<Dashboard />} />   
                 <Route path="document_dir" element={<DocumentDirPage />} />
                 <Route path="document" element={<DocumentPage />} />
-
                 <Route path="workspace" element={<WorkspacePage />} />
                 <Route path="ontology" element={<OntologyPage />} />
                 <Route path="ontology_prop" element={<OntologyPropPage />} />
