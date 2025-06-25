@@ -3,17 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import { Spin, message } from 'antd';
 import styles from './index.module.less';
 
-import entityIcon from '../../../../assets/1.png';
-import relationIcon from '../../../../assets/2.png';
-import fileIcon from '../../../../assets/3.png';
-import taskIcon from '../../../../assets/4.png';
-import workspaceIcon from '../../../../assets/5.png'; 
+import entityIcon from '../../../../assets/dashboard_icon_1.png';
+import relationIcon from '../../../../assets/dashboard_icon_2.png';
+import fileIcon from '../../../../assets/dashboard_icon_3.png';
+import taskIcon from '../../../../assets/dashboard_icon_4.png';
+import workspaceIcon from '../../../../assets/dashboard_icon_5.png';
 
-import { GetTotalSchemaOntologyCountAllWorkspaces } from '../../../../service/schema_ontology';
-import { GetDocumentTotalCount } from '../../../../service/document';
-import { GetTotalExtractTaskCountAllWorkspaces } from '../../../../service/extract_task';
-import { GetOrganizationTotalCount } from '../../../../service/organization';
-import { GetKnowledgeGraphWorkspaceTotalCount } from '../../../../service/workspace';
+import {
+  GetTotalSchemaOntologyCountAllWorkspaces,
+  GetDocumentTotalCount,
+  GetTotalExtractTaskCountAllWorkspaces,
+  GetOrganizationTotalCount,
+  GetKnowledgeGraphWorkspaceTotalCount
+} from '../../../../service/dashboard';
+
 
 interface CardData {
   name: string;
@@ -41,7 +44,7 @@ const DashboardCards: React.FC = () => {
     try {
       const [entityTotal, relationTotal, docTotal, taskTotal, workspaceTotal] = await Promise.all([
         GetTotalSchemaOntologyCountAllWorkspaces(),
-        GetOrganizationTotalCount(), 
+        GetOrganizationTotalCount(),
         GetDocumentTotalCount(),
         GetTotalExtractTaskCountAllWorkspaces(),
         GetKnowledgeGraphWorkspaceTotalCount(),

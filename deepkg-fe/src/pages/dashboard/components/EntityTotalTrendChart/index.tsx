@@ -11,6 +11,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 import ReactECharts from 'echarts-for-react';
 import { GetSchemaOntologyDailyCount } from '../../../../service/schema_ontology';
 import { Spin } from 'antd';
+import styles from './index.module.less';
 
 // 注册 ECharts 组件
 echarts.use([
@@ -108,14 +109,14 @@ const EntityTotalTrendChart: React.FC = () => {
 
   if (loading) {
     return (
-      <div style={{ width: '100%', height: 400, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div className={styles.loadingWrapper}>
         <Spin size="large" tip="加载累计数据中..." />
       </div>
     );
   }
 
   return (
-    <div style={{ width: '100%', height: 400 }}>
+    <div className={styles.chartWrapper}>
       <ReactECharts
         ref={chartRef}
         option={option}

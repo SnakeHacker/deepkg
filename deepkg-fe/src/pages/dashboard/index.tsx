@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Col, Row } from 'antd';
 import styles from './index.module.less';
-import WelcomeCard from './components/WelcomeCard/WelcomeCard';
+import WelcomeCard from './components/WelcomeCard';
 import DashboardCards from './components/DashboardCards';
 import WorkspaceEntityPieChart from './components/WorkspaceEntityPieChart';
 import EntityTotalTrendChart from './components/EntityTotalTrendChart';

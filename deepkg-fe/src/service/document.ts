@@ -47,20 +47,3 @@ export async function UpdateDocument(params: UpdateDocumentParams): Promise<any>
     return request.post(`/document/update`, params);
 }
 
-export interface GetDocumentListResp {
-  total: number;
-  documents: Document[];
-  page_size: number;
-  page_number: number;
-}
-
-// 获取文档总数
-export async function GetDocumentTotalCount(dir_id?: number): Promise<number> {
-  try {
-    const resp = await ListDocument({ page_size: 1, page_number: 1 });
-    return resp.total || 0;
-  } catch (e) {
-    console.error('获取文档总数失败:', e);
-    return 0;
-  }
-}

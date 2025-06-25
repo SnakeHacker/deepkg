@@ -3,17 +3,19 @@
   overflow-x: hidden;
   max-width: 100%;
 
-  // 额外安全限制所有 Card、Row 不溢出
+  
   .ant-card {
     max-width: 100%;
     overflow-x: hidden;
   }
 
   .ant-row {
+    display: flex;            
+    flex-direction: row;      
     flex-wrap: wrap;
   }
 
   .ant-col {
-    min-width: 0; // 防止子元素撑破
+    min-width: 0; 
   }
 }

@@ -45,18 +45,3 @@ export interface UpdateKnowledgeGraphWorkspaceParams {
 export async function UpdateKnowledgeGraphWorkspace(params: UpdateKnowledgeGraphWorkspaceParams): Promise<any> {
     return request.post(`/knowledge_graph_workspace/update`, params);
 }
-
-export interface GetKnowledgeGraphWorkspaceListResp {
-  total: number;
-  knowledge_graph_workspaces: KnowledgeGraphWorkspace[];
-  page_size: number;
-  page_number: number;
-}
-
-export async function GetKnowledgeGraphWorkspaceTotalCount(): Promise<number> {
-  const resp: GetKnowledgeGraphWorkspaceListResp = await request.post('/knowledge_graph_workspace/list', {
-    page_size: 1,
-    page_number: 1,
-  });
-  return resp.total || 0;
-}

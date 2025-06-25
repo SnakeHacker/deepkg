@@ -9,8 +9,9 @@ import {
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import { ListKnowledgeGraphWorkspace } from '../../../../service/workspace';
-import type { SchemaOntologyListResponse } from '../../../../service/schema_ontology';
+import type { ListSchemaOntologyResp } from '../../../../service/dashboard';
 import request from '../../../../utils/req';
+import styles from './index.module.less';
 
 echarts.use([
   PieChart,
@@ -41,7 +42,7 @@ const WorkspaceEntityPieChart: React.FC = () => {
             work_space_id: ws.id,
             page_number: 1,
             page_size: 1,
-          }) as SchemaOntologyListResponse;
+          }) as ListSchemaOntologyResp;
 
           const displayName = ws.name?.trim() || `ID-${ws.id}`;
 
@@ -85,13 +86,17 @@ const WorkspaceEntityPieChart: React.FC = () => {
       },
     },
     tooltip: {
-      // 不变
+      trigger: 'item',
+      formatter: (params: any) => {
+        const { marker, name, value, percent } = params;
+        return `${marker} ${name}<br/>实体数量：${value}<br/>占比：${percent}%`;
+      }
     },
     legend: {
       type: 'scroll',
       orient: 'vertical',
       left: '75%',
-      top: '0',  // 从 '10%' 调整为 '5%'
+      top: '0',
       icon: 'circle',
       itemWidth: 8,
       itemHeight: 8,
@@ -111,7 +116,7 @@ const WorkspaceEntityPieChart: React.FC = () => {
       {
         name: '实体数量',
         type: 'pie',
-        center: ['35%', '40%'],  // 从 '50%' 调整为 '45%'
+        center: ['35%', '40%'],
         radius: ['35%', '55%'],
         clockwise: false,
         label: {
@@ -134,7 +139,7 @@ const WorkspaceEntityPieChart: React.FC = () => {
 
 
   return (
-    <div style={{ width: '100%', height: 400 }}>
+    <div className={styles.chartWrapper}>
       <ReactECharts
         ref={chartRef}
         option={option}

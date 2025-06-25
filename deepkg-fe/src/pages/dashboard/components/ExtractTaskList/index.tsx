@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, Tag, Card, message } from 'antd';
 import { ListExtractTask } from '../../../../service/extract_task';
 import { ListKnowledgeGraphWorkspace } from '../../../../service/workspace';
+import styles from './index.module.less';
 
 const EXTRACT_TASK_STATUS_WAITING = 1;
 const EXTRACT_TASK_STATUS_RUNNING = 2;
@@ -105,7 +106,7 @@ const ExtractTaskList: React.FC = () => {
   ];
 
   return (
-    
+    <div className={styles.tableWrapper}>
       <Table
         columns={columns}
         dataSource={pagedData}
@@ -122,7 +123,7 @@ const ExtractTaskList: React.FC = () => {
         }}
         bordered
       />
-    
+    </div>
   );
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Button, Divider, Typography, Avatar } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentUser } from '../../../../service/auth';
-import styles from './WelcomeCard.module.less';
+import styles from './index.module.less';
 
 const { Title, Text } = Typography;
 
