@@ -67,14 +67,14 @@ const TriplePage: React.FC = () => {
 
     const handleCreateTripleOk = async () => {
         const values = await form.validateFields();
-        const { work_space_id, source_ontology_id, target_ontology_id, relationship } = values;
+        const { source_ontology_id, target_ontology_id, relationship } = values;
         try {
             setIsModalOpen(false);
             if (tripleID > 0) {
                 const res = await UpdateSchemaTriple({
                     schema_triple: {
                         id: tripleID,
-                        work_space_id: work_space_id,
+                        work_space_id: workspaceID,
                         source_ontology_id: source_ontology_id,
                         target_ontology_id: target_ontology_id,
                         relationship: relationship,
@@ -88,7 +88,7 @@ const TriplePage: React.FC = () => {
 
                 const res = await CreateSchemaTriple({
                     schema_triple: {
-                        work_space_id: work_space_id,
+                        work_space_id: workspaceID,
                         source_ontology_id: source_ontology_id,
                         target_ontology_id: target_ontology_id,
                         relationship: relationship,
@@ -122,7 +122,6 @@ const TriplePage: React.FC = () => {
             relationship: record.relationship,
             source_ontology_id: record.source_ontology_id === 0 ? '': record.source_ontology_id,
             target_ontology_id: record.target_ontology_id === 0 ? '': record.target_ontology_id,
-            work_space_id: record.work_space_id === 0 ? '': record.work_space_id,
         });
         setIsModalOpen(true);
     }
@@ -255,23 +254,6 @@ const TriplePage: React.FC = () => {
                         labelAlign='left'
                         labelCol={{ span: 5 }}
                     >
-                        <Form.Item
-                            label="工作空间"
-                            name="work_space_id"
-                            rules={[{ required: true, message: '请选择工作空间' }]}
-                        >
-                            <Select
-                                style={{'width': '100%'}}
-                                placeholder="工作空间"
-                                disabled={workspaces.length === 0}
-                                options={[
-                                    ...workspaces.map((workspaces) => (
-                                        {key: workspaces.id, label: workspaces.knowledge_graph_workspace_name, value: workspaces.id}
-                                    )),
-                                ]}
-                            >
-                            </Select>
-                        </Form.Item>
 
                         <Form.Item
                             label="起始节点"

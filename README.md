@@ -4,18 +4,23 @@ English | [简体中文](README_zh.md)
 
 DeepKG is a LLM-powered multi-modal knowledge graph platform, designed to facilitate the construction, management, and inference of knowledge graphs.
 
-## Screenshots
+## Demonstration
 
-| Features                | Screenshots                                           |
-|-------------------------|-------------------------------------------------------|
-| Directories             | ![Directories](assets/screenshots/directory.png "Directories")      |
-| Documents               | ![Documents](assets/screenshots/document.png "Documents")       |
-| Workspaces              | !["Workspaces"](assets/screenshots/workspace.png "Workspaces")  |
-| Ontologies              | ![Ontologies](assets/screenshots/ontology.png "Ontologies")       |
-| Relations               | ![Relations](assets/screenshots/relationship.png "Relations")   |
-| unstructured extraction | ![unstructured extraction](assets/screenshots/extraction.png "unstructured extraction") |
-| Organizations           | ![Organizations](assets/screenshots/organization.png "Organizations")   |
-| Users                   | ![Users](assets/screenshots/user.png "Users")           |
+| Directories                                      | Documents                                       | Workspaces                                           |
+|--------------------------------------------------|-------------------------------------------------|------------------------------------------------------|
+| ![Directories](assets/screenshots/directory.png "Directories") | ![Documents](assets/screenshots/document.png "Documents") | !["Workspaces"](assets/screenshots/workspace.png "Workspaces") |
+
+| Ontologies                                      | Relations                                           | Unstructured Extraction                               |
+|-------------------------------------------------|-----------------------------------------------------|-------------------------------------------------------|
+| ![Ontologies](assets/screenshots/ontology.png "Ontologies") | ![Relations](assets/screenshots/relationship.png "Relations") | ![Unstructured Extraction](assets/screenshots/extraction.png "Unstructured Extraction") |
+
+| Organizations                                       | Users                                       |
+|-----------------------------------------------------|---------------------------------------------|
+| ![Organizations](assets/screenshots/organization.png "Organizations") | ![Users](assets/screenshots/user.png "Users") |
+
+## Sequence Diagram
+
+![Sequence Diagram](assets/sequence_diagram.png "Sequence Diagram")
 
 ## Dependencies
 

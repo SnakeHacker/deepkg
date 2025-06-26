@@ -56,3 +56,12 @@ export interface PublishExtractTaskParams {
 export async function PublishExtractTask(params: PublishExtractTaskParams): Promise<any> {
     return request.post(`/extract_task/publish`, params);
 }
+
+
+export interface RunExtractTaskParams {
+    id: number;
+}
+
+export async function RunExtractTask(params: RunExtractTaskParams): Promise<any> {
+    return request.post(`/extract_task/run`, params);
+}

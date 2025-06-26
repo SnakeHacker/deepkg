@@ -418,10 +418,15 @@ type PublishExtractTaskReq struct {
 	ID int64 `json:"id"`
 }
 
+type RunExtractTaskReq struct {
+	ID int64 `json:"id"`
+}
+
 type Entity struct {
-	ID         int64  `json:"id,optional"`
-	TaskID     int64  `json:"task_id"`
-	EntityName string `json:"entity_name"`
+	ID         int64        `json:"id,optional"`
+	TaskID     int64        `json:"task_id"`
+	EntityName string       `json:"entity_name"`
+	Props      []EntityProp `json:"props, optional"`
 }
 
 type GetEntityListReq struct {
@@ -512,6 +517,20 @@ type UpdateRelationshipReq struct {
 
 type DeleteRelationshipsReq struct {
 	IDs []int64 `json:"ids"`
+}
+
+type ExtractTaskResult struct {
+	TaskID        int64          `json:"task_id"`
+	Entities      []Entity       `json:"entities"`
+	Relationships []Relationship `json:"relationships"`
+}
+
+type GetExtractTaskResultReq struct {
+	TaskID int64 `json:"task_id"`
+}
+
+type GetExtractTaskResultResp struct {
+	ExtractTaskResult ExtractTaskResult `json:"extract_task_result"`
 }
 
 type KnowledgeGraphWorkspace struct {

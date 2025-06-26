@@ -12,6 +12,7 @@
   "dependencies": {
     "@ant-design/icons": "5.x",
     "@antv/g2": "^5.2.12",
+    "@antv/g6": "^5.0.48",
     "@tsparticles/engine": "^3.8.1",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.8.1",

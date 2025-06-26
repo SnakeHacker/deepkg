@@ -219,33 +219,36 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	)
 
 	server.AddRoutes(
-		[]rest.Route{
-			{
-				Method:  http.MethodPost,
-				Path:    "/schema_triple/get",
-				Handler: schema_triple.GetSchemaTripleHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/schema_triple/list",
-				Handler: schema_triple.GetSchemaTripleListHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/schema_triple/create",
-				Handler: schema_triple.CreateSchemaTripleHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/schema_triple/update",
-				Handler: schema_triple.UpdateSchemaTripleHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/schema_triple/delete",
-				Handler: schema_triple.DeleteSchemaTriplesHandler(serverCtx),
-			},
-		},
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.JwtX},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/schema_triple/get",
+					Handler: schema_triple.GetSchemaTripleHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/schema_triple/list",
+					Handler: schema_triple.GetSchemaTripleListHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/schema_triple/create",
+					Handler: schema_triple.CreateSchemaTripleHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/schema_triple/update",
+					Handler: schema_triple.UpdateSchemaTripleHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/schema_triple/delete",
+					Handler: schema_triple.DeleteSchemaTriplesHandler(serverCtx),
+				},
+			}...,
+		),
 		rest.WithPrefix("/api"),
 	)
 
@@ -352,6 +355,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/extract_task/publish",
 					Handler: extract_task.PublishExtractTaskHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/extract_task/run",
+					Handler: extract_task.RunExtractTaskHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/api"),
@@ -420,6 +428,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/relationship/delete",
 					Handler: extract_task_result.DeleteRelationshipsHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/extract_task_result/get",
+					Handler: extract_task_result.GetExtractTaskResultHandler(serverCtx),
 				},
 			}...,
 		),

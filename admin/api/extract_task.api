@@ -59,6 +59,10 @@ type (
     PublishExtractTaskReq {
         ID    int64  `json:"id"`
     }
+
+    RunExtractTaskReq {
+        ID    int64  `json:"id"`
+    }
 )
 
 @server(
@@ -84,5 +88,8 @@ service admin {
 
     @handler publishExtractTask
     post /extract_task/publish (PublishExtractTaskReq)
+
+    @handler runExtractTask
+    post /extract_task/run (RunExtractTaskReq)
 
 }

@@ -33,10 +33,15 @@ func (l *UpdateSchemaOntologyPropLogic) UpdateSchemaOntologyProp(req *types.Upda
 		return err
 	}
 
+	creator, err := l.svcCtx.GetUserFromCache(req.Authorization)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
 	propModel.PropName = prop.PropName
 	propModel.PropDesc = prop.PropDesc
-	// TODO
-	propModel.CreatorID = 1
+	propModel.CreatorID = int(creator.ID)
 
 	err = dao.UpdateSchemaOntologyProp(l.svcCtx.DB, &propModel)
 	if err != nil {

@@ -101,7 +101,5 @@ func (l *CreateExtractTaskLogic) CreateExtractTask(req *types.CreateExtractTaskR
 		return
 	}
 
-	// TODO(mickey): 后台异步执行抽取任务
-
 	return
 }
