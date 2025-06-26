@@ -46,3 +46,4 @@ export interface UpdateDocumentParams {
 export async function UpdateDocument(params: UpdateDocumentParams): Promise<any> {
     return request.post(`/document/update`, params);
 }
+

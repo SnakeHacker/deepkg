@@ -1,13 +1,14 @@
-
 import type { ExtractTask } from '../model/extract_task';
 import request from '../utils/req';
 
+//分页查询参数类型
 export interface ListExtractTaskParams {
   work_space_id?: number;
   page_size: number;
   page_number: number;
 }
 
+//分页查询方法
 export async function ListExtractTask(params: ListExtractTaskParams): Promise<any> {
     return request.post(`/extract_task/list`, {
         ...params

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Layout, Avatar, Dropdown, message, Menu } from "antd";
 import type { MenuProps } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from "@ant-design/icons";
-import { useNavigate, Outlet } from "react-router-dom";
+import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import styles from "./index.module.less";
 import { Logout } from "../../service/session";
 import { getCurrentUser } from "../../service/auth";
@@ -18,6 +18,7 @@ type MenuItem = Required<MenuProps>['items'][number];
 
 const HomePage: React.FC = () => {
     const { successMsg, errorMsg, warningMsg } = useStore() as MessageInfo;
+     
 
     const [messageApi, contextHolder] = message.useMessage();
 
@@ -37,6 +38,7 @@ const HomePage: React.FC = () => {
 
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [collapsed, setCollapsed] = useState(false);
     const [selectedKeys, setSelectedKeys] = useState<string[]>(['']);
@@ -97,8 +99,9 @@ const HomePage: React.FC = () => {
                 <Menu
                     theme="light"
                     mode="inline"
+                    selectedKeys={[location.pathname]}
                     //   selectedKeys={selectedKeys}
-                    defaultSelectedKeys={[location.pathname]}
+                    //defaultSelectedKeys={[location.pathname]}
                     // 默认全部展开，获取所有菜单项的 key 作为 openKeys
                     defaultOpenKeys={(menus|| []).map(item => item!.key as string)}
                     onClick={({ key }) => toMenu(key)}
