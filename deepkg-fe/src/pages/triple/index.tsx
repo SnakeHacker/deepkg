@@ -291,7 +291,7 @@ const TriplePage: React.FC = () => {
                         >
                             <Select
                                 style={{'width': '100%'}}
-                                placeholder="起始节点"
+                                placeholder="目标节点"
                                 disabled={ontologies.length === 0}
                                 options={[
                                     ...ontologies.map((ontology) => (
