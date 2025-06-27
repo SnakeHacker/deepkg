@@ -83,11 +83,16 @@ const ExtractTaskResultPage: React.FC = () => {
                     labelText: (d: any) => d.labelText,
                 },
             },
+            edge: {
+                style: {
+                    labelText: (d: any) => d.labelText,
+                },
+            },
             layout: {
                 type: 'd3-force',
                 link: {
                     distance: (d: any) => {
-                        return 30;
+                        return 300;
                     },
                     strength: (d: any) => {
                         return 0.1;
@@ -143,7 +148,7 @@ const ExtractTaskResultPage: React.FC = () => {
                         id: `propNode${prop.id}`,
                         size: 15,
                         isLeaf: true,
-                        labelText: prop.prop_name
+                        labelText: prop.prop_value
                         // ...prop
                     }));
                     return [entityNode, ...propNodes];
