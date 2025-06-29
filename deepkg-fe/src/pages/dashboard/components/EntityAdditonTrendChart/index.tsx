@@ -9,7 +9,7 @@ import {
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import ReactECharts from 'echarts-for-react';
-import { GetSchemaOntologyDailyCount } from '../../../../service/schema_ontology';
+import { GetEntityDailyCount } from '../../../../service/dashboard';
 import { Spin } from 'antd';
 import styles from './index.module.less';
 
@@ -34,24 +34,34 @@ const EntityAdditonTrendChart: React.FC = () => {
   const fetchDailyData = async () => {
     try {
       setLoading(true);
-      const response = await GetSchemaOntologyDailyCount();
-      const items = response.items || [];
-      
-      const dates = items.map(item => {
+      const response = await GetEntityDailyCount();
+
+      const dates = response.map(item => {
         // 将日期格式从 '2025-06-23' 转换为 '6月23日'
         const date = new Date(item.date);
         return `${date.getMonth() + 1}月${date.getDate()}日`;
       });
-      
-      const counts = items.map(item => item.count);
-      
+
+      const counts = response.map(item => item.count);
+
       setChartData({ dates, counts });
     } catch (error) {
       console.error('获取实体数量趋势数据失败:', error);
       // 如果获取失败，使用默认数据
+      const today = new Date();
+      const defaultDates: string[] = [];
+      const defaultCounts: number[] = [];
+
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        defaultDates.push(`${date.getMonth() + 1}月${date.getDate()}日`);
+        defaultCounts.push(0);
+      }
+
       setChartData({
-        dates: ['6月17日', '6月18日', '6月19日', '6月20日', '6月21日', '6月22日', '6月23日'],
-        counts: [0, 0, 0, 0, 0, 0, 0]
+        dates: defaultDates,
+        counts: defaultCounts
       });
     } finally {
       setLoading(false);
@@ -61,7 +71,7 @@ const EntityAdditonTrendChart: React.FC = () => {
   useEffect(() => {
     fetchDailyData();
     // 每30秒刷新一次数据
-    const interval = setInterval(fetchDailyData, 30000);
+    const interval = setInterval(fetchDailyData, 60000);
     return () => clearInterval(interval);
   }, []);
 
@@ -83,7 +93,7 @@ const EntityAdditonTrendChart: React.FC = () => {
     },
     grid: {
       top: "18%",
-      bottom: "10%",
+      bottom: "20%",
       right: "5%",
       left: "5%"
     },
@@ -93,7 +103,11 @@ const EntityAdditonTrendChart: React.FC = () => {
     },
     yAxis: {
       type: "value",
-      max: Math.max(...chartData.counts, 10), // 动态设置最大值
+      max: (value: any) => {
+        // 取最大值后向上取整为10的倍数，例如：14 -> 20
+        return Math.ceil(value.max / 10) * 10;
+      },
+      minInterval: 1, // 最小刻度间隔为1，避免出现小数或太密集
     },
     series: [
       {

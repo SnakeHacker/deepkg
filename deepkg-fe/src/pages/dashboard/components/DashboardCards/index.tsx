@@ -10,7 +10,7 @@ import taskIcon from '../../../../assets/dashboard_icon_4.png';
 import workspaceIcon from '../../../../assets/dashboard_icon_5.png';
 
 import {
-  GetTotalSchemaOntologyCountAllWorkspaces,
+  GetTotalEntityCountAllWorkspaces,
   GetDocumentTotalCount,
   GetTotalExtractTaskCountAllWorkspaces,
   GetOrganizationTotalCount,
@@ -43,7 +43,7 @@ const DashboardCards: React.FC = () => {
 
     try {
       const [entityTotal, relationTotal, docTotal, taskTotal, workspaceTotal] = await Promise.all([
-        GetTotalSchemaOntologyCountAllWorkspaces(),
+        GetTotalEntityCountAllWorkspaces(),
         GetOrganizationTotalCount(),
         GetDocumentTotalCount(),
         GetTotalExtractTaskCountAllWorkspaces(),

@@ -1,67 +1,110 @@
 .container {
     width: 100%;
     height: 95vh;
-
     background: rgb(255, 255, 255);
     padding: 16px;
-
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
+    overflow: hidden;
 
     .left {
-        height: 99%;
-        width: 300px;
+        height: 100%;
+        width: 280px;
         background-color: white;
         padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        flex-shrink: 0;
     }
 
     .right {
-        height: 99%;
-        width: 80%;
+        height: 100%;
+        flex: 1;
         background-color: white;
-        margin-left: 15px;
-        padding-left: 16px;
-        padding-right: 16px;
+        margin-left: 16px;
+        padding: 16px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+
         .header {
-            z-index: 1;
-            height: 100px;
+            height: 60px;
             width: 100%;
             display: flex;
             flex-direction: row;
             justify-content: flex-end;
             align-items: center;
+            margin-bottom: 16px;
+            flex-shrink: 0;
         }
 
-        .body{
-            height: 90%;
+        .body {
+            flex: 1;
             width: 100%;
             display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-            justify-content: flex-start;
-            flex-wrap: wrap;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 0;
 
             .tableContainer {
-                height: 80%;
+                flex: 1;
                 width: 100%;
+                overflow: hidden;
+                min-height: 0;
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 8px;
+                
+                :global(.ant-table-wrapper) {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    min-height: 0;
+                    
+                    .ant-table {
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+                        min-height: 0;
+                        
+                        .ant-table-container {
+                            flex: 1;
+                            display: flex;
+                            flex-direction: column;
+                            min-height: 0;
+                            
+                            .ant-table-header {
+                                flex-shrink: 0;
+                            }
+                            
+                            .ant-table-body {
+                                flex: 1;
+                                overflow-y: auto !important;
+                                overflow-x: hidden;
+                                max-height: none !important;
+                                min-height: 0;
+                            }
+                        }
+                    }
+                }
             }
 
             .footer {
-                height: 20%;
+                height: 60px;
                 width: 100%;
                 display: flex;
                 flex-direction: row;
                 align-items: center;
                 justify-content: center;
-
+                margin-top: 0;
+                flex-shrink: 0;
+                border-top: 1px solid #f0f0f0;
+                padding-top: 16px;
             }
-
         }
-
     }
-
-
-
 }
