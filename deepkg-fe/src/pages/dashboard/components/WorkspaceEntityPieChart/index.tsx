@@ -44,7 +44,7 @@ const WorkspaceEntityPieChart: React.FC = () => {
             page_size: 1,
           }) as ListSchemaOntologyResp;
 
-          const displayName = ws.name?.trim() || `ID-${ws.id}`;
+          const displayName = ws.knowledge_graph_workspace_name?.trim() || `ID-${ws.id}`;
 
           chartData.push({
             name: displayName,

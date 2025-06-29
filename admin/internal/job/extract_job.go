@@ -203,7 +203,7 @@ func DoExtractTask(svcCtx *svc.ServiceContext, taskID int) (err error) {
 
 			targetEntity, ok := entitiesMap[relationship.Target]
 			if !ok {
-				err = errors.New("source entity not found")
+				err = errors.New("target entity not found")
 				glog.Error(err)
 				tx.Rollback()
 				return err
