@@ -9,7 +9,7 @@ import {
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import ReactECharts from 'echarts-for-react';
-import { GetSchemaOntologyDailyCount } from '../../../../service/schema_ontology';
+import { GetEntityTotalDailyCount } from '../../../../service/dashboard';
 import { Spin } from 'antd';
 import styles from './index.module.less';
 
@@ -35,24 +35,33 @@ const EntityTotalTrendChart: React.FC = () => {
   const fetchDailyData = async () => {
     try {
       setLoading(true);
-      const response = await GetSchemaOntologyDailyCount();
-      const items = response.items || [];
-      // 计算累计总数
-      let sum = 0;
-      const counts = items.map(item => {
-        sum += item.count;
-        return sum;
-      });
-      const dates = items.map(item => {
+      const response = await GetEntityTotalDailyCount();
+
+      const dates = response.map(item => {
         const date = new Date(item.date);
         return `${date.getMonth() + 1}月${date.getDate()}日`;
       });
+
+      const counts = response.map(item => item.count);
+
       setChartData({ dates, counts });
     } catch (error) {
       console.error('获取实体累计数量数据失败:', error);
+      // 如果获取失败，使用默认数据
+      const today = new Date();
+      const defaultDates: string[] = [];
+      const defaultCounts: number[] = [];
+
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        defaultDates.push(`${date.getMonth() + 1}月${date.getDate()}日`);
+        defaultCounts.push(0);
+      }
+
       setChartData({
-        dates: ['6月17日', '6月18日', '6月19日', '6月20日', '6月21日', '6月22日', '6月23日'],
-        counts: [0, 0, 0, 0, 0, 0, 0]
+        dates: defaultDates,
+        counts: defaultCounts
       });
     } finally {
       setLoading(false);
@@ -61,7 +70,7 @@ const EntityTotalTrendChart: React.FC = () => {
 
   useEffect(() => {
     fetchDailyData();
-    const interval = setInterval(fetchDailyData, 30000);
+    const interval = setInterval(fetchDailyData, 60000);
     return () => clearInterval(interval);
   }, []);
 
@@ -82,7 +91,7 @@ const EntityTotalTrendChart: React.FC = () => {
     },
     grid: {
       top: "18%",
-      bottom: "10%",
+      bottom: "20%",
       right: "5%",
       left: "5%"
     },
@@ -92,7 +101,8 @@ const EntityTotalTrendChart: React.FC = () => {
     },
     yAxis: {
       type: "value",
-      max: Math.max(...chartData.counts, 10),
+      max: (value: any) => Math.ceil(value.max / 10) * 10,
+      minInterval: 1,
     },
     series: [
       {

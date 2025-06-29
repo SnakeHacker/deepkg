@@ -8,9 +8,7 @@ import {
   TitleComponent,
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
-import { ListKnowledgeGraphWorkspace } from '../../../../service/workspace';
-import type { ListSchemaOntologyResp } from '../../../../service/dashboard';
-import request from '../../../../utils/req';
+import { GetWorkspaceEntityCounts, type WorkspaceEntityCount } from '../../../../service/dashboard';
 import styles from './index.module.less';
 
 echarts.use([
@@ -25,38 +23,31 @@ const WorkspaceEntityPieChart: React.FC = () => {
   const chartRef = useRef(null);
   const [data, setData] = useState<{ name: string; value: number }[]>([]);
   const [total, setTotal] = useState<number>(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const res = await ListKnowledgeGraphWorkspace({
-          page_size: 1000,
-          page_number: 1,
-        });
-
-        const workspaces = res.knowledge_graph_workspaces || [];
-        const chartData: { name: string; value: number }[] = [];
-
-        for (const ws of workspaces) {
-          const countRes = await request.post('/schema_ontology/list', {
-            work_space_id: ws.id,
-            page_number: 1,
-            page_size: 1,
-          }) as ListSchemaOntologyResp;
-
-          const displayName = ws.name?.trim() || `ID-${ws.id}`;
-
-          chartData.push({
-            name: displayName,
-            value: countRes.total || 0,
-          });
-        }
+        const workspaceEntityCounts: WorkspaceEntityCount[] = await GetWorkspaceEntityCounts();
+        
+        // 过滤掉实体数量为0的工作空间
+        const filteredCounts = workspaceEntityCounts.filter(item => item.entity_count > 0);
+        
+        const chartData: { name: string; value: number }[] = filteredCounts.map(item => ({
+          name: item.workspace_name,
+          value: item.entity_count,
+        }));
 
         const totalCount = chartData.reduce((sum, item) => sum + item.value, 0);
         setData(chartData);
         setTotal(totalCount);
       } catch (error) {
-        console.error('获取实体数量失败:', error);
+        console.error('获取工作空间实体数量失败:', error);
+        setData([]);
+        setTotal(0);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -75,9 +66,9 @@ const WorkspaceEntityPieChart: React.FC = () => {
 
   const option = {
     title: {
-      text: '100%',
-      left: '35%',
-      top: '40%',  // 从 '50%' 调整为 '45%'
+      text: total.toString(),
+      left: '40%',
+      top: '40%',
       textAlign: 'center',
       textVerticalAlign: 'middle',
       textStyle: {
@@ -116,7 +107,7 @@ const WorkspaceEntityPieChart: React.FC = () => {
       {
         name: '实体数量',
         type: 'pie',
-        center: ['35%', '40%'],
+        center: ['40%', '40%'],
         radius: ['35%', '55%'],
         clockwise: false,
         label: {
@@ -137,6 +128,21 @@ const WorkspaceEntityPieChart: React.FC = () => {
     ],
   };
 
+  if (loading) {
+    return (
+      <div className={styles.chartWrapper} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div>加载中...</div>
+      </div>
+    );
+  }
+
+  if (data.length === 0) {
+    return (
+      <div className={styles.chartWrapper} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div>暂无数据</div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.chartWrapper}>

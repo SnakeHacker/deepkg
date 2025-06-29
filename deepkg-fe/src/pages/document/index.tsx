@@ -39,7 +39,7 @@ const DocumentPage: React.FC = () => {
 
     useEffect(() => {
         listDocuments();
-    }, [dirID]);
+    }, [dirID, pagination.current, pagination.pageSize]);
 
     const listDirs = async () => {
         const res = await ListDocumentDir();
@@ -79,6 +79,11 @@ const DocumentPage: React.FC = () => {
     const handleSelectDir= (selectedKeys: React.Key[])=>{
         const selectedKeyAsInt = parseInt(selectedKeys[0] as string, 10);
         setDirID(selectedKeyAsInt);
+        // 切换目录时重置分页到第一页
+        setPagination(prev => ({
+            ...prev,
+            current: 1
+        }));
     }
 
     const handleCreateDocOk = async () => {
@@ -207,28 +212,33 @@ const DocumentPage: React.FC = () => {
           title: 'ID',
           dataIndex: 'id',
           key: 'id',
-          width: '10%',
+          width: 80,
+          ellipsis: true,
         },
         {
           title: '文件名称',
           dataIndex: 'doc_name',
           key: 'doc_name',
-          width: '60%',
+          ellipsis: true,
+          render: (text: string) => (
+            <span title={text}>{text}</span>
+          ),
         },
         {
             title: '创建时间',
             dataIndex: 'created_at',
             key: 'created_at',
-            width: 350,
+            width: 180,
+            ellipsis: true,
         },
         {
             title: '操作',
             key: 'action',
-            width: 200,
+            width: 160,
             render: (_: any, record: Document) => (
                 <div key={record.id}>
                     <Button
-                        style={{ marginRight: '10px' }}
+                        style={{ marginRight: '8px' }}
                         onClick={() => handleEdit(record)}
                         size='small'
                     >
@@ -366,13 +376,16 @@ const DocumentPage: React.FC = () => {
                     </Modal>
 
                     <div className={styles.tableContainer}>
-                    <Table
-                        style={{ width: '100%' }}
-                        dataSource={docs}
-                        columns={columns}
-                        pagination={false}
-                        rowKey="id"
-                    />
+                        <Table
+                            dataSource={docs}
+                            columns={columns}
+                            pagination={false}
+                            rowKey="id"
+                            scroll={{ 
+                                x: 'max-content',
+                                y: 'calc(100vh - 310px)' // 增加预留空间，确保底部完全显示
+                            }}
+                        />
                     </div>
 
                     <div className={styles.footer}>
@@ -381,6 +394,10 @@ const DocumentPage: React.FC = () => {
                             pageSize={pagination.pageSize}
                             total={total}
                             onChange={handlePageChange}
+                            showSizeChanger
+                            showQuickJumper
+                            showTotal={(total, range) => `第 ${range[0]}-${range[1]} 条/共 ${total} 条`}
+                            pageSizeOptions={['10', '20', '50', '100']}
                         />
                     </div>
 
