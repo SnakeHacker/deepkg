@@ -1,0 +1,25 @@
+type (
+	StreamChatReq {
+        Content string `json:"content"`
+		History []Message `json:"history,optional"`
+        WorkspaceID int `json:"workspace_id, optional"`
+	}
+
+	StreamChatResp {
+		Result string `json:"result"`
+	}
+
+	Message {
+		Role    string `json:"role"`
+		Content string `json:"content"`
+	}
+)
+
+@server(
+	prefix: api
+	group: chat
+)
+service admin {
+	@handler streamChat
+	post /chat (StreamChatReq) returns (StreamChatResp)
+}

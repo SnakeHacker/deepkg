@@ -13,6 +13,13 @@ import {
     UserOutlined
 } from "@ant-design/icons";
 
+import ChatIcon from '../../assets/chat.svg';
+
+const ImageIcon = ( src : any) => (
+  <img src={src} alt="icon" style={{ width: 14, height: 14, marginRight: 8 }} />
+);
+
+
 export const menuList = [
     {
         key: '/dashboard',
@@ -62,6 +69,11 @@ export const menuList = [
                 label: '非结构化抽取',
             },
         ]
+    },
+    {
+        key: '/knowledge_infer',
+        icon: ImageIcon(ChatIcon),
+        label: '知识推理',
     },
     {
         key: '/system',

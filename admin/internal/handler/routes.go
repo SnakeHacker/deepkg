@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	admin "github.com/SnakeHacker/deepkg/admin/internal/handler/admin"
+	chat "github.com/SnakeHacker/deepkg/admin/internal/handler/chat"
 	document "github.com/SnakeHacker/deepkg/admin/internal/handler/document"
 	document_dir "github.com/SnakeHacker/deepkg/admin/internal/handler/document_dir"
 	extract_task "github.com/SnakeHacker/deepkg/admin/internal/handler/extract_task"
@@ -29,6 +30,17 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodGet,
 				Path:    "/health",
 				Handler: admin.HealthHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/chat",
+				Handler: chat.StreamChatHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/api"),

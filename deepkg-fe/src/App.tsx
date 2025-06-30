@@ -15,6 +15,7 @@ import ExtractTaskPage from "./pages/extract_task";
 import OntologyPropPage from "./pages/ontology_prop";
 import Dashboard from "./pages/dashboard";
 import ExtractTaskResultPage from "./pages/extract_task_result";
+import KnowledgeInferPage from "./pages/knowledge_infer";
 
 
 function App() {
@@ -27,7 +28,7 @@ function App() {
             <Route path="/" element={<AuthRoute><HomePage /></AuthRoute>}>
 
                 <Route index element={<Dashboard />} />
-                <Route path="dashboard" element={<Dashboard />} />   
+                <Route path="dashboard" element={<Dashboard />} />
                 <Route path="document_dir" element={<DocumentDirPage />} />
                 <Route path="document" element={<DocumentPage />} />
                 <Route path="workspace" element={<WorkspacePage />} />
@@ -36,6 +37,7 @@ function App() {
                 <Route path="triple" element={<TriplePage />} />
                 <Route path="extract_task" element={<ExtractTaskPage />} />
                 <Route path="extract_task_result" element={<ExtractTaskResultPage />} />
+                <Route path="knowledge_infer" element={<KnowledgeInferPage />} />
 
                 <Route path="org" element={<OrganizationListPage />} />
                 <Route path="user" element={<UserListPage />} />
