@@ -25,15 +25,15 @@ const TriplePage: React.FC = () => {
     const [form] = Form.useForm();
 
     useEffect(() => {
-        listWorkspaces()
+        listWorkspaces();
     }, []);
 
     useEffect(() => {
-        if (workspaceID > 0){
-            listTriples()
-            listOntologies()
+        if (workspaceID > 0) {
+            listTriples();
+            listOntologies();
         }
-    }, [workspaceID]);
+    }, [workspaceID, pagination.current, pagination.pageSize]);
 
     const listTriples = async () => {
         const res = await ListSchemaTriple({
@@ -41,7 +41,7 @@ const TriplePage: React.FC = () => {
             page_size: pagination.pageSize,
             page_number: pagination.current
         });
-        setTotal(res.total)
+        setTotal(res.total);
         setTriples(res.schema_triples);
     };
 
@@ -51,8 +51,8 @@ const TriplePage: React.FC = () => {
             page_number: -1
         });
         setWorkspaces(res.knowledge_graph_workspaces);
-        if (res.knowledge_graph_workspaces.length > 0){
-            setWorkspaceID(res.knowledge_graph_workspaces[res.knowledge_graph_workspaces.length-1].id)
+        if (res.knowledge_graph_workspaces.length > 0) {
+            setWorkspaceID(res.knowledge_graph_workspaces[res.knowledge_graph_workspaces.length - 1].id);
         }
     };
 
@@ -80,12 +80,10 @@ const TriplePage: React.FC = () => {
                         relationship: relationship,
                     },
                 });
-                console.log(res)
                 form.resetFields();
                 setTripleID(0);
                 listTriples();
             } else {
-
                 const res = await CreateSchemaTriple({
                     schema_triple: {
                         work_space_id: workspaceID,
@@ -94,7 +92,6 @@ const TriplePage: React.FC = () => {
                         relationship: relationship,
                     }
                 });
-                console.log(res)
                 form.resetFields();
                 setTripleID(0);
                 listTriples();
@@ -102,75 +99,75 @@ const TriplePage: React.FC = () => {
         } catch (errorInfo) {
             console.log('Failed:', errorInfo);
         }
-    }
+    };
 
     const handleCancelCreateTriple = () => {
         setIsModalOpen(false);
         form.resetFields();
         setTripleID(0);
-    }
+    };
 
     const deleteTriple = async (id: number) => {
         const res = await DeleteSchemaTriples({ ids: [id] });
-        console.log(res)
         listTriples();
-    }
+    };
 
     const handleEdit = (record: SchemaTriple) => {
         setTripleID(record.id!);
         form.setFieldsValue({
             relationship: record.relationship,
-            source_ontology_id: record.source_ontology_id === 0 ? '': record.source_ontology_id,
-            target_ontology_id: record.target_ontology_id === 0 ? '': record.target_ontology_id,
+            source_ontology_id: record.source_ontology_id === 0 ? '' : record.source_ontology_id,
+            target_ontology_id: record.target_ontology_id === 0 ? '' : record.target_ontology_id,
         });
         setIsModalOpen(true);
-    }
+    };
 
     const columns = [
         {
-          title: 'ID',
-          dataIndex: 'id',
-          key: 'id',
-          width: '10%',
+            title: 'ID',
+            dataIndex: 'id',
+            key: 'id',
+            width: 80,
+            ellipsis: true,
         },
         {
             title: '起始节点',
             dataIndex: 'source_ontology_name',
             key: 'source_ontology_name',
-            width: '20%',
+            ellipsis: true,
         },
         {
-          title: '关系',
-          dataIndex: 'relationship',
-          key: 'relationship',
-          width: '20%',
+            title: '关系',
+            dataIndex: 'relationship',
+            key: 'relationship',
+            ellipsis: true,
         },
         {
-          title: '目标节点',
-          dataIndex: 'target_ontology_name',
-          key: 'target_ontology_name',
-          width: '20%',
+            title: '目标节点',
+            dataIndex: 'target_ontology_name',
+            key: 'target_ontology_name',
+            ellipsis: true,
         },
         {
             title: '创建时间',
             dataIndex: 'created_at',
             key: 'created_at',
-            width: 350,
+            width: 180,
+            ellipsis: true,
         },
         {
             title: '操作',
             key: 'action',
-            width: 200,
+            width: 160,
             render: (_: any, record: SchemaTriple) => (
                 <div key={record.id}>
                     <Button
-                        style={{ marginRight: '10px' }}
+                        style={{ marginRight: '8px' }}
                         onClick={() => handleEdit(record)}
                         size='small'
                     >
                         编辑
                     </Button>
-
                     <Popconfirm
                         title={""}
                         description="确认删除关系?"
@@ -186,7 +183,6 @@ const TriplePage: React.FC = () => {
                             删除
                         </Button>
                     </Popconfirm>
-
                 </div>
             ),
         },
@@ -202,34 +198,26 @@ const TriplePage: React.FC = () => {
 
     return (
         <div className={styles.container}
-            style={{
-                backgroundImage: `url(${BgSVG})`,
-            }}
+            style={{ backgroundImage: `url(${BgSVG})` }}
         >
-
             <div className={styles.header}>
                 <Select
-                    style={{'width': '200px', 'marginRight': '10px'}}
+                    style={{ width: '200px', marginRight: '10px' }}
                     placeholder="工作空间"
                     disabled={workspaces.length === 0}
                     onSelect={(value) => setWorkspaceID(value)}
                     value={workspaceID}
-                    options={[
-                        ...workspaces.map((workspaces) => (
-                            {key: workspaces.id, label: workspaces.knowledge_graph_workspace_name, value: workspaces.id}
-                        )),
-                    ]}
+                    options={workspaces.map((ws) => ({ key: ws.id, label: ws.knowledge_graph_workspace_name, value: ws.id }))}
                 />
-
                 <Button
                     type="primary"
                     icon={<PlusOutlined />}
                     onClick={() => {
                         setTripleID(0);
                         form.resetFields();
-                        setIsModalOpen(true)
-                        if (workspaceID > 0){
-                            form.setFieldValue("work_space_id", workspaceID)
+                        setIsModalOpen(true);
+                        if (workspaceID > 0) {
+                            form.setFieldValue("work_space_id", workspaceID);
                         }
                     }}
                 >
@@ -238,9 +226,7 @@ const TriplePage: React.FC = () => {
             </div>
             <div className={styles.body}>
                 <Modal
-                    title={
-                        tripleID > 0 ? '编辑关系' : `新建关系`
-                    }
+                    title={tripleID > 0 ? '编辑关系' : `新建关系`}
                     open={isModalOpen}
                     onOk={handleCreateTripleOk}
                     onCancel={handleCancelCreateTriple}
@@ -254,56 +240,42 @@ const TriplePage: React.FC = () => {
                         labelAlign='left'
                         labelCol={{ span: 5 }}
                     >
-
                         <Form.Item
                             label="起始节点"
                             name="source_ontology_id"
                             rules={[{ required: true, message: '请选择起始节点' }]}
                         >
                             <Select
-                                style={{'width': '100%'}}
+                                style={{ width: '100%' }}
                                 placeholder="起始节点"
                                 disabled={ontologies.length === 0}
-                                options={[
-                                    ...ontologies.map((ontology) => (
-                                        {key: ontology.id, label: ontology.ontology_name, value: ontology.id}
-                                    )),
-                                ]}
-                            >
-                            </Select>
+                                options={ontologies.map((ontology) => ({ key: ontology.id, label: ontology.ontology_name, value: ontology.id }))}
+                            />
                         </Form.Item>
-
                         <Form.Item
                             label="关系名称"
                             name="relationship"
                             rules={[{ required: true, message: '请输入关系名称' }]}
                         >
                             <Input
-                                style={{'width': '100%'}}
+                                style={{ width: '100%' }}
                                 placeholder="请输入关系名称"
                             />
                         </Form.Item>
-
                         <Form.Item
                             label="目标节点"
                             name="target_ontology_id"
                             rules={[{ required: true, message: '请选择目标节点' }]}
                         >
                             <Select
-                                style={{'width': '100%'}}
+                                style={{ width: '100%' }}
                                 placeholder="目标节点"
                                 disabled={ontologies.length === 0}
-                                options={[
-                                    ...ontologies.map((ontology) => (
-                                        {key: ontology.id, label: ontology.ontology_name, value: ontology.id}
-                                    )),
-                                ]}
-                            >
-                            </Select>
+                                options={ontologies.map((ontology) => ({ key: ontology.id, label: ontology.ontology_name, value: ontology.id }))}
+                            />
                         </Form.Item>
                     </Form>
                 </Modal>
-
                 <Table
                     style={{ width: '100%' }}
                     dataSource={triples}
@@ -312,17 +284,19 @@ const TriplePage: React.FC = () => {
                     rowKey="id"
                 />
             </div>
-
             <div className={styles.footer}>
                 <Pagination
                     current={pagination.current}
                     pageSize={pagination.pageSize}
                     total={total}
                     onChange={handlePageChange}
+                    showSizeChanger
+                    showTotal={(total, range) => `第 ${range[0]}-${range[1]} 条/共 ${total} 条`}
+                    pageSizeOptions={['10', '20', '50', '100']}
                 />
             </div>
         </div>
-    )
+    );
 };
 
 export default TriplePage;
