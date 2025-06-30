@@ -26,7 +26,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<AuthRoute><HomePage /></AuthRoute>}>
 
-                <Route index element={<UserListPage />} />
+                <Route index element={<Dashboard />} />
                 <Route path="dashboard" element={<Dashboard />} />   
                 <Route path="document_dir" element={<DocumentDirPage />} />
                 <Route path="document" element={<DocumentPage />} />

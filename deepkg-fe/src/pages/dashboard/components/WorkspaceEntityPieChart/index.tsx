@@ -29,6 +29,7 @@ const WorkspaceEntityPieChart: React.FC = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
+
         const workspaceEntityCounts: WorkspaceEntityCount[] = await GetWorkspaceEntityCounts();
         
         // 过滤掉实体数量为0的工作空间
@@ -38,7 +39,7 @@ const WorkspaceEntityPieChart: React.FC = () => {
           name: item.workspace_name,
           value: item.entity_count,
         }));
-
+          
         const totalCount = chartData.reduce((sum, item) => sum + item.value, 0);
         setData(chartData);
         setTotal(totalCount);
