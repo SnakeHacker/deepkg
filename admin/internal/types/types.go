@@ -5,6 +5,21 @@ type GetHealthResp struct {
 	Result string `json:"result"`
 }
 
+type StreamChatReq struct {
+	Content     string    `json:"content"`
+	History     []Message `json:"history,optional"`
+	WorkspaceID int       `json:"workspace_id, optional"`
+}
+
+type StreamChatResp struct {
+	Result string `json:"result"`
+}
+
+type Message struct {
+	Role    string `json:"role"`
+	Content string `json:"content"`
+}
+
 type PaginationParams struct {
 	PageSize   int `json:"page_size"`
 	PageNumber int `json:"page_number"`

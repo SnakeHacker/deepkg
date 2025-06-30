@@ -1,5 +1,6 @@
 import (
 	"health.api"
+	"chat.api"
 	"common.api"
 	"document.api"
 	"document_dir.api"
