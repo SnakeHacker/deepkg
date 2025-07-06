@@ -6,6 +6,7 @@ import { PlusOutlined, RollbackOutlined } from "@ant-design/icons";
 import type { Entity, EntityProp, Relationship } from "../../model/extract_task_result";
 import { Graph } from '@antv/g6';
 import { GetExtractTaskResult } from "../../service/extract_task_result";
+import {PublishExtractTask} from "../../service/extract_task.ts";
 const ExtractTaskResultPage: React.FC = () => {
 
     const [taskID, setTaskID] = useState(0);
@@ -164,6 +165,15 @@ const ExtractTaskResultPage: React.FC = () => {
         }
     };
 
+    const publishExtractTask = async () => {
+        const res = await PublishExtractTask({id: taskID})
+        if (res) {
+            console.log('发布成功');
+        } else {
+            console.error('发布失败');
+        }
+    }
+
 
     return (
         <div className={styles.container}
@@ -187,8 +197,7 @@ const ExtractTaskResultPage: React.FC = () => {
                 <Button
                     type="primary"
                     icon={<PlusOutlined />}
-                    onClick={() => {
-                    }}
+                    onClick={publishExtractTask}
                 >
                     发布
                 </Button>

@@ -2,6 +2,7 @@ package schema_ontology_prop
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
@@ -47,6 +48,26 @@ func (l *UpdateSchemaOntologyPropLogic) UpdateSchemaOntologyProp(req *types.Upda
 	if err != nil {
 		glog.Error(err)
 		return err
+	}
+
+	ontologyModel, err := dao.SelectSchemaOntologyByID(l.svcCtx.DB, int64(propModel.OntologyID))
+	if err != nil {
+		glog.Error(err)
+		return err
+	}
+
+	workspaceModel, err := dao.SelectKnowledgeGraphWorkspaceByID(l.svcCtx.DB, int64(ontologyModel.WorkSpaceID))
+	if err != nil {
+		glog.Error("查询工作空间失败：", err)
+		return
+	}
+
+	stmt := fmt.Sprintf("USE %s; ALTER TAG %s CHANGE (%s STRING COMMENT '%s');", workspaceModel.WorkSpaceName, ontologyModel.OntologyName, prop.PropName, prop.PropDesc)
+	glog.Info("修改标签属性：", stmt)
+	_, err = l.svcCtx.Nebula.Execute(stmt)
+	if err != nil {
+		glog.Error("修改标签属性失败：", err)
+		return
 	}
 
 	return
