@@ -52,7 +52,10 @@ const KnowledgeInferPage: React.FC = () => {
 
             </div>
             <div className={styles.body}>
-                <ChatContainer />
+                <ChatContainer
+                  key={`chat-${workspaceID}`} // 添加 key 属性
+                  workspaceID={workspaceID}
+                />
 
             </div>
 

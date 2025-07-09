@@ -2,6 +2,7 @@ package schema_ontology_prop
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
@@ -43,7 +44,7 @@ func (l *CreateSchemaOntologyPropLogic) CreateSchemaOntologyProp(req *types.Crea
 	ontologyPropModel := gorm_model.SchemaOntologyProp{
 		PropName:    prop.PropName,
 		PropDesc:    prop.PropDesc,
-		WorkSpaceID: int(ontologyModel.WorkSpaceID),
+		WorkSpaceID: ontologyModel.WorkSpaceID,
 		OntologyID:  int(prop.OntologyID),
 		CreatorID:   int(creator.ID),
 	}
@@ -51,6 +52,28 @@ func (l *CreateSchemaOntologyPropLogic) CreateSchemaOntologyProp(req *types.Crea
 	err = dao.CreateSchemaOntologyProp(l.svcCtx.DB, &ontologyPropModel)
 	if err != nil {
 		glog.Error(err)
+		return
+	}
+
+	workspaceModel, err := dao.SelectKnowledgeGraphWorkspaceByID(l.svcCtx.DB, int64(ontologyModel.WorkSpaceID))
+	if err != nil {
+		glog.Error("查询工作空间失败：", err)
+		return
+	}
+
+	stmt := fmt.Sprintf("USE %s; ALTER TAG `%s` ADD (`%s` STRING COMMENT '%s');", workspaceModel.WorkSpaceName, ontologyModel.OntologyName, prop.PropName, prop.PropDesc)
+	glog.Info("创建标签属性：", stmt)
+	_, err = l.svcCtx.Nebula.Execute(stmt)
+	if err != nil {
+		glog.Error("创建标签属性失败:", err)
+		return
+	}
+
+	stmt = fmt.Sprintf("CREATE TAG INDEX `%s_index_%s` ON `%s`(`%s`(10));", ontologyModel.OntologyName, prop.PropName, ontologyModel.OntologyName, prop.PropName)
+	glog.Info("创建属性索引：", stmt)
+	_, err = l.svcCtx.Nebula.Execute(stmt)
+	if err != nil {
+		glog.Error("创建属性索引失败:", err)
 		return
 	}
 

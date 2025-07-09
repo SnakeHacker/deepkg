@@ -208,7 +208,7 @@ const OntologyPropPage: React.FC = () => {
             <div className={styles.body}>
                 <Modal
                     title={
-                        propID > 0 ? '编辑空间' : `新建空间`
+                        propID > 0 ? '编辑属性' : `新建属性`
                     }
                     open={isModalOpen}
                     onOk={handleCreateOntologyPropOk}
@@ -230,7 +230,7 @@ const OntologyPropPage: React.FC = () => {
                         >
                             <Input
                                 style={{'width': '100%'}}
-                                placeholder="请输入本体名称"
+                                placeholder="请输入属性名称"
                             />
                         </Form.Item>
 

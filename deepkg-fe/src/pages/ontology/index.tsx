@@ -262,6 +262,7 @@ const OntologyPage: React.FC = () => {
                                         {key: workspaces.id, label: workspaces.knowledge_graph_workspace_name, value: workspaces.id}
                                     )),
                                 ]}
+                                onSelect={(value)=> setWorkspaceID(value)}
                             >
                             </Select>
                         </Form.Item>

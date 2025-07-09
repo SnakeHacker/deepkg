@@ -69,7 +69,7 @@ func SelectProps(db *gorm.DB, entityID int, pageIndex int, pageSize int) (props 
 	return
 }
 
-func SelectPropsByIDs(db *gorm.DB, entityIDs []int) (props []*m.Prop, err error) {
+func SelectPropsByEntityIDs(db *gorm.DB, entityIDs []int) (props []*m.Prop, err error) {
 	statement := db.Model(&m.Prop{}).Where("entity_id IN (?) ", entityIDs)
 
 	err = statement.Order("created_at desc").Distinct().Find(&props).Error

@@ -33,7 +33,7 @@ func DeleteEntitysByIDs(db *gorm.DB, ids []int64) (err error) {
 	return
 }
 
-func SelectEntitys(db *gorm.DB, taskID int, pageIndex int, pageSize int) (entitys []*m.Entity, total int64, err error) {
+func SelectEntitiesByTaskID(db *gorm.DB, taskID int, pageIndex int, pageSize int) (entities []*m.Entity, total int64, err error) {
 	statement := db.Model(&m.Entity{})
 	if taskID != 0 {
 		statement = statement.Where("task_id = ?", taskID)
@@ -49,7 +49,7 @@ func SelectEntitys(db *gorm.DB, taskID int, pageIndex int, pageSize int) (entity
 		statement = statement.Offset((pageIndex - 1) * pageSize).Limit(pageSize)
 	}
 
-	err = statement.Order("created_at desc").Distinct().Find(&entitys).Error
+	err = statement.Order("created_at desc").Distinct().Find(&entities).Error
 	if err != nil {
 		glog.Error(err)
 		return

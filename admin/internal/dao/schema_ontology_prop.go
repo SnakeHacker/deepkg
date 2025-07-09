@@ -66,6 +66,16 @@ func SelectSchemaOntologyPropByID(db *gorm.DB, id int64) (prop m.SchemaOntologyP
 	return
 }
 
+func SelectSchemaOntologyPropsByIDs(db *gorm.DB, ids []int64) (props []*m.SchemaOntologyProp, err error) {
+	err = db.Where("id IN (?)", ids).Find(&props).Error
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	return
+}
+
 func SelectSchemaOntologyPropsByOntologyIDs(db *gorm.DB, ids []int64) (props []*m.SchemaOntologyProp, err error) {
 	err = db.Where("ontology_id IN (?)", ids).Find(&props).Error
 	if err != nil {
