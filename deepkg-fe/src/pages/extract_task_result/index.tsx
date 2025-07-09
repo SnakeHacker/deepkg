@@ -120,7 +120,7 @@ const ExtractTaskResultPage: React.FC = () => {
         });
 
         graph.render();
-    }, [graphData])
+    }, [graphData]);
 
     useEffect(() => {
         taskID > 0 && getExtractTaskResult()
@@ -135,30 +135,48 @@ const ExtractTaskResultPage: React.FC = () => {
 
         if (res){
 
-            const {entities, relationships }=res.extract_task_result
+            const {entities, relationships} = res.extract_task_result
 
-            const data = {
-                nodes: entities.flatMap((entity: Entity) => {
-                    const entityNode = {
-                        id: `entityNode${entity.id}`,
-                        size: 30,
-                        labelText: entity.entity_name
-                        // ...entity
-                    };
-                    const propNodes = (entity.props || []).map((prop: EntityProp) => ({
+            const nodes = [];
+            const edges = [];
+
+            for (const entity of entities) {
+                const entityNode = {
+                    id: `entityNode${entity.id}`,
+                    size: 30,
+                    labelText: entity.entity_name
+                };
+                nodes.push(entityNode);
+
+                for (const prop of entity.props || []) {
+                    const propNode = {
                         id: `propNode${prop.id}`,
                         size: 15,
-                        isLeaf: true,
                         labelText: prop.prop_value
-                        // ...prop
-                    }));
-                    return [entityNode, ...propNodes];
-                }),
-                edges: relationships.map((relationship: Relationship) => ({
+                    };
+                    nodes.push(propNode);
+
+                    const propEdge = {
+                        source: `entityNode${entity.id}`,
+                        target: `propNode${prop.id}`,
+                        labelText: prop.prop_name
+                    }
+                    edges.push(propEdge);
+                }
+            }
+
+            for (const relationship of relationships) {
+                const edge = {
                     source: `entityNode${relationship.source_entity_id}`,
                     target: `entityNode${relationship.target_entity_id}`,
                     labelText: relationship.relationship_name
-                })),
+                };
+                edges.push(edge);
+            }
+
+            const data = {
+                nodes: nodes,
+                edges: edges,
             };
 
             setGraphData(data)
