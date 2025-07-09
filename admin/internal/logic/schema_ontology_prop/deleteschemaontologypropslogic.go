@@ -46,7 +46,15 @@ func (l *DeleteSchemaOntologyPropsLogic) DeleteSchemaOntologyProps(req *types.De
 			return err
 		}
 
-		stmt := fmt.Sprintf("USE %s; ALTER TAG %s DROP (%s);", workspaceModel.WorkSpaceName, ontologyModel.OntologyName, propModel.PropName)
+		stmt := fmt.Sprintf("USE %s; DROP TAG INDEX IF EXISTS `%s_index_%s`;", workspaceModel.WorkSpaceName, ontologyModel.OntologyName, propModel.PropName)
+		glog.Infof("删除%s属性索引: %s", propModel.PropName, stmt)
+		_, err = l.svcCtx.Nebula.Execute(stmt)
+		if err != nil {
+			glog.Error("删除属性索引失败:", err)
+			return err
+		}
+
+		stmt = fmt.Sprintf("ALTER TAG `%s` DROP (`%s`);", ontologyModel.OntologyName, propModel.PropName)
 		glog.Info("删除标签属性：", stmt)
 		_, err = l.svcCtx.Nebula.Execute(stmt)
 		if err != nil {

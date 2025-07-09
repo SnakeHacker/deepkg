@@ -61,11 +61,19 @@ func (l *CreateSchemaOntologyPropLogic) CreateSchemaOntologyProp(req *types.Crea
 		return
 	}
 
-	stmt := fmt.Sprintf("USE %s; ALTER TAG %s ADD (%s STRING COMMENT '%s');", workspaceModel.WorkSpaceName, ontologyModel.OntologyName, prop.PropName, prop.PropDesc)
+	stmt := fmt.Sprintf("USE %s; ALTER TAG `%s` ADD (`%s` STRING COMMENT '%s');", workspaceModel.WorkSpaceName, ontologyModel.OntologyName, prop.PropName, prop.PropDesc)
 	glog.Info("创建标签属性：", stmt)
 	_, err = l.svcCtx.Nebula.Execute(stmt)
 	if err != nil {
 		glog.Error("创建标签属性失败:", err)
+		return
+	}
+
+	stmt = fmt.Sprintf("CREATE TAG INDEX `%s_index_%s` ON `%s`(`%s`(10));", ontologyModel.OntologyName, prop.PropName, ontologyModel.OntologyName, prop.PropName)
+	glog.Info("创建属性索引：", stmt)
+	_, err = l.svcCtx.Nebula.Execute(stmt)
+	if err != nil {
+		glog.Error("创建属性索引失败:", err)
 		return
 	}
 

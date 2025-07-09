@@ -41,7 +41,7 @@ func (l *DeleteSchemaTriplesLogic) DeleteSchemaTriples(req *types.DeleteSchemaTr
 			return err
 		}
 
-		stmt := fmt.Sprintf("USE %s; DROP EDGE IF EXISTS %s", workspaceModel.WorkSpaceName, tripleModel.Relationship)
+		stmt := fmt.Sprintf("USE %s; DROP EDGE IF EXISTS `%s`", workspaceModel.WorkSpaceName, tripleModel.Relationship)
 		glog.Info("删除边类型：", stmt)
 		_, err = l.svcCtx.Nebula.Execute(stmt)
 		if err != nil {

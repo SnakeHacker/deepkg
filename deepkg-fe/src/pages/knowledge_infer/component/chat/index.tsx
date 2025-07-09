@@ -32,14 +32,12 @@ const renderMarkdown: BubbleProps['messageRender'] = (content: any) => {
 
 
 interface ChatProps {
+    workspaceID: number
 }
 
-const ChatContainer: React.FC<ChatProps> = ({
-  }) =>  {
+const ChatContainer: React.FC<ChatProps> = ({workspaceID}) =>  {
 
-  useEffect(() => {
-
-  }, []);
+  useEffect(() => {}, []);
 
   const [content, setContent] = React.useState('');
 
@@ -58,9 +56,11 @@ const ChatContainer: React.FC<ChatProps> = ({
       history.pop()
 
       var raw = JSON.stringify({
-        "content": message,
-        "history": history,
+          "content": message,
+          "history": history,
+          "workspace_id": workspaceID,
       });
+      console.log(raw);
 
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");

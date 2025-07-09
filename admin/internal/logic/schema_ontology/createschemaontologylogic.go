@@ -55,11 +55,19 @@ func (l *CreateSchemaOntologyLogic) CreateSchemaOntology(req *types.CreateSchema
 		return
 	}
 
-	stmt := fmt.Sprintf("USE %s; CREATE TAG IF NOT EXISTS %s(name STRING NOT NULL DEFAULT '%s' COMMENT '名称') COMMENT = '%s';", workspaceModel.WorkSpaceName, ontology.OntologyName, ontology.OntologyName, ontology.OntologyDesc)
+	stmt := fmt.Sprintf("USE %s; CREATE TAG IF NOT EXISTS `%s`(name STRING NOT NULL DEFAULT '%s' COMMENT '名称') COMMENT = '%s';", workspaceModel.WorkSpaceName, ontology.OntologyName, ontology.OntologyName, ontology.OntologyDesc)
 	glog.Info("创建标签：", stmt)
 	_, err = l.svcCtx.Nebula.Execute(stmt)
 	if err != nil {
 		glog.Error("创建标签失败：", err)
+		return
+	}
+
+	stmt = fmt.Sprintf("CREATE TAG INDEX IF NOT EXISTS `%s_index_name` ON `%s`(name(10));", ontology.OntologyName, ontology.OntologyName)
+	glog.Infof("创建name索引：%s", stmt)
+	_, err = l.svcCtx.Nebula.Execute(stmt)
+	if err != nil {
+		glog.Error("创建name索引失败：", err)
 		return
 	}
 

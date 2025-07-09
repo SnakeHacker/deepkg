@@ -91,17 +91,17 @@ func (l *PublishExtractTaskLogic) PublishExtractTask(req *types.PublishExtractTa
 
 		propNameList := "name"
 		for _, prop := range props {
-			propNameList = propNameList + ", " + prop.PropName
+			propNameList = propNameList + ", `" + prop.PropName + "`"
 		}
 
 		VID := em.ID
 
-		propValueList := "\"" + em.EntityName + "\""
+		propValueList := "'" + em.EntityName + "'"
 		for _, prop := range props {
-			propValueList = propValueList + ", \"" + prop.PropValue + "\""
+			propValueList = propValueList + ", '" + prop.PropValue + "'"
 		}
 
-		stmt := fmt.Sprintf("INSERT VERTEX %s (%s) VALUES %d:(%s)", tagName, propNameList, VID, propValueList)
+		stmt := fmt.Sprintf("INSERT VERTEX `%s` (%s) VALUES %d:(%s)", tagName, propNameList, VID, propValueList)
 		glog.Info("创建点:", stmt)
 		_, err := l.svcCtx.Nebula.Execute(stmt)
 		if err != nil {
@@ -122,7 +122,7 @@ func (l *PublishExtractTaskLogic) PublishExtractTask(req *types.PublishExtractTa
 		srcVID := rm.SourceEntityID
 		dstVID := rm.TargetEntityID
 
-		stmt := fmt.Sprintf("INSERT EDGE %s () VALUES %d->%d:()", edgeType, srcVID, dstVID)
+		stmt := fmt.Sprintf("INSERT EDGE `%s` () VALUES %d->%d:()", edgeType, srcVID, dstVID)
 		glog.Info("创建边:", stmt)
 		_, err = l.svcCtx.Nebula.Execute(stmt)
 		if err != nil {
