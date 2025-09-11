@@ -381,7 +381,7 @@ const DocumentPage: React.FC = () => {
                             columns={columns}
                             pagination={false}
                             rowKey="id"
-                            scroll={{ 
+                            scroll={{
                                 x: 'max-content',
                                 y: 'calc(100vh - 310px)' // 增加预留空间，确保底部完全显示
                             }}

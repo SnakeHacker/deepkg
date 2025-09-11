@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/SnakeHacker/deepkg/admin/common"
-	"github.com/SnakeHacker/deepkg/admin/common/captcha"
 	"github.com/SnakeHacker/deepkg/admin/common/rsa"
 	"github.com/SnakeHacker/deepkg/admin/common/werkzeug"
 	"github.com/SnakeHacker/deepkg/admin/internal/dao"
@@ -45,15 +44,15 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginResp, err erro
 		return nil, errors.New(http.StatusBadRequest, "密码不能为空")
 	}
 
-	if len(strings.TrimSpace(req.CaptchaID)) == 0 || len(strings.TrimSpace(req.CaptchaValue)) == 0 {
-		return nil, errors.New(http.StatusBadRequest, "验证码参数错误")
-	}
+	// if len(strings.TrimSpace(req.CaptchaID)) == 0 || len(strings.TrimSpace(req.CaptchaValue)) == 0 {
+	// 	return nil, errors.New(http.StatusBadRequest, "验证码参数错误")
+	// }
 
-	successed, err := captcha.VerifyCaptcha(l.svcCtx.Captcha, req.CaptchaID, req.CaptchaValue)
-	if err != nil || !successed {
-		glog.Error(err)
-		return
-	}
+	// successed, err := captcha.VerifyCaptcha(l.svcCtx.Captcha, req.CaptchaID, req.CaptchaValue)
+	// if err != nil || !successed {
+	// 	glog.Error(err)
+	// 	return
+	// }
 
 	user, err := dao.SelectUserByAccount(l.svcCtx.DB, req.Account)
 	if err != nil {

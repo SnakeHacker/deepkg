@@ -39,3 +39,5 @@ logs/
 *.tar
 .VSCodeCounter
 server
+
+test2
