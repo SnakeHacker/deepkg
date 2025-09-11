@@ -9,7 +9,7 @@ import {PublishExtractTask} from "../../service/extract_task.ts";
 const ExtractTaskResultPage: React.FC = () => {
 
     const [taskID, setTaskID] = useState(0);
-    const [graphData, setGraphData]= useState<any>({});
+    const [graphData, setGraphData] = useState<any>({});
 
     let graph: Graph | null = null;
 
@@ -26,11 +26,11 @@ const ExtractTaskResultPage: React.FC = () => {
 
     }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
 
         console.log(graphData)
 
-        if (!graphData.nodes ){
+        if (!graphData.nodes) {
             return
         }
         graph = new Graph({
@@ -40,12 +40,28 @@ const ExtractTaskResultPage: React.FC = () => {
                 style: {
                     size: (d: any) => d.size,
                     labelText: (d: any) => d.labelText,
+                    fill: (d: any) => d.color,
+                },
+                state: {
+                    highlight: {
+                        fill: '#D580FF', // 高亮色
+                        halo: true,
+                        lineWidth: 0,
+                    },
+                    dim: {
+                        fill: '#99ADD1', // 变暗色
+                    },
                 },
             },
             edge: {
                 style: {
                     labelText: (d: any) => d.labelText,
                     endArrow: true,
+                },
+                state: {
+                    highlight: {
+                        stroke: '#D580FF', // 高亮边颜色
+                    },
                 },
             },
             layout: {
@@ -56,26 +72,41 @@ const ExtractTaskResultPage: React.FC = () => {
                 },
                 manyBody: {
                     strength: (d: any) => {
-                    if (d.isLeaf) {
-                        return -50;
-                    }
-                    return -10;
+                        if (d.isLeaf) {
+                            return -50;
+                        }
+                        return -10;
                     },
                 },
             },
             behaviors: [
                 {
-                  type: 'drag-element-force',
-                  key: 'drag-element-force-1',
-                  fixed: true, // 拖拽后固定节点位置
+                    type: 'drag-element-force',
+                    key: 'drag-element-force-1',
+                    fixed: true, // 拖拽后固定节点位置
                 },
-                'zoom-canvas'
+                'zoom-canvas',
+                {
+                    type: 'hover-activate',
+                    enable: (event: any) => event.targetType === 'node',
+                    degree: 1, // 关联节点和边都高亮
+                    state: 'highlight',
+                    inactiveState: 'dim',
+                    onHover: (event: any) => {
+                        event.view.setCursor('pointer');
+                    },
+                    onHoverEnd: (event: any) => {
+                        event.view.setCursor('default');
+                    },
+                },
             ],
             // behaviors: ['drag-node'],
         });
-
+    
         graph.render();
-    }, [graphData]);
+        
+    }, [graphData])
+
 
     useEffect(() => {
         taskID > 0 && getExtractTaskResult()
@@ -88,8 +119,7 @@ const ExtractTaskResultPage: React.FC = () => {
         });
 
 
-        if (res){
-
+        if (res) {
             const {entities, relationships} = res.extract_task_result
 
             const nodes = [];
@@ -147,7 +177,6 @@ const ExtractTaskResultPage: React.FC = () => {
                 nodes: nodes,
                 edges: edges,
             };
-
             setGraphData(data)
         }
     };
@@ -177,7 +206,7 @@ const ExtractTaskResultPage: React.FC = () => {
                     onClick={() => {
                         window.history.back();
                     }}
-                    style={{ marginRight: '10px'}}
+                    style={{ marginRight: '10px' }}
                 >
                     返回
                 </Button>
@@ -190,7 +219,7 @@ const ExtractTaskResultPage: React.FC = () => {
                 </Button>
             </div>
             <div className={styles.body}>
-                <div id="container"className={styles.graphContainer}/>
+                <div id="container" className={styles.graphContainer} />
             </div>
 
         </div>
