@@ -26,8 +26,7 @@ func NewGetExtractTaskResultLogic(ctx context.Context, svcCtx *svc.ServiceContex
 }
 
 func (l *GetExtractTaskResultLogic) GetExtractTaskResult(req *types.GetExtractTaskResultReq) (resp *types.GetExtractTaskResultResp, err error) {
-
-	entityModels, _, err := dao.SelectEntitys(l.svcCtx.DB, int(req.TaskID), -1, 10)
+	entityModels, _, err := dao.SelectEntitiesByTaskID(l.svcCtx.DB, int(req.TaskID), -1, 10)
 	if err != nil {
 		glog.Error(err)
 		return
@@ -38,7 +37,7 @@ func (l *GetExtractTaskResultLogic) GetExtractTaskResult(req *types.GetExtractTa
 		entityIDs = append(entityIDs, int(em.ID))
 	}
 
-	propModels, err := dao.SelectPropsByIDs(l.svcCtx.DB, entityIDs)
+	propModels, err := dao.SelectPropsByEntityIDs(l.svcCtx.DB, entityIDs)
 	if err != nil {
 		glog.Error(err)
 		return
@@ -71,7 +70,7 @@ func (l *GetExtractTaskResultLogic) GetExtractTaskResult(req *types.GetExtractTa
 
 	edges := []types.Relationship{}
 
-	relModels, _, err := dao.SelectRelationships(l.svcCtx.DB, int(req.TaskID), -1, 10)
+	relModels, _, err := dao.SelectRelationshipsByTaskID(l.svcCtx.DB, int(req.TaskID), -1, 10)
 	if err != nil {
 		glog.Error(err)
 		return

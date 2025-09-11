@@ -9,6 +9,8 @@ type Entity struct {
 	EntityName string `gorm:"column:entity_name; type:varchar(255); not null; comment:实体名称" json:"entity_name"`
 
 	TaskID int `gorm:"column:task_id; type:int(11); not null; comment:任务ID" json:"task_id"`
+
+	OntologyID int `gorm:"column:ontology_id; type:int(11); not null; comment:本体ID" json:"ontology_id"`
 }
 
 func (u *Entity) TableName() string {

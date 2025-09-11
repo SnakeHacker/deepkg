@@ -15,7 +15,7 @@ func ExtractEntityPrompt(content string, ontologies []string) string {
 已知有本体概念如下:
 %v
 
-请从语料中根据本体概念抽取实体，已存在的实体请不要重复抽取。以JSON格式返回
+本体是概念的集合，实体是本体概念的一个实例。请从语料中根据给出的本体概念抽取实体，已存在的实体请不要重复抽取。以JSON格式返回。
 	{
 		"entities": [
 			{

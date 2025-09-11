@@ -17,7 +17,7 @@ const LoadTripleComponent: React.FC<LoadTripleProps> = ({ visible, onCancel, onO
     const [selectedRowKeysState, setSelectedRowKeysState] = useState<React.Key[]>([]);
     const { setTripleList } = useStore() as LoadTriple;
     const [pagination, setPagination] = useState({
-        current: 1,
+        current: -1,
         pageSize: 10,
     });
 

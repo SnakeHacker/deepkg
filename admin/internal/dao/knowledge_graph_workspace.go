@@ -66,6 +66,22 @@ func SelectKnowledgeGraphWorkspaceByID(db *gorm.DB, id int64) (wsp m.KnowledgeGr
 	return
 }
 
+func SelectKnowledgeGraphWorkspaceByIDs(db *gorm.DB, ids []int64) (wsps []*m.KnowledgeGraphWorkspace, err error) {
+	if len(ids) == 0 {
+		err = errors.New("no knowledge graph workspace ids provided")
+		glog.Error(err)
+		return
+	}
+
+	err = db.Where("id IN (?)", ids).Find(&wsps).Error
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	return
+}
+
 func UpdateKnowledgeGraphWorkspace(db *gorm.DB, wsp *m.KnowledgeGraphWorkspace) (err error) {
 	if wsp == nil {
 		err = errors.New("missing knowledge graph workspace object")

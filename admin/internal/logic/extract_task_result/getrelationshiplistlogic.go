@@ -27,7 +27,7 @@ func NewGetRelationshipListLogic(ctx context.Context, svcCtx *svc.ServiceContext
 }
 
 func (l *GetRelationshipListLogic) GetRelationshipList(req *types.GetRelationshipListReq) (resp *types.GetRelationshipListResp, err error) {
-	rlModels, total, err := dao.SelectRelationships(l.svcCtx.DB, int(req.TaskID), req.PageNumber, req.PageSize)
+	rlModels, total, err := dao.SelectRelationshipsByTaskID(l.svcCtx.DB, int(req.TaskID), req.PageNumber, req.PageSize)
 
 	entityIDs := []int64{}
 	for _, rlModel := range rlModels {

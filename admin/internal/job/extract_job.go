@@ -26,7 +26,7 @@ func DoExtractTask(svcCtx *svc.ServiceContext, taskID int) (err error) {
 	}
 
 	// 载入三元组定义
-	triples, err := GetTriples(svcCtx, taskID)
+	triples, tripleMap, err := GetTriples(svcCtx, taskID)
 	if err != nil {
 		glog.Error(err)
 		return
@@ -97,9 +97,15 @@ func DoExtractTask(svcCtx *svc.ServiceContext, taskID int) (err error) {
 		entitiesMap := make(map[string]gorm_model.Entity)
 		// 实体入库
 		for idx, et := range entities.Entities {
+			ontologyModel, ok := ontologyNameMap[et.Type]
+			if !ok {
+				glog.Warningf("ontology:[%s] is not existed", et.Type)
+				continue
+			}
 			etModel := &gorm_model.Entity{
 				EntityName: et.EntityName,
 				TaskID:     taskID,
+				OntologyID: int(ontologyModel.ID),
 			}
 			err = dao.CreateEntity(tx, etModel)
 			if err != nil {
@@ -123,8 +129,10 @@ func DoExtractTask(svcCtx *svc.ServiceContext, taskID int) (err error) {
 
 			propModels := propsMap[int64(ontology.ID)]
 			propNameList := []string{}
+			propNameMap := make(map[string]struct{})
 			for _, prop := range propModels {
 				propNameList = append(propNameList, prop.PropName)
+				propNameMap[prop.PropName] = struct{}{}
 			}
 
 			if len(propNameList) == 0 {
@@ -155,6 +163,12 @@ func DoExtractTask(svcCtx *svc.ServiceContext, taskID int) (err error) {
 			glog.Info(props)
 
 			for _, prop := range props.Props {
+				_, ok := propNameMap[prop.PropName]
+				if !ok {
+					glog.Warningf("prop:[%s] is not existed in ontology:[%s]", prop.PropName, entity.Type)
+					continue
+				}
+
 				propModel := &gorm_model.Prop{
 					PropName:  prop.PropName,
 					PropValue: prop.Value,
@@ -193,6 +207,12 @@ func DoExtractTask(svcCtx *svc.ServiceContext, taskID int) (err error) {
 
 		// 关系入库
 		for _, relationship := range relationships.Relationships {
+			_, ok := tripleMap[relationship.Rel]
+			if !ok {
+				glog.Warningf("relationship:[%s] is not existed", relationship.Rel)
+				continue
+			}
+
 			sourceEntity, ok := entitiesMap[relationship.Source]
 			if !ok {
 				err = errors.New("source entity not found")
@@ -236,7 +256,8 @@ func DoExtractTask(svcCtx *svc.ServiceContext, taskID int) (err error) {
 	return
 }
 
-func GetTriples(svcCtx *svc.ServiceContext, taskID int) (triples []*gorm_model.SchemaTriple, err error) {
+func GetTriples(svcCtx *svc.ServiceContext, taskID int) (triples []*gorm_model.SchemaTriple, tripleMap map[string]gorm_model.SchemaTriple, err error) {
+	tripleMap = make(map[string]gorm_model.SchemaTriple)
 	tripleModels, err := dao.SelectExtractTaskTriples(svcCtx.DB, taskID)
 	if err != nil {
 		glog.Error(err)
@@ -252,6 +273,10 @@ func GetTriples(svcCtx *svc.ServiceContext, taskID int) (triples []*gorm_model.S
 	if err != nil {
 		glog.Error(err)
 		return
+	}
+
+	for _, triple := range triples {
+		tripleMap[triple.Relationship] = *triple
 	}
 
 	return

@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/rsa"
 	"encoding/json"
+	"github.com/SnakeHacker/deepkg/admin/internal/utils/nebula"
 	"net/http"
 
 	"github.com/zeromicro/x/errors"
@@ -55,10 +56,10 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	// Init redis client
 	redisClient := NewRedisClient(c)
 
-	// nebulaSession, err := nebula.NewNebulaSession(c.Nebula)
-	// if err != nil {
-	// 	glog.Fatal(err)
-	// }
+	nebulaSession, err := nebula.NewNebulaSession(c.Nebula)
+	if err != nil {
+		glog.Fatal(err)
+	}
 
 	// Init RSA key
 	privateKey, err := rsa2.GenerateKey(2048)
@@ -78,7 +79,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		HTTPClient: httpClient,
 		Minio:      minioClient,
 		Redis:      redisClient,
-		// Nebula:     nebulaSession,
+		Nebula:     nebulaSession,
 		PrivateKey: privateKey,
 		JwtX:       middleware.NewJwtXMiddleware(redisClient, c).Handle,
 		Captcha:    svcCaptcha,

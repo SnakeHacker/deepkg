@@ -2,6 +2,7 @@ package knowledge_graph_workspace
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
@@ -44,6 +45,13 @@ func (l *CreateKnowledgeGraphWorkspaceLogic) CreateKnowledgeGraphWorkspace(req *
 	err = dao.CreateKnowledgeGraphWorkspace(l.svcCtx.DB, &workspaceModel)
 	if err != nil {
 		glog.Error(err)
+		return
+	}
+
+	_, err = l.svcCtx.Nebula.Execute(fmt.Sprintf("CREATE SPACE %s (vid_type=INT64, partition_num=1, replica_factor=1);", workspace.KnowledgeGraphWorkspaceName))
+	glog.Infof("创建图空间：%s", workspace.KnowledgeGraphWorkspaceName)
+	if err != nil {
+		glog.Error("创建 Nebula 图空间失败:", err)
 		return
 	}
 

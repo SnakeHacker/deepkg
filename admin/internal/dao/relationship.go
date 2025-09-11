@@ -44,7 +44,7 @@ func DeleteRelationshipsByEntityIDs(db *gorm.DB, ids []int64) (err error) {
 	return
 }
 
-func SelectRelationships(db *gorm.DB, taskID int, pageIndex int, pageSize int) (relationships []*m.Relationship, total int64, err error) {
+func SelectRelationshipsByTaskID(db *gorm.DB, taskID int, pageIndex int, pageSize int) (relationships []*m.Relationship, total int64, err error) {
 	statement := db.Model(&m.Relationship{})
 	if taskID != 0 {
 		statement = statement.Where("task_id = ?", taskID)

@@ -26,7 +26,7 @@ func NewGetEntityListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Get
 
 func (l *GetEntityListLogic) GetEntityList(req *types.GetEntityListReq) (resp *types.GetEntityListResp, err error) {
 
-	entitiyModels, total, err := dao.SelectEntitys(l.svcCtx.DB, int(req.TaskID), req.PageNumber, req.PageSize)
+	entitiyModels, total, err := dao.SelectEntitiesByTaskID(l.svcCtx.DB, int(req.TaskID), req.PageNumber, req.PageSize)
 
 	entities := []types.Entity{}
 	for _, em := range entitiyModels {

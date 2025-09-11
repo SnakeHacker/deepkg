@@ -2,6 +2,7 @@ package schema_triple
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/golang/glog"
@@ -43,6 +44,33 @@ func (l *UpdateSchemaTripleLogic) UpdateSchemaTriple(req *types.UpdateSchemaTrip
 	if err != nil {
 		glog.Error(err)
 		return err
+	}
+
+	sourceOntologyModel, err := dao.SelectSchemaOntologyByID(l.svcCtx.DB, triple.SourceOntologyID)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	targetOntologyModel, err := dao.SelectSchemaOntologyByID(l.svcCtx.DB, triple.TargetOntologyID)
+	if err != nil {
+		glog.Error(err)
+		return
+	}
+
+	workspaceModel, err := dao.SelectKnowledgeGraphWorkspaceByID(l.svcCtx.DB, triple.WorkSpaceID)
+	if err != nil {
+		glog.Error("查询工作空间失败：", err)
+		return
+	}
+
+	tripleStr := fmt.Sprintf("%s -> %s -> %s", sourceOntologyModel.OntologyName, triple.Relationship, targetOntologyModel.OntologyName)
+	stmt := fmt.Sprintf("USE %s; ALTER EDGE %s COMMENT = '%s';", workspaceModel.WorkSpaceName, triple.Relationship, tripleStr)
+	glog.Info("修改边类型：", stmt)
+	_, err = l.svcCtx.Nebula.Execute(stmt)
+	if err != nil {
+		glog.Error("修改边类型失败：", err)
+		return
 	}
 
 	return
