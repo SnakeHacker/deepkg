@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./index.module.less";
 import BgSVG from '../../assets/bg.png';
-import type { KnowledgeGraphWorkspace } from "../../model/kg_workspace";
-import { CreateKnowledgeGraphWorkspace, DeleteKnowledgeGraphWorkspaces, ListKnowledgeGraphWorkspace, UpdateKnowledgeGraphWorkspace } from "../../service/workspace";
-import { Button, Form, Input, Modal, Pagination, Popconfirm, Table } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import type {KnowledgeGraphWorkspace} from "../../model/kg_workspace";
+import {
+    CreateKnowledgeGraphWorkspace,
+    DeleteKnowledgeGraphWorkspaces,
+    ListKnowledgeGraphWorkspace,
+    UpdateKnowledgeGraphWorkspace
+} from "../../service/workspace";
+import {Button, Form, Input, Modal, Pagination, Popconfirm, Table} from "antd";
+import {PlusOutlined} from "@ant-design/icons";
 
 const WorkspacePage: React.FC = () => {
     const [pagination, setPagination] = useState({
@@ -144,6 +149,26 @@ const WorkspacePage: React.FC = () => {
         }));
     };
 
+    // 添加空间名称校验函数
+    const validateWorkspaceName = (_: unknown, value: string) => {
+        if (!value) {
+            return Promise.reject(new Error('请输入空间名称'));
+        }
+
+        // 检查是否以数字开头
+        if (/^\d/.test(value)) {
+            return Promise.reject(new Error('空间名称不能以数字开头'));
+        }
+
+        // 检查字符规则：仅支持中文、英文字母、数字、下划线
+        const validPattern = /^[a-zA-Z\u4e00-\u9fa5][a-zA-Z0-9\u4e00-\u9fa5_]*$/;
+        if (!validPattern.test(value)) {
+            return Promise.reject(new Error('空间名称只能包含中文、英文字母、数字和下划线，且不能以数字开头'));
+        }
+
+        return Promise.resolve();
+    };
+
     return (
         <div className={styles.container} style={{ backgroundImage: `url(${BgSVG})` }}>
             <div className={styles.header}>
@@ -200,7 +225,9 @@ const WorkspacePage: React.FC = () => {
                     <Form.Item
                         label="空间名称"
                         name="knowledge_graph_workspace_name"
-                        rules={[{ required: true, message: '请输入空间名称' }]}
+                        rules={[
+                            { validator: validateWorkspaceName }
+                        ]}
                     >
                         <Input
                             style={{ 'width': '100%' }}
