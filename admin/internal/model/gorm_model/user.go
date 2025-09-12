@@ -1,9 +1,13 @@
 package gorm_model
 
-import "gorm.io/gorm"
+import (
+	"time"
+)
 
 type User struct {
-	gorm.Model
+	ID           uint `gorm:"primarykey"`
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 	UserCode     string `gorm:"column:user_code; type:varchar(255); unique; not null; comment:用户编码" json:"user_code"`
 	OrgID        int    `gorm:"column:org_id; type:int(11); not null; default:0; comment:组织ID" json:"org_id"`
 	Account      string `gorm:"column:account; type:varchar(255); unique; not null; comment:账号用于登录" json:"account"`

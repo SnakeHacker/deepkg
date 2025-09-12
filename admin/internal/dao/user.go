@@ -36,7 +36,7 @@ func DeleteUsersByIDs(db *gorm.DB, ids []int64) (err error) {
 
 func SelectUsers(db *gorm.DB, pageIndex int, pageSize int) (users []*types.User, total int64, err error) {
 	statement := db.Table("user").Select("user.*, organization.org_name").
-		Joins("JOIN organization ON user.org_id = organization.id").Where("user.deleted_at IS NULL")
+		Joins("JOIN organization ON user.org_id = organization.id")
 
 	err = statement.Count(&total).Error
 	if err != nil {

@@ -1,11 +1,13 @@
 package gorm_model
 
 import (
-	"gorm.io/gorm"
+	"time"
 )
 
 type Document struct {
-	gorm.Model
+	ID        uint `gorm:"primarykey"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
 	DocName   string `gorm:"column:doc_name; type:varchar(255); not null; comment:文件名" json:"doc_name"`
 	DocDesc   string `gorm:"column:doc_desc; type:text; not null; comment:文件描述" json:"doc_desc"`
 	DocPath   string `gorm:"column:doc_path; type:varchar(255); not null; comment:文件路径" json:"doc_path"`

@@ -1,11 +1,13 @@
 package gorm_model
 
 import (
-	"gorm.io/gorm"
+	"time"
 )
 
 type ExtractTask struct {
-	gorm.Model
+	ID          uint `gorm:"primarykey"`
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 	TaskName    string `gorm:"column:task_name; type:varchar(255); not null; comment:任务名称" json:"task_name"`
 	Remark      string `gorm:"column:remark; type:text; not null; comment:备注" json:"remark"`
 	WorkSpaceID int64  `gorm:"column:work_space_id; type:int(11); not null; comment:工作空间ID" json:"work_space_id"`
@@ -21,9 +23,11 @@ func (u *ExtractTask) TableName() string {
 }
 
 type ExtractTaskDocument struct {
-	gorm.Model
-	TaskID int `gorm:"column:task_id; type:int(11); not null; comment:任务ID" json:"task_id"`
-	DocID  int `gorm:"column:doc_id; type:int(11); not null; comment:文档ID" json:"doc_id"`
+	ID        uint `gorm:"primarykey"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	TaskID    int `gorm:"column:task_id; type:int(11); not null; comment:任务ID" json:"task_id"`
+	DocID     int `gorm:"column:doc_id; type:int(11); not null; comment:文档ID" json:"doc_id"`
 }
 
 func (u *ExtractTaskDocument) TableName() string {
@@ -31,9 +35,11 @@ func (u *ExtractTaskDocument) TableName() string {
 }
 
 type ExtractTaskTriple struct {
-	gorm.Model
-	TaskID   int `gorm:"column:task_id; type:int(11); not null; comment:任务ID" json:"task_id"`
-	TripleID int `gorm:"column:triple_id; type:int(11); not null; comment:三元组ID" json:"triple_id"`
+	ID        uint `gorm:"primarykey"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	TaskID    int `gorm:"column:task_id; type:int(11); not null; comment:任务ID" json:"task_id"`
+	TripleID  int `gorm:"column:triple_id; type:int(11); not null; comment:三元组ID" json:"triple_id"`
 }
 
 func (u *ExtractTaskTriple) TableName() string {
