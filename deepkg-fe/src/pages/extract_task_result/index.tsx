@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./index.module.less";
 import BgSVG from '../../assets/bg.png';
-import { Button } from "antd";
-import { PlusOutlined, RollbackOutlined } from "@ant-design/icons";
-import { Graph } from '@antv/g6';
-import { GetExtractTaskResult } from "../../service/extract_task_result";
+import {Button} from "antd";
+import {PlusOutlined, RollbackOutlined} from "@ant-design/icons";
+import {Graph} from '@antv/g6';
+import {GetExtractTaskResult} from "../../service/extract_task_result";
 import {PublishExtractTask} from "../../service/extract_task.ts";
+
 const ExtractTaskResultPage: React.FC = () => {
 
     const [taskID, setTaskID] = useState(0);
@@ -129,7 +130,8 @@ const ExtractTaskResultPage: React.FC = () => {
                 const entityNode = {
                     id: `entityNode${entity.id}`,
                     size: 30,
-                    labelText: entity.entity_name
+                    labelText: entity.entity_name,
+                    color: "#1E90FF"
                 };
                 nodes.push(entityNode);
 
@@ -137,7 +139,8 @@ const ExtractTaskResultPage: React.FC = () => {
                     const propNode = {
                         id: `propNode${prop.id}`,
                         size: 15,
-                        labelText: prop.prop_value
+                        labelText: prop.prop_value,
+                        color: "#FFD700"
                     };
                     nodes.push(propNode);
 

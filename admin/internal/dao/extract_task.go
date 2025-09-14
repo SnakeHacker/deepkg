@@ -3,9 +3,10 @@ package dao
 import (
 	"errors"
 
-	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 	"github.com/golang/glog"
 	"gorm.io/gorm"
+
+	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 )
 
 func CreateExtractTask(db *gorm.DB, task *m.ExtractTask) (err error) {
@@ -23,7 +24,7 @@ func CreateExtractTask(db *gorm.DB, task *m.ExtractTask) (err error) {
 }
 
 func DeleteExtractTasksByIDs(db *gorm.DB, ids []int64) (err error) {
-	err = db.Where("id IN (?)", ids).Delete(&m.ExtractTask{}).Error
+	err = db.Unscoped().Where("id IN (?)", ids).Delete(&m.ExtractTask{}).Error
 	if err != nil {
 		err = errors.New("task is not existed")
 		glog.Error(err)

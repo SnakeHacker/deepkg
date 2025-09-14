@@ -1,6 +1,8 @@
 package gorm_model
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type KnowledgeGraphWorkspace struct {
 	gorm.Model

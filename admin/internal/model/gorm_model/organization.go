@@ -1,8 +1,6 @@
 package gorm_model
 
-import (
-	"gorm.io/gorm"
-)
+import "gorm.io/gorm"
 
 type Organization struct {
 	gorm.Model

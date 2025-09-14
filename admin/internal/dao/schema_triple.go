@@ -3,9 +3,10 @@ package dao
 import (
 	"errors"
 
-	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 	"github.com/golang/glog"
 	"gorm.io/gorm"
+
+	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 )
 
 func CreateSchemaTriple(db *gorm.DB, triple *m.SchemaTriple) (err error) {
@@ -23,7 +24,7 @@ func CreateSchemaTriple(db *gorm.DB, triple *m.SchemaTriple) (err error) {
 }
 
 func DeleteSchemaTriplesByIDs(db *gorm.DB, ids []int64) (err error) {
-	err = db.Where("id IN (?)", ids).Delete(&m.SchemaTriple{}).Error
+	err = db.Unscoped().Where("id IN (?)", ids).Delete(&m.SchemaTriple{}).Error
 	if err != nil {
 		err = errors.New("schema triple is not existed")
 		glog.Error(err)

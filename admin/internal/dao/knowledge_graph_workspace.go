@@ -3,9 +3,10 @@ package dao
 import (
 	"errors"
 
-	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 	"github.com/golang/glog"
 	"gorm.io/gorm"
+
+	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 )
 
 func CreateKnowledgeGraphWorkspace(db *gorm.DB, wsp *m.KnowledgeGraphWorkspace) (err error) {
@@ -23,7 +24,7 @@ func CreateKnowledgeGraphWorkspace(db *gorm.DB, wsp *m.KnowledgeGraphWorkspace) 
 }
 
 func DeleteKnowledgeGraphWorkspacesByIDs(db *gorm.DB, ids []int64) (err error) {
-	err = db.Where("id IN (?)", ids).Delete(&m.KnowledgeGraphWorkspace{}).Error
+	err = db.Unscoped().Where("id IN (?)", ids).Delete(&m.KnowledgeGraphWorkspace{}).Error
 	if err != nil {
 		err = errors.New("knowledge graph workspace is not existed")
 		glog.Error(err)

@@ -3,10 +3,11 @@ package dao
 import (
 	"errors"
 
-	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
-	"github.com/SnakeHacker/deepkg/admin/internal/types"
 	"github.com/golang/glog"
 	"gorm.io/gorm"
+
+	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
+	"github.com/SnakeHacker/deepkg/admin/internal/types"
 )
 
 func CreateUser(db *gorm.DB, user *m.User) (err error) {
@@ -24,7 +25,7 @@ func CreateUser(db *gorm.DB, user *m.User) (err error) {
 }
 
 func DeleteUsersByIDs(db *gorm.DB, ids []int64) (err error) {
-	err = db.Where("id IN (?)", ids).Delete(&m.User{}).Error
+	err = db.Unscoped().Where("id IN (?)", ids).Delete(&m.User{}).Error
 	if err != nil {
 		err = errors.New("User用户对象不存在")
 		glog.Error(err)
@@ -36,7 +37,7 @@ func DeleteUsersByIDs(db *gorm.DB, ids []int64) (err error) {
 
 func SelectUsers(db *gorm.DB, pageIndex int, pageSize int) (users []*types.User, total int64, err error) {
 	statement := db.Table("user").Select("user.*, organization.org_name").
-		Joins("JOIN organization ON user.org_id = organization.id").Where("user.deleted_at IS NULL")
+		Joins("JOIN organization ON user.org_id = organization.id")
 
 	err = statement.Count(&total).Error
 	if err != nil {
