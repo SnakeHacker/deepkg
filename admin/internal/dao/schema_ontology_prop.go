@@ -3,9 +3,10 @@ package dao
 import (
 	"errors"
 
-	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 	"github.com/golang/glog"
 	"gorm.io/gorm"
+
+	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 )
 
 func CreateSchemaOntologyProp(db *gorm.DB, prop *m.SchemaOntologyProp) (err error) {
@@ -23,7 +24,7 @@ func CreateSchemaOntologyProp(db *gorm.DB, prop *m.SchemaOntologyProp) (err erro
 }
 
 func DeleteSchemaOntologyPropsByIDs(db *gorm.DB, ids []int64) (err error) {
-	err = db.Where("id IN (?)", ids).Delete(&m.SchemaOntologyProp{}).Error
+	err = db.Unscoped().Where("id IN (?)", ids).Delete(&m.SchemaOntologyProp{}).Error
 	if err != nil {
 		err = errors.New("schema ontology prop is not existed")
 		glog.Error(err)

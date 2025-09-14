@@ -3,9 +3,10 @@ package dao
 import (
 	"errors"
 
-	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 	"github.com/golang/glog"
 	"gorm.io/gorm"
+
+	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 )
 
 func CreateRelationship(db *gorm.DB, relationship *m.Relationship) (err error) {
@@ -23,7 +24,7 @@ func CreateRelationship(db *gorm.DB, relationship *m.Relationship) (err error) {
 }
 
 func DeleteRelationshipsByIDs(db *gorm.DB, ids []int64) (err error) {
-	err = db.Where("id IN (?)", ids).Delete(&m.Relationship{}).Error
+	err = db.Unscoped().Where("id IN (?)", ids).Delete(&m.Relationship{}).Error
 	if err != nil {
 		err = errors.New("relationship is not existed")
 		glog.Error(err)
@@ -34,7 +35,7 @@ func DeleteRelationshipsByIDs(db *gorm.DB, ids []int64) (err error) {
 }
 
 func DeleteRelationshipsByEntityIDs(db *gorm.DB, ids []int64) (err error) {
-	err = db.Where("source_entity_id IN (?) OR target_entity_id IN (?)", ids, ids).Delete(&m.Relationship{}).Error
+	err = db.Unscoped().Where("source_entity_id IN (?) OR target_entity_id IN (?)", ids, ids).Delete(&m.Relationship{}).Error
 	if err != nil {
 		err = errors.New("relationship is not existed")
 		glog.Error(err)

@@ -3,9 +3,10 @@ package dao
 import (
 	"errors"
 
-	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 	"github.com/golang/glog"
 	"gorm.io/gorm"
+
+	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 )
 
 func CreateOrg(db *gorm.DB, org *m.Organization) (err error) {
@@ -24,7 +25,7 @@ func CreateOrg(db *gorm.DB, org *m.Organization) (err error) {
 }
 
 func DeleteOrgsByIDs(db *gorm.DB, ids []int64) (err error) {
-	err = db.Where("id IN (?)", ids).Delete(&m.Organization{}).Error
+	err = db.Unscoped().Where("id IN (?)", ids).Delete(&m.Organization{}).Error
 	if err != nil {
 		glog.Error(err)
 		return

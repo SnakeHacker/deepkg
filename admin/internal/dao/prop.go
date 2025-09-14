@@ -3,9 +3,10 @@ package dao
 import (
 	"errors"
 
-	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 	"github.com/golang/glog"
 	"gorm.io/gorm"
+
+	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 )
 
 func CreateProp(db *gorm.DB, prop *m.Prop) (err error) {
@@ -23,7 +24,7 @@ func CreateProp(db *gorm.DB, prop *m.Prop) (err error) {
 }
 
 func DeletePropsByIDs(db *gorm.DB, ids []int64) (err error) {
-	err = db.Where("id IN (?)", ids).Delete(&m.Prop{}).Error
+	err = db.Unscoped().Where("id IN (?)", ids).Delete(&m.Prop{}).Error
 	if err != nil {
 		err = errors.New("prop is not existed")
 		glog.Error(err)
@@ -34,7 +35,7 @@ func DeletePropsByIDs(db *gorm.DB, ids []int64) (err error) {
 }
 
 func DeletePropsByEntityIDs(db *gorm.DB, ids []int64) (err error) {
-	err = db.Where("entity_id IN (?)", ids).Delete(&m.Prop{}).Error
+	err = db.Unscoped().Where("entity_id IN (?)", ids).Delete(&m.Prop{}).Error
 	if err != nil {
 		err = errors.New("prop is not existed")
 		glog.Error(err)

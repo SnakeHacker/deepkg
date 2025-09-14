@@ -3,9 +3,10 @@ package dao
 import (
 	"errors"
 
-	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 	"github.com/golang/glog"
 	"gorm.io/gorm"
+
+	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 )
 
 func CreateEntity(db *gorm.DB, entity *m.Entity) (err error) {
@@ -23,7 +24,7 @@ func CreateEntity(db *gorm.DB, entity *m.Entity) (err error) {
 }
 
 func DeleteEntitysByIDs(db *gorm.DB, ids []int64) (err error) {
-	err = db.Where("id IN (?)", ids).Delete(&m.Entity{}).Error
+	err = db.Unscoped().Where("id IN (?)", ids).Delete(&m.Entity{}).Error
 	if err != nil {
 		err = errors.New("entity is not existed")
 		glog.Error(err)

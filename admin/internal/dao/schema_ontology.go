@@ -3,9 +3,10 @@ package dao
 import (
 	"errors"
 
-	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 	"github.com/golang/glog"
 	"gorm.io/gorm"
+
+	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 )
 
 func CreateSchemaOntology(db *gorm.DB, ontology *m.SchemaOntology) (err error) {
@@ -23,7 +24,7 @@ func CreateSchemaOntology(db *gorm.DB, ontology *m.SchemaOntology) (err error) {
 }
 
 func DeleteSchemaOntologysByIDs(db *gorm.DB, ids []int64) (err error) {
-	err = db.Where("id IN (?)", ids).Delete(&m.SchemaOntology{}).Error
+	err = db.Unscoped().Where("id IN (?)", ids).Delete(&m.SchemaOntology{}).Error
 	if err != nil {
 		err = errors.New("schema ontology is not existed")
 		glog.Error(err)

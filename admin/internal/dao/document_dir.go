@@ -3,9 +3,10 @@ package dao
 import (
 	"errors"
 
-	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 	"github.com/golang/glog"
 	"gorm.io/gorm"
+
+	m "github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 )
 
 func CreateDocumentDir(db *gorm.DB, dir *m.DocumentDir) (err error) {
@@ -23,7 +24,7 @@ func CreateDocumentDir(db *gorm.DB, dir *m.DocumentDir) (err error) {
 }
 
 func DeleteDocumentDirsByIDs(db *gorm.DB, ids []int64) (err error) {
-	err = db.Where("id IN (?)", ids).Delete(&m.DocumentDir{}).Error
+	err = db.Unscoped().Where("id IN (?)", ids).Delete(&m.DocumentDir{}).Error
 	if err != nil {
 		err = errors.New("document dir is not existed")
 		glog.Error(err)
