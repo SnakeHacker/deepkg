@@ -5,12 +5,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
+
+	"github.com/golang/glog"
+	nebula_go "github.com/vesoft-inc/nebula-go/v3"
+
 	"github.com/SnakeHacker/deepkg/admin/internal/dao"
 	"github.com/SnakeHacker/deepkg/admin/internal/model/gorm_model"
 	"github.com/SnakeHacker/deepkg/admin/internal/utils/io_util"
-	"github.com/golang/glog"
-	nebula_go "github.com/vesoft-inc/nebula-go/v3"
-	"strings"
 
 	"github.com/SnakeHacker/deepkg/admin/common/ai/llm"
 	"github.com/SnakeHacker/deepkg/admin/internal/svc"
@@ -104,7 +106,7 @@ func (l *StreamChatLogic) StreamChat(req *types.StreamChatReq, ch chan<- string)
 	}
 	glog.Infof("queryResult: %s", queryResult)
 
-	sysPrompt := `你是一个知识图谱推理助手。你现在的任务是根据查询到的实体和关系结果，回答用户的问题。如果查询到的结果无法回答用户的问题，请直接回复“无法回答”。`
+	sysPrompt := `你是一个知识图谱推理助手。你现在的任务是根据查询到的实体和关系结果，回答用户的问题。如果查询到的结果为空，则按你的理解尽可能进行回答。`
 	msgs := []llm.Message{}
 
 	msgs = append(msgs, llm.Message{
@@ -724,7 +726,7 @@ description字段是对下一步查询目的的简要描述。
 }
 
 func (l *StreamChatLogic) GenerateFinalAnswer(state ReasoningState, ch chan<- string) error {
-	sysPrompt := `你是一个知识图谱推理助手。你现在的任务是基于多步推理结果回答用户问题，并详细解释推理过程。如果无法回答问题，请明确说明。`
+	sysPrompt := `你是一个知识图谱推理助手。你现在的任务是基于多步推理结果回答用户问题，并详细解释推理过程。`
 
 	// 构建推理步骤记录
 	stepsDesc := ""
